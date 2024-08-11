@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import Image from "next/image";
 import { useThemeContext } from "./hooks/useThemeContext";
 import ThemeSelector from "./theme-selector";

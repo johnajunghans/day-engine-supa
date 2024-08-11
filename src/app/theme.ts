@@ -13,7 +13,7 @@ export const theme = extendTheme({
         400: "#F4B95A",
         300: "#F5C06C",
         200: "#F6C87D",
-        100: "#F7D08F"
+        100: "#FCEFD9"
     },
     bgTheme: {
         blue: {
@@ -51,6 +51,9 @@ export const theme = extendTheme({
         dark: "#70757A"
     }
   },
+  borderRadius: {
+    md: "10px"
+  },
   components: {
     Button: {
         variants: {
@@ -63,6 +66,11 @@ export const theme = extendTheme({
                 fontWeight: "700"
             },
             secondary: {
+                bg: "white",
+                border: "1px solid",
+                borderColor: "brand.500",
+                color: "brand.700",
+                _hover: {bg: "brand.100"}
 
             }
         }
