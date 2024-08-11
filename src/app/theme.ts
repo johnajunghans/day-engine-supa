@@ -74,6 +74,13 @@ export const theme = extendTheme({
 
             }
         }
+    },
+    Input: {
+        variants: {
+            primary: {
+                
+            }
+        }
     }
   }
 })

@@ -19,16 +19,18 @@ interface ThemeContextProviderProps {
 }
 
 export const ThemeContextProvider: React.FC<ThemeContextProviderProps> = ({ children }) => {
+    const savedTheme = JSON.parse(localStorage.getItem("theme") ?? "null");
     
-    const [theme, setTheme] = useState<Theme>({ dark: "var(--blue-dark)", light: "var(--blue-light)" });
+    const [theme, setTheme] = useState<Theme>(savedTheme ? savedTheme : { dark: "var(--blue-dark)", light: "var(--blue-light)" });
 
     // This useEffect runs only on the client side
-    useEffect(() => {
-        const savedTheme = localStorage.getItem("theme");
-        if (savedTheme) {
-            setTheme(JSON.parse(savedTheme));
-        }
-    }, []); // Empty dependency array ensures this runs only once when the component mounts
+    // useEffect(() => {
+    //     const savedTheme = localStorage.getItem("theme");
+    //     if (savedTheme) {
+    //         console.log(savedTheme)
+    //         setTheme(JSON.parse(savedTheme));
+    //     }
+    // }, []); // Empty dependency array ensures this runs only once when the component mounts
 
     const changeTheme = (dark: string, light: string) => {
         setTheme({

@@ -3,16 +3,18 @@ import { useCallback, useEffect, useState } from 'react'
 import { createClient } from '../../../utils/supabase/client'
 import { type User } from '@supabase/supabase-js'
 import Avatar from './avatar'
+import { Button, Input } from '@chakra-ui/react'
 
 export default function AccountForm({ user }: { user: User | null }) {
   const supabase = createClient()
   const [loading, setLoading] = useState(true)
   const [fullname, setFullname] = useState<string | null>(null)
   const [username, setUsername] = useState<string | null>(null)
-  const [website, setWebsite] = useState<string | null>(null)
+//   const [website, setWebsite] = useState<string | null>(null)
   const [avatar_url, setAvatarUrl] = useState<string | null>(null)
 
   const getProfile = useCallback(async () => {
+
     try {
       setLoading(true)
 
@@ -30,28 +32,28 @@ export default function AccountForm({ user }: { user: User | null }) {
       if (data) {
         setFullname(data.full_name)
         setUsername(data.username)
-        setWebsite(data.website)
+        // setWebsite(data.website)
         setAvatarUrl(data.avatar_url)
       }
     } catch (error) {
-      alert('Error loading user data!')
+    //   alert('Error loading user data!')
     } finally {
       setLoading(false)
     }
   }, [user, supabase])
 
   useEffect(() => {
+    console.log("use effect run")
     getProfile()
   }, [user, getProfile])
 
   async function updateProfile({
     username,
-    website,
     avatar_url,
   }: {
     username: string | null
     fullname: string | null
-    website: string | null
+    // website: string | null
     avatar_url: string | null
   }) {
     try {
@@ -61,33 +63,35 @@ export default function AccountForm({ user }: { user: User | null }) {
         id: user?.id as string,
         full_name: fullname,
         username,
-        website,
+        // website,
         avatar_url,
         updated_at: new Date().toISOString(),
       })
       if (error) throw error
-      alert('Profile updated!')
+    //   alert('Profile updated!')
     } catch (error) {
-      alert('Error updating the data!')
+    //   alert('Error updating the data!')
     } finally {
       setLoading(false)
     }
   }
 
+  console.log(user)
+
   return (
-    <div className="form-widget">
+    <div className="account-form">
         <Avatar
             uid={user?.id ?? null}
             url={avatar_url}
             size={150}
             onUpload={(url) => {
                 setAvatarUrl(url)
-                updateProfile({ fullname, username, website, avatar_url: url })
+                updateProfile({ fullname, username, avatar_url: url })
             }}
         />
       <div>
-        <label htmlFor="email">Email</label>
-        <input id="email" type="text" value={user?.email} disabled />
+        {/* <label htmlFor="email">Email</label> */}
+        <Input id="email" type="text" value={user?.email} disabled  />
       </div>
       <div>
         <label htmlFor="fullName">Full Name</label>
@@ -107,7 +111,7 @@ export default function AccountForm({ user }: { user: User | null }) {
           onChange={(e) => setUsername(e.target.value)}
         />
       </div>
-      <div>
+      {/* <div>
         <label htmlFor="website">Website</label>
         <input
           id="website"
@@ -115,23 +119,26 @@ export default function AccountForm({ user }: { user: User | null }) {
           value={website || ''}
           onChange={(e) => setWebsite(e.target.value)}
         />
-      </div>
+      </div> */}
 
       <div>
-        <button
-          className="button primary block"
-          onClick={() => updateProfile({ fullname, username, website, avatar_url })}
-          disabled={loading}
+        {/* <button
+          
         >
-          {loading ? 'Loading ...' : 'Update'}
-        </button>
+          
+        </button> */}
+        <Button className="button primary block"
+          onClick={() => updateProfile({ fullname, username, avatar_url })}
+          disabled={loading}>
+            {loading ? 'Loading ...' : 'Update'}
+        </Button>
       </div>
 
       <div>
         <form action="/auth/signout" method="post">
-          <button className="button block" type="submit">
+          <Button className="button block" type="submit">
             Sign out
-          </button>
+          </Button>
         </form>
       </div>
     </div>
