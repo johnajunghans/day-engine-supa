@@ -3,7 +3,10 @@
 @tailwind utilities;
 
 :root {
+  /* COLORS */
+  /* brand color */
   --de-orange: #F1B049;
+  /* theme colors */
   --blue-dark: #0E4FB6;
   --blue-light: #346BC4;
   --green-dark: #296B4B;
@@ -18,7 +21,7 @@
   --light-brown-light: #AD7F62;
   --grey-dark: #88888B;
   --grey-light: #A9A9AD;
-
+  /* greys */
   --light-grey: #DADCE0;
   --med-grey: #999EA2;
   --dark-grey: #70757A;
@@ -77,4 +80,8 @@
   100% {
       fill: #346BC4;
   }
+}
+
+h2 {
+  font-size: 2rem;
 }
