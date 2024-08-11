@@ -13,6 +13,10 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      animation: {
+        "wheel-spin": "spin 320s linear reverse infinite",
+        "logo-spin": "spin 120s linear infinite",
+      }
     },
   },
   plugins: [],
