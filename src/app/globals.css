@@ -3,31 +3,78 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --de-orange: #F1B049;
+  --blue-dark: #0E4FB6;
+  --blue-light: #346BC4;
+  --green-dark: #296B4B;
+  --green-light: #458968;
+  --purple-dark: #501B68;
+  --purple-light: #6D3787;
+  --red-dark: #7D1425;
+  --red-light: #973242;
+  --dark-brown-dark: #1F140E;
+  --dark-brown-light: #4B362A;
+  --light-brown-dark: #986546;
+  --light-brown-light: #AD7F62;
+  --grey-dark: #88888B;
+  --grey-light: #A9A9AD;
+
+  --light-grey: #DADCE0;
+  --med-grey: #999EA2;
+  --dark-grey: #70757A;
+  --bg-main: #FFFFFF;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+@keyframes gradient-dark-svg {
+  0% {
+      fill: #0E4FB6;
+  }
+  14.3% {
+      fill: #296B4B;
+  }
+  28.6% {
+      fill: #501B68;
+  }
+  42.9% {
+      fill: #7D1425;
+  }
+  57.1% {
+      fill: #1F140E;
+  }
+  71.4% {
+      fill: #986546;
+  }
+  85.7% {
+      fill: #88888B;
+  }
+  100% {
+      fill: #0E4FB6;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+@keyframes gradient-light-svg {
+  0% {
+      fill: #346BC4;
+  }
+  14.3% {
+      fill: #458968;
+  }
+  28.6% {
+      fill: #6D3787;
+  }
+  42.9% {
+      fill: #973242;
+  }
+  57.1% {
+      fill: #4B362A;
+  }
+  71.4% {
+      fill: #AD7F62;
+  }
+  85.7% {
+      fill: #A9A9AD;
+  }
+  100% {
+      fill: #346BC4;
   }
 }
