@@ -5,6 +5,8 @@ import { type User } from '@supabase/supabase-js'
 import Avatar from './avatar'
 import { Button, Flex, Input } from '@chakra-ui/react'
 import { useThemeContext } from '../hooks/useThemeContext'
+import Link from 'next/link'
+
 
 export default function AccountForm({ user }: { user: User | null }) {
   const supabase = createClient()
@@ -80,7 +82,8 @@ export default function AccountForm({ user }: { user: User | null }) {
 
   return (
     <Flex id='account-form-bg' bgColor={theme.light} minH="100vh" align="center" justify="center">
-        <Flex className="account-form" flexDir="column" gap="0.5rem" h="50%" w="33%" minW="400px" minH="400px" p="2rem" borderRadius="md" border="1px solid" borderColor="brand.500" bgColor={theme.dark}>
+        <Link href="/active-routine" className='absolute top-4 left-4 text-xl'>⬅</Link>
+        <Flex className="account-form" flexDir="column" align="center" gap="0.5rem" h="50%" w="33%" minW="400px" minH="400px" p="2rem" borderRadius="md" border="1px solid" borderColor="brand.500" bgColor={theme.dark}>
             <Avatar
                 uid={user?.id ?? null}
                 url={avatar_url}
@@ -91,18 +94,25 @@ export default function AccountForm({ user }: { user: User | null }) {
                 }}
             />
             {/* <label htmlFor="email">Email</label> */}
-            <Input id="email" type="text" value={user?.email} disabled  />
+            <Input 
+                id="email" w="80%"
+                type="text" 
+                value={user?.email} 
+                disabled  />
             <Input id="fullName"
+                variant="primary"
+                w="80%"
                 type="text"
                 value={fullname || ''}
                 onChange={(e) => setFullname(e.target.value)} 
                 placeholder='Full Name' />
-            <Input id="username"
+            <Input id="username" w="80%"
+                
                 type="text"
                 value={username || ''}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder='Username' />
-            <Button className="button primary block"
+            <Button className="button primary block" w="80%"
                 onClick={() => updateProfile({ fullname, username, avatar_url })}
                 disabled={loading}>
                 {loading ? 'Loading ...' : 'Update'}
@@ -110,7 +120,7 @@ export default function AccountForm({ user }: { user: User | null }) {
 
         <div>
             <form action="/auth/signout" method="post">
-            <Button className="button block" type="submit" variant="outline">
+            <Button type="submit" variant="outline">
                 Sign out
             </Button>
             </form>

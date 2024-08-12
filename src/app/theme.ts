@@ -1,5 +1,6 @@
 // 1. Import `extendTheme`
 import { extendTheme } from "@chakra-ui/react"
+import { inputTheme } from './lib/variants/input'
 
 // 2. Call `extendTheme` and pass your custom values
 export const theme = extendTheme({
@@ -58,10 +59,11 @@ export const theme = extendTheme({
     Button: {
         variants: {
             primary: {
-                bg: "brand.500",
+                bg: "brand.200",
+                color: "black",
                 border: "1px solid",
                 borderColor: "brand.700",
-                _hover: {bg: "brand.600", borderColor: "brand.800"},
+                _hover: {bg: "brand.300", borderColor: "brand.900"},
                 fontSize: "1rem",
                 fontWeight: "700"
             },
@@ -81,12 +83,6 @@ export const theme = extendTheme({
             }
         }
     },
-    Input: {
-        variants: {
-            primary: {
-
-            },
-        }
-    }
+    Input: { inputTheme }
   }
 })

@@ -6,6 +6,7 @@ import { login, signup } from './actions'
 import Image from 'next/image';
 import ThemeSelector from '../theme-selector';
 import { useState } from 'react';
+import Link from 'next/link';
 
 export default function LoginPage() {
 
@@ -18,6 +19,7 @@ export default function LoginPage() {
 
   return (
     <Flex id='login-background' align="center" justify="center" bgColor={theme.theme.light} h="100vh">
+        <Link href="/" className='absolute top-4 left-4 text-xl'>⬅</Link>
         <Flex id='login-form-container' align="center" justify="center" bgColor={theme.theme.dark} h="50%" w="33%" minW="400px" minH="400px" p="2rem" borderRadius="md" border="1px solid" borderColor="brand.500" pos="relative" >
             <Image src="/logo.png" alt='logo-image' width={100} height={100} className="absolute top-4 left-4 animate-logo-spin" />
             <Box className='absolute right-4 bottom-4'><ThemeSelector /></Box>
