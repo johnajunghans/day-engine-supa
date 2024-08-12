@@ -8,6 +8,7 @@ import AccountForm from "../account/account-form";
 import { User } from "@supabase/supabase-js";
 import useClose from "../hooks/useClose";
 import Link from "next/link";
+import ThemeSelector from "../theme-selector";
 
 export default function Navbar() {
 
@@ -26,18 +27,19 @@ export default function Navbar() {
     }
 
     return (
-        <Flex id='account-nav-bar' as='header' h="64px" bgColor={theme.dark} align="center" justify="space-between" px="0.5rem" overflow="hidden">
+        <Flex id='account-nav-bar' as='header' h="64px" bgColor={theme.dark} align="center" justify="space-between" px="0.75rem" overflow="hidden">
             <Image src="/logo.png" alt="logo-image" width={60} height={60} className="animate-logo-spin" />
-            <Settings />
+            <Flex id="right-hand-nav-container" align="center" gap="0.75rem">
+                <ThemeSelector />
+                <Settings />             
+            </Flex>
             {showAccountForm && <Flex id="account-form-container" pos="fixed" w="20%" minW="200px" bgColor={theme.dark} top="calc(64px + 1rem)" right="1rem" border="1px solid" borderColor="brand.500" borderRadius="md" p="1rem">
-                <div>
-                    <form action="/auth/signout" method="post">
                     <Link href="/account">Account</Link>
-                    <Button type="submit" variant="outline">
-                        Sign out
-                    </Button>
+                    <form action="/auth/signout" method="post">
+                        <Button type="submit" variant="outline">
+                            Sign out
+                        </Button>
                     </form>
-                </div>
             </Flex>}
         </Flex>
            
