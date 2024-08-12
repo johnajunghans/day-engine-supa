@@ -4,11 +4,11 @@ import { Flex } from "@chakra-ui/react"
 import Image from "next/image";
 import { useThemeContext } from "../hooks/useThemeContext"
 import { useState } from "react";
-import AccountForm from "./account-form";
+import AccountForm from "../account/account-form";
 import { User } from "@supabase/supabase-js";
 import useClose from "../hooks/useClose";
 
-export default function Navbar(user: User) {
+export default function Navbar() {
 
     const { theme } = useThemeContext();
     const [showAccountForm, setShowAccountForm] = useState(false);
@@ -25,11 +25,11 @@ export default function Navbar(user: User) {
     }
 
     return (
-        <Flex id='account-nav-bar' as='header' h="64px" bgColor={theme.dark} align="center" justify="space-between" px="1rem">
+        <Flex id='account-nav-bar' as='header' h="64px" bgColor={theme.dark} align="center" justify="space-between" px="0.5rem" overflow="hidden">
             <Image src="/logo.png" alt="logo-image" width={60} height={60} className="animate-logo-spin" />
             <Settings />
-            {showAccountForm && <Flex id="account-form-container" pos="fixed" bgColor={theme.dark} top="calc(64px + 1rem)" right="1rem" border="1px solid" borderColor="brand.500" borderRadius="md" p="1rem">
-            <AccountForm user={user} />
+            {showAccountForm && <Flex id="account-form-container" pos="fixed" w="20%" minW="200px" bgColor={theme.dark} top="calc(64px + 1rem)" right="1rem" border="1px solid" borderColor="brand.500" borderRadius="md" p="1rem">
+            
             </Flex>}
         </Flex>
            

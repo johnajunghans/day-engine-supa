@@ -33,8 +33,7 @@ export default function LoginPage() {
                     </HStack>
                 </VStack>   
             </form>
-        </Flex>
-        
+        </Flex>  
     </Flex>
     
   )

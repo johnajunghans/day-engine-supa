@@ -72,14 +72,20 @@ export const theme = extendTheme({
                 color: "brand.700",
                 _hover: {bg: "brand.100"}
 
+            },
+            outline: {
+                bg: "transparent",
+                border: "1px solid white",
+                color: "white",
+                _hover: {bg: "rgba(255,255,255,0.25"},
             }
         }
     },
     Input: {
         variants: {
             primary: {
-                
-            }
+
+            },
         }
     }
   }

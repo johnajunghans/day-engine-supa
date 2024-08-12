@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { createClient } from '../../../utils/supabase/client'
 import Image from 'next/image'
+import { Button, Flex } from '@chakra-ui/react'
 
 export default function Avatar({
   uid,
@@ -17,6 +18,7 @@ export default function Avatar({
   const supabase = createClient()
   const [avatarUrl, setAvatarUrl] = useState<string | null>(url)
   const [uploading, setUploading] = useState(false)
+  console.log(uid)
 
   useEffect(() => {
     async function downloadImage(path: string) {
@@ -48,9 +50,10 @@ export default function Avatar({
       const fileExt = file.name.split('.').pop()
       const filePath = `${uid}-${Math.random()}.${fileExt}`
 
-      const { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, file)
+      const { error: uploadError } = await supabase.storage.from('user-avatar').upload(filePath, file)
 
       if (uploadError) {
+        console.log(uploadError)
         throw uploadError
       }
 
@@ -63,7 +66,7 @@ export default function Avatar({
   }
 
   return (
-    <div>
+    <Flex id='avatar-container' align="center" gap="1rem">
       {avatarUrl ? (
         <Image
           width={size}
@@ -74,12 +77,10 @@ export default function Avatar({
           style={{ height: size, width: size }}
         />
       ) : (
-        <div className="avatar no-image" style={{ height: size, width: size }} />
+        <div className="avatar no-image" style={{ height: size, width: size, border: "1px dashed white", borderRadius: "10px" }} />
       )}
       <div style={{ width: size }}>
-        <label className="button primary block" htmlFor="single">
-          {uploading ? 'Uploading ...' : 'Upload'}
-        </label>
+        <label role='button' htmlFor='single' className='border border-white rounded-md p-2 hover:bg-[rgba(255,255,255,0.1)]'>{uploading ? 'Uploading ...' : 'Upload'}</label>
         <input
           style={{
             visibility: 'hidden',
@@ -92,6 +93,6 @@ export default function Avatar({
           disabled={uploading}
         />
       </div>
-    </div>
+    </Flex>
   )
 }

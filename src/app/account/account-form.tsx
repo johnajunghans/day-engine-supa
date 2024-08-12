@@ -3,7 +3,8 @@ import { useCallback, useEffect, useState } from 'react'
 import { createClient } from '../../../utils/supabase/client'
 import { type User } from '@supabase/supabase-js'
 import Avatar from './avatar'
-import { Button, Input } from '@chakra-ui/react'
+import { Button, Flex, Input } from '@chakra-ui/react'
+import { useThemeContext } from '../hooks/useThemeContext'
 
 export default function AccountForm({ user }: { user: User | null }) {
   const supabase = createClient()
@@ -13,6 +14,8 @@ export default function AccountForm({ user }: { user: User | null }) {
 //   const [website, setWebsite] = useState<string | null>(null)
   const [avatar_url, setAvatarUrl] = useState<string | null>(null)
 
+  const { theme } = useThemeContext()
+
   const getProfile = useCallback(async () => {
 
     try {
@@ -20,7 +23,7 @@ export default function AccountForm({ user }: { user: User | null }) {
 
       const { data, error, status } = await supabase
         .from('profiles')
-        .select(`full_name, username, website, avatar_url`)
+        .select(`full_name, username, avatar_url`)
         .eq('id', user?.id)
         .single()
 
@@ -43,7 +46,6 @@ export default function AccountForm({ user }: { user: User | null }) {
   }, [user, supabase])
 
   useEffect(() => {
-    console.log("use effect run")
     getProfile()
   }, [user, getProfile])
 
@@ -76,71 +78,44 @@ export default function AccountForm({ user }: { user: User | null }) {
     }
   }
 
-  console.log(user)
-
   return (
-    <div className="account-form">
-        <Avatar
-            uid={user?.id ?? null}
-            url={avatar_url}
-            size={150}
-            onUpload={(url) => {
-                setAvatarUrl(url)
-                updateProfile({ fullname, username, avatar_url: url })
-            }}
-        />
-      <div>
-        {/* <label htmlFor="email">Email</label> */}
-        <Input id="email" type="text" value={user?.email} disabled  />
-      </div>
-      <div>
-        <label htmlFor="fullName">Full Name</label>
-        <input
-          id="fullName"
-          type="text"
-          value={fullname || ''}
-          onChange={(e) => setFullname(e.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor="username">Username</label>
-        <input
-          id="username"
-          type="text"
-          value={username || ''}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </div>
-      {/* <div>
-        <label htmlFor="website">Website</label>
-        <input
-          id="website"
-          type="url"
-          value={website || ''}
-          onChange={(e) => setWebsite(e.target.value)}
-        />
-      </div> */}
+    <Flex id='account-form-bg' bgColor={theme.light} minH="100vh" align="center" justify="center">
+        <Flex className="account-form" flexDir="column" gap="0.5rem" h="50%" w="33%" minW="400px" minH="400px" p="2rem" borderRadius="md" border="1px solid" borderColor="brand.500" bgColor={theme.dark}>
+            <Avatar
+                uid={user?.id ?? null}
+                url={avatar_url}
+                size={150}
+                onUpload={(url) => {
+                    setAvatarUrl(url)
+                    updateProfile({ fullname, username, avatar_url: url })
+                }}
+            />
+            {/* <label htmlFor="email">Email</label> */}
+            <Input id="email" type="text" value={user?.email} disabled  />
+            <Input id="fullName"
+                type="text"
+                value={fullname || ''}
+                onChange={(e) => setFullname(e.target.value)} 
+                placeholder='Full Name' />
+            <Input id="username"
+                type="text"
+                value={username || ''}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder='Username' />
+            <Button className="button primary block"
+                onClick={() => updateProfile({ fullname, username, avatar_url })}
+                disabled={loading}>
+                {loading ? 'Loading ...' : 'Update'}
+            </Button>
 
-      <div>
-        {/* <button
-          
-        >
-          
-        </button> */}
-        <Button className="button primary block"
-          onClick={() => updateProfile({ fullname, username, avatar_url })}
-          disabled={loading}>
-            {loading ? 'Loading ...' : 'Update'}
-        </Button>
-      </div>
-
-      <div>
-        <form action="/auth/signout" method="post">
-          <Button className="button block" type="submit">
-            Sign out
-          </Button>
-        </form>
-      </div>
-    </div>
+        <div>
+            <form action="/auth/signout" method="post">
+            <Button className="button block" type="submit" variant="outline">
+                Sign out
+            </Button>
+            </form>
+        </div>
+        </Flex>
+    </Flex>
   )
 }
