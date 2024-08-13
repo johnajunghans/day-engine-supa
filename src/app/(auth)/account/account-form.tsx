@@ -1,10 +1,10 @@
 'use client'
 import { useCallback, useEffect, useState } from 'react'
-import { createClient } from '../../../utils/supabase/client'
+import { createClient } from '../../../../utils/supabase/client'
 import { type User } from '@supabase/supabase-js'
 import Avatar from './avatar'
 import { Button, Flex, Input } from '@chakra-ui/react'
-import { useThemeContext } from '../hooks/useThemeContext'
+import { useThemeContext } from '../../hooks/useThemeContext'
 import Link from 'next/link'
 
 
@@ -100,7 +100,7 @@ export default function AccountForm({ user }: { user: User | null }) {
                 value={user?.email} 
                 disabled  />
             <Input id="fullName"
-                variant="primary"
+                
                 w="80%"
                 type="text"
                 value={fullname || ''}

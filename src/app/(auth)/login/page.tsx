@@ -1,10 +1,10 @@
 'use client'
 
 import { Box, Button, Flex, HStack, Input, InputGroup, InputLeftAddon, VStack } from '@chakra-ui/react';
-import { useThemeContext } from '../hooks/useThemeContext'
+import { useThemeContext } from '../../hooks/useThemeContext'
 import { login, signup } from './actions'
 import Image from 'next/image';
-import ThemeSelector from '../theme-selector';
+import ThemeSelector from '../../theme-selector';
 import { useState } from 'react';
 import Link from 'next/link';
 

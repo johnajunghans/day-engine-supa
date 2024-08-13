@@ -4,7 +4,7 @@ import { Button, Flex } from "@chakra-ui/react"
 import Image from "next/image";
 import { useThemeContext } from "../hooks/useThemeContext"
 import { useState } from "react";
-import AccountForm from "../account/account-form";
+import AccountForm from "../(auth)/account/account-form";
 import { User } from "@supabase/supabase-js";
 import useClose from "../hooks/useClose";
 import Link from "next/link";
