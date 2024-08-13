@@ -18,12 +18,11 @@ export default function Avatar({
   const supabase = createClient()
   const [avatarUrl, setAvatarUrl] = useState<string | null>(url)
   const [uploading, setUploading] = useState(false)
-  console.log(uid)
 
   useEffect(() => {
     async function downloadImage(path: string) {
       try {
-        const { data, error } = await supabase.storage.from('avatars').download(path)
+        const { data, error } = await supabase.storage.from('user-avatar').download(path)
         if (error) {
           throw error
         }

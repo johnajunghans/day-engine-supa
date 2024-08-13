@@ -72,9 +72,9 @@ export default function AccountForm({ user }: { user: User | null }) {
         updated_at: new Date().toISOString(),
       })
       if (error) throw error
-    //   alert('Profile updated!')
+      alert('Profile updated!')
     } catch (error) {
-    //   alert('Error updating the data!')
+      alert('Error updating the data!')
     } finally {
       setLoading(false)
     }
