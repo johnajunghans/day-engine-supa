@@ -1,5 +1,4 @@
 import Main from "./main";
-import Navbar from "./navbar";
 import { redirect } from "next/navigation";
 import { createClient } from "../../../utils/supabase/server";
 
@@ -14,8 +13,6 @@ export default async function ActiveRoutine() {
     if (error || !data?.user) {
         redirect('/')
     }
-
-    return (   
-        <Main />
-    )
+    
+    return <Main />
 }
