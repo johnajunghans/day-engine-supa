@@ -31,7 +31,7 @@
   --med-grey: #999EA2;
   --dark-grey: #70757A;
   /* wheel and tile bg color */
-  --bg-main: rgba(255,255,255,0.75);
+  --bg-main: rgba(255,255,255,0.8);
 }
 
 @keyframes gradient-dark-svg {

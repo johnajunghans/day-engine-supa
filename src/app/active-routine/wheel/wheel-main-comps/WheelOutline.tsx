@@ -29,7 +29,7 @@ const WheelOutline: React.FC<WheelOutlineProps> = ({ svgSize, miliTime=false, ri
                 alignmentBaseline="middle"
                 x={timeRawHoursToCoordinates(6, -index+6, outerCircleRadius*1.075, center)[0]} 
                 y={timeRawHoursToCoordinates(6, -index+6, outerCircleRadius*1.055, center)[1]}
-                fill="var(--light-grey)"
+                fill="white"
                 fontSize="12px"
             >{marker}</text>
         )
@@ -44,7 +44,7 @@ const WheelOutline: React.FC<WheelOutlineProps> = ({ svgSize, miliTime=false, ri
                     <path key={rot}
                         d={`M ${center-innerCircleRadius} ${center} L ${center-outerCircleRadius*1.03} ${center}`}
                         style={{transform: `rotate(${rot}deg)`, transformOrigin: `${center}px ${center}px`}}
-                        stroke="white" strokeWidth="1"
+                        stroke="var(--med-grey)" strokeWidth="1"
                     />
                 ))}
             </g>

@@ -1,18 +1,22 @@
+import useClose from "@/app/hooks/useClose";
 import { Flex, Text } from "@chakra-ui/react";
 import Image from "next/image";
 import { useState } from "react";
 
 interface RitualTileProps {
+    id: number,
     name: string,
     description?: string
 }
  
-const RitualTile: React.FC<RitualTileProps> = ({ name, description}) => {
+const RitualTile: React.FC<RitualTileProps> = ({ id, name, description}) => {
 
     const [expanded, setExpanded] = useState(false)
 
+    useClose({id: `ritual-${id}-container`, stateUpdateFunction: setExpanded})
+
     return ( 
-        <Flex
+        <Flex id={`ritual-${id}-container`}
             flexDir="column" 
             align="center"
             w="80%" 
@@ -28,7 +32,7 @@ const RitualTile: React.FC<RitualTileProps> = ({ name, description}) => {
             cursor="pointer"
             onClick={() => setExpanded(!expanded)}
         >
-            <Flex
+            <Flex id={`ritual-${id}-header`}
                 w="full"
                 h="50px"
                 align="center" 
@@ -36,12 +40,12 @@ const RitualTile: React.FC<RitualTileProps> = ({ name, description}) => {
                 px="1rem" 
                 gap="1rem"
             >
-                <Text 
+                <Text id={`ritual-${id}-name`}
                     color="black" 
                     fontSize="16px"
                 >{name}</Text>
                 <Flex >
-                    <Image 
+                    <Image
                         src="/chevron-right.svg" 
                         alt="chevron-right" 
                         width={24} 
@@ -50,7 +54,7 @@ const RitualTile: React.FC<RitualTileProps> = ({ name, description}) => {
                     />
                 </Flex>
             </Flex>
-            {expanded && <Text>{description ? description : "This is a test description of a habit"}</Text>}
+            {expanded && <Text id={`ritual-${id}-description`}>{description ? description : "This is a test description of a habit"}</Text>}
         </Flex>
      );
 }

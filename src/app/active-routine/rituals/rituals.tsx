@@ -17,7 +17,8 @@ const Rituals: React.FC<Rituals> = ({ rituals }) => {
         >
             {rituals.map(ritual => (
                 <RitualTile 
-                    key={ritual.id} 
+                    key={ritual.id}
+                    id={ritual.id} 
                     name={ritual.name} 
                     description={ritual?.description} 
                 />
