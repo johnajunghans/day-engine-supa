@@ -7,8 +7,14 @@ import Rituals from "./rituals/rituals"
 import { useState } from "react"
 import WheelMain from "./wheel/WheelMain"
 import Navbar from "./navbar"
+import { Ritual, RitualInstance } from "../lib/interfaces/rituals-interface"
 
-export default function Main() {
+interface MainProps {
+    rituals: Ritual[],
+    ritualInstances: RitualInstance[]
+}
+
+const Main: React.FC<MainProps> = ({ rituals, ritualInstances }) => {
 
     const { theme } = useThemeContext()
     const [showGoals, setShowGoals] = useState(true);
@@ -46,3 +52,5 @@ export default function Main() {
         </Box>
     )
 }
+
+export default Main
