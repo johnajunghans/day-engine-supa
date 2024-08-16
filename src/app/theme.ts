@@ -55,6 +55,9 @@ export const theme = extendTheme({
   borderRadius: {
     md: "10px"
   },
+  boxShadow: {
+    md: "0px 4px 4px rgba(0,0,0,0.4)"
+  },
   components: {
     Button: {
         variants: {

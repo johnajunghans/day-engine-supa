@@ -25,20 +25,22 @@ const Main: React.FC<MainProps> = ({ rituals, ritualInstances }) => {
             <Flex id="rituals-goals-container" flexDir="column" bgColor={theme.light} border="1px solid var(--de-orange)" h="100%" borderRadius="md">
                 <Flex id="rituals-goals-tabs-container" h="60px" w="100%" align="center" justify="space-evenly" borderBottom="1px solid var(--de-orange)">
                     <Text as="button" 
-                        w="100px" h="40px" 
+                        w="100px" h="40px"
+                        bgColor={showGoals ? theme.dark : "unset"} 
                         boxShadow={showGoals ? "0px 4px 4px rgba(0,0,0,0.5)" : "unset"} 
                         _hover={!showGoals ? {border: `1px solid ${theme.dark}`} : {}} 
                         borderColor="transparent"
-                        transitionDuration="200ms" 
+                        transition="box-shadow 200ms, border 200ms" 
                         borderRadius="md"
                         onClick={() => setShowGoals(true)}
                     >Goals</Text>
                     <Text as="button" 
-                        w="100px" h="40px" 
+                        w="100px" h="40px"
+                        bgColor={!showGoals ? theme.dark : "unset"}
                         boxShadow={!showGoals ? "0px 4px 4px rgba(0,0,0,0.4)" : "unset"}
                         borderColor="transparent"
                         _hover={showGoals ? {border: `1px solid ${theme.dark}`} : {}}
-                        transitionDuration="200ms"
+                        transition="box-shadow 200ms, border 200ms"
                         borderRadius="md"
                         onClick={() => setShowGoals(false)}
                     >Rituals</Text>
