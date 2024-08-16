@@ -2,16 +2,16 @@ import { VStack, Input, Textarea, Button } from "@chakra-ui/react";
 import { FormEvent, useState } from "react";
 
 interface Ritual {
+    id: number,
     name: string,
     description?: string
 }
 
 interface EditRitualFormProps {
-    id: number,
     initialRitual: Ritual
 }
  
-const EditRitualForm: React.FC<EditRitualFormProps> = ({ id, initialRitual }) => {
+const EditRitualForm: React.FC<EditRitualFormProps> = ({ initialRitual }) => {
 
     const [name, setName] = useState(initialRitual.name);
     const [description, setDescription] = useState(initialRitual.description);
@@ -22,7 +22,7 @@ const EditRitualForm: React.FC<EditRitualFormProps> = ({ id, initialRitual }) =>
         setIsLoading(true)
 
         const updatedRitual = {
-            id,
+            id: initialRitual.id,
             // conditionally add name and description if they have been changed
             ...(initialRitual.name !== name && { name }),
             ...(initialRitual.description !== description && { description })
@@ -37,7 +37,7 @@ const EditRitualForm: React.FC<EditRitualFormProps> = ({ id, initialRitual }) =>
 
         if (res.status === 304) {
             setIsLoading(false)
-            
+
         }
 
     }

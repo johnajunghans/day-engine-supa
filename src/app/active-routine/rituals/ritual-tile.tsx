@@ -1,24 +1,43 @@
 import ModalMain from "@/app/components/modal";
 import { ChevronRightIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { Box, Flex, IconButton, Text, useDisclosure } from "@chakra-ui/react";
-import { SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import EditRitualForm from "./edit-ritual-form";
 import DeleteRitualForm from "./delete-ritual-form";
+
+interface Ritual {
+    id: number,
+    name: string,
+    description?: string
+}
 
 interface RitualTileProps {
     id: number,
     name: string,
     description?: string,
+    setInitialRitualEdit: Dispatch<SetStateAction<Ritual | null>>,
+    setInitialRitualDelete: Dispatch<SetStateAction<Ritual | null>>
 }
  
-const RitualTile: React.FC<RitualTileProps> = ({ id, name, description}) => {
+const RitualTile: React.FC<RitualTileProps> = ({ id, name, description, setInitialRitualEdit, setInitialRitualDelete}) => {
 
     const [expanded, setExpanded] = useState(false)
-    const { isOpen: isEditModalOpen, onClose: closeEditModal, onOpen: openEditModal } = useDisclosure()
-    const { isOpen: isDeleteModalOpen, onClose: closeDeleteModal, onOpen: openDeleteModal } = useDisclosure()
+    // const { isOpen: isEditModalOpen, onClose: closeEditModal, onOpen: openEditModal } = useDisclosure()
+    // const { isOpen: isDeleteModalOpen, onClose: closeDeleteModal, onOpen: openDeleteModal } = useDisclosure()
+
+    function handleClickEdit() {
+        setInitialRitualEdit({
+            id, name, description
+        })
+    }
+
+    function handleClickDelete() {
+        setInitialRitualDelete({
+            id, name, description
+        })
+    }
 
     return ( 
-        <>
         <Flex id={`ritual-${id}-container`}
             flexDir="column" 
             align="center"
@@ -52,14 +71,14 @@ const RitualTile: React.FC<RitualTileProps> = ({ id, name, description}) => {
                     <IconButton 
                         aria-label="edit ritual"
                         size="sm"
-                        onClick={openEditModal}
+                        onClick={handleClickEdit}
                         icon={<EditIcon boxSize={4}  />}
                         p="0px"
                     />
                     <IconButton
                         aria-label="edit ritual"
                         size="sm"
-                        onClick={openDeleteModal}
+                        onClick={handleClickDelete}
                         icon={<DeleteIcon boxSize={4} />}
                         p="0px"
                     />
@@ -74,13 +93,6 @@ const RitualTile: React.FC<RitualTileProps> = ({ id, name, description}) => {
             </Flex>
             {expanded && <Text id={`ritual-${id}-description`}>{description ? description : "This is a test description of a habit"}</Text>}
         </Flex>
-            <ModalMain isOpen={isEditModalOpen} onClose={closeEditModal} modalTitle={`Edit Ritual: ${name}`}>
-                <EditRitualForm id={id} initialRitual={{name: name, description: description}} />
-            </ModalMain>
-            <ModalMain isOpen={isDeleteModalOpen} onClose={closeDeleteModal} modalTitle={`Delete Ritual: ${name}`}>
-                <DeleteRitualForm />
-            </ModalMain>
-        </>
      );
 }
  
