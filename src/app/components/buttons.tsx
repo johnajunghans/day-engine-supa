@@ -24,7 +24,7 @@ export const CreateNewBtn: React.FC<CreateNewBtnProps> = ({ position, handleClic
             boxShadow="0px 4px 4px rgba(0,0,0,0.4)"
             onClick={handleClick}
         >
-            <AddIcon boxSize={7} />
+            <AddIcon boxSize={7} color="white" />
         </Flex>
     )
 }

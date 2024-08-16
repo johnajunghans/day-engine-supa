@@ -14,7 +14,7 @@ interface ModalMainProps {
     children: React.ReactNode
     isOpen: boolean,
     onClose: () => void,
-    modalTitle: string
+    modalTitle: string,
 }
  
 const ModalMain: React.FC<ModalMainProps> = ({ children, isOpen, onClose, modalTitle }) => {

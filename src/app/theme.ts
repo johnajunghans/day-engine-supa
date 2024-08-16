@@ -1,5 +1,5 @@
 // 1. Import `extendTheme`
-import { extendTheme } from "@chakra-ui/react"
+import { extendTheme, IconButton } from "@chakra-ui/react"
 import { inputTheme } from './lib/variants/input'
 
 // 2. Call `extendTheme` and pass your custom values
@@ -84,6 +84,12 @@ export const theme = extendTheme({
                 color: "white",
                 _hover: {bg: "rgba(255,255,255,0.25"},
             }
+        }
+    },
+    IconButton: {
+        ritual: {
+            bg: "transparent",
+            _hover: {bg: "rgba(0,0,0,0.25)"}
         }
     },
     Input: { inputTheme }

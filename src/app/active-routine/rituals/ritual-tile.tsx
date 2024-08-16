@@ -1,25 +1,28 @@
-import useClose from "@/app/hooks/useClose";
-import { Flex, Text } from "@chakra-ui/react";
-import Image from "next/image";
-import { useState } from "react";
+import ModalMain from "@/app/components/modal";
+import { ChevronRightIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { Box, Flex, IconButton, Text, useDisclosure } from "@chakra-ui/react";
+import { SetStateAction, useState } from "react";
+import EditRitualForm from "./edit-ritual-form";
+import DeleteRitualForm from "./delete-ritual-form";
 
 interface RitualTileProps {
     id: number,
     name: string,
-    description?: string
+    description?: string,
 }
  
 const RitualTile: React.FC<RitualTileProps> = ({ id, name, description}) => {
 
     const [expanded, setExpanded] = useState(false)
-
-    useClose({id: `ritual-${id}-container`, stateUpdateFunction: setExpanded})
+    const { isOpen: isEditModalOpen, onClose: closeEditModal, onOpen: openEditModal } = useDisclosure()
+    const { isOpen: isDeleteModalOpen, onClose: closeDeleteModal, onOpen: openDeleteModal } = useDisclosure()
 
     return ( 
+        <>
         <Flex id={`ritual-${id}-container`}
             flexDir="column" 
             align="center"
-            w="80%" 
+            w="100%" 
             minW="200px" 
             h={expanded ? 'auto' : '50px'}
             minH="50px" 
@@ -27,35 +30,57 @@ const RitualTile: React.FC<RitualTileProps> = ({ id, name, description}) => {
             border={expanded ? "1px solid transparent" : "1px solid white"}
             borderRadius="md"
             boxShadow={expanded ? "0px 4px 4px rgba(0,0,0,0.4)" : "0px 0px 0px rgba(0,0,0,0.4)"}
-            _hover={{boxShadow: "0px 4px 4px rgba(0,0,0,0.4)", borderColor: "transparent"}}
+            // _hover={{boxShadow: "0px 4px 4px rgba(0,0,0,0.4)", borderColor: "transparent"}}
             transitionDuration="200ms"
-            cursor="pointer"
-            onClick={() => setExpanded(!expanded)}
         >
             <Flex id={`ritual-${id}-header`}
                 w="full"
                 h="50px"
                 align="center" 
                 justify="space-between" 
-                px="1rem" 
-                gap="1rem"
+                px="0.5rem" 
             >
                 <Text id={`ritual-${id}-name`}
                     color="black" 
                     fontSize="16px"
                 >{name}</Text>
-                <Flex >
-                    <Image
-                        src="/chevron-right.svg" 
-                        alt="chevron-right" 
-                        width={24} 
-                        height={24}
-                        className={`${expanded ? "rotate-90" : "rotate-180"} duration-100`}
+                <Flex 
+                    align="center"
+                    justify="center"
+                    gap="0.5rem"
+                >
+                    <IconButton 
+                        aria-label="edit ritual"
+                        size="sm"
+                        onClick={openEditModal}
+                        icon={<EditIcon boxSize={4}  />}
+                        p="0px"
+                    />
+                    <IconButton
+                        aria-label="edit ritual"
+                        size="sm"
+                        onClick={openDeleteModal}
+                        icon={<DeleteIcon boxSize={4} />}
+                        p="0px"
+                    />
+                    <IconButton 
+                        aria-label="edit ritual"
+                        size="sm"
+                        onClick={() => setExpanded(!expanded)}
+                        icon={<ChevronRightIcon boxSize={6} className={`${expanded ? "rotate-90" : "rotate-180"} duration-100`} />}
+                        p="0px"
                     />
                 </Flex>
             </Flex>
             {expanded && <Text id={`ritual-${id}-description`}>{description ? description : "This is a test description of a habit"}</Text>}
         </Flex>
+            <ModalMain isOpen={isEditModalOpen} onClose={closeEditModal} modalTitle={`Edit Ritual: ${name}`}>
+                <EditRitualForm id={id} initialRitual={{name: name, description: description}} />
+            </ModalMain>
+            <ModalMain isOpen={isDeleteModalOpen} onClose={closeDeleteModal} modalTitle={`Delete Ritual: ${name}`}>
+                <DeleteRitualForm />
+            </ModalMain>
+        </>
      );
 }
  
