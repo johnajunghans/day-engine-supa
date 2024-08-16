@@ -82,7 +82,7 @@ const Rituals: React.FC<Rituals> = ({ rituals }) => {
                 <EditRitualForm initialRitual={initialRitualEdit} />
             </ModalMain>
             <ModalMain isOpen={isDeleteModalOpen} onClose={closeDeleteModal} modalTitle={`Delete Ritual: ${initialRitualDelete?.name}`}>
-                <DeleteRitualForm />
+                <DeleteRitualForm id={initialRitualDelete?.id} />
             </ModalMain>
         </Flex>
      );

@@ -44,5 +44,16 @@ export async function PUT(request: Request) {
 
 // DELETE: delete a ritual
 export async function DELETE(request: Request) {
+    const ritualId = await request.json()
+    const supabase = createClient()
 
+    const { data, error } = await supabase.from('Rituals')
+        .delete()
+        .eq('id', ritualId)
+
+    if (error) {
+        console.error('Supabase Error:', error);  // Log the error
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    return NextResponse.json({ data }, { status: 204 })
 }
