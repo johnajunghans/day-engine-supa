@@ -1,7 +1,6 @@
 import { Ritual } from "@/app/lib/interfaces/rituals-interface";
 import { Flex, IconButton, useDisclosure } from "@chakra-ui/react";
 import RitualTile from "./ritual-tile";
-import { CreateNewBtn } from "@/app/components/buttons";
 import ModalMain from "@/app/components/modal";
 import CreateRitual from "./create-ritual-form";
 import { useEffect, useState } from "react";
@@ -58,9 +57,9 @@ const Rituals: React.FC<Rituals> = ({ rituals }) => {
             {rituals.map(ritual => (
                 <RitualTile 
                     key={ritual.id}
-                    id={ritual.id} 
+                    id={ritual.id ?? 0} 
                     name={ritual.name} 
-                    description={ritual?.description}
+                    description={ritual?.description ?? ''}
                     setInitialRitualEdit={setInitialRitualEdit}
                     setInitialRitualDelete={setInitialRitualDelete}
                 />
@@ -74,15 +73,14 @@ const Rituals: React.FC<Rituals> = ({ rituals }) => {
                 icon={<AddIcon boxSize={4} />}
                 onClick={openAddModal}
             />
-            {/* <CreateNewBtn position="bottom-4 left-4" handleClick={openAddModal} /> */}
             <ModalMain isOpen={isAddModalOpen} onClose={closeAddModal} modalTitle="Create New Ritual">
                 <CreateRitual />
             </ModalMain>
-            <ModalMain isOpen={isEditModalOpen} onClose={closeEditModal} modalTitle={`Edit Ritual: ${initialRitualEdit?.name}`}>
-                <EditRitualForm initialRitual={initialRitualEdit} />
+            <ModalMain isOpen={isEditModalOpen} onClose={closeEditModal} modalTitle={`Edit Ritual: ${initialRitualEdit?.name || ''}`}>
+                {initialRitualEdit && <EditRitualForm initialRitual={initialRitualEdit} />}
             </ModalMain>
-            <ModalMain isOpen={isDeleteModalOpen} onClose={closeDeleteModal} modalTitle={`Delete Ritual: ${initialRitualDelete?.name}`}>
-                <DeleteRitualForm id={initialRitualDelete?.id} />
+            <ModalMain isOpen={isDeleteModalOpen} onClose={closeDeleteModal} modalTitle={`Delete Ritual: ${initialRitualDelete?.name || ''}`}>
+                {initialRitualDelete && <DeleteRitualForm id={initialRitualDelete?.id} />}
             </ModalMain>
         </Flex>
      );

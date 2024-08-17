@@ -1,7 +1,7 @@
 import Main from "./main";
 import { redirect } from "next/navigation";
 import { createClient } from "../../../utils/supabase/server";
-
+import { RitualInstance, DayOfWeek } from "../lib/interfaces/rituals-interface";
 
 export default async function ActiveRoutine() {
 
@@ -42,5 +42,26 @@ export default async function ActiveRoutine() {
         throw new Error(ritualInstancesError.message)
     }
 
-    return <Main rituals={rituals} ritualInstances={ritualInstances} />
+    const mappableRitualInstances: Record<DayOfWeek, RitualInstance[]> = {
+        Monday: [],
+        Tuesday: [],
+        Wednesday: [],
+        Thursday: [],
+        Friday: [],
+        Saturday: [],
+        Sunday: []
+    }
+
+    if (ritualInstances.length > 0) {
+        ritualInstances.forEach(instance => {
+            // update the ritual instance to include the name that corresponds to the ritual
+            const updatedInstance = {
+                ...instance, name: rituals.filter(ritual => ritual.id === instance.ritual_id)[0].name
+            }
+            mappableRitualInstances[instance.day as DayOfWeek].push(updatedInstance)
+        })
+        console.log(mappableRitualInstances)
+    }
+
+    return <Main rituals={rituals} ritualInstances={mappableRitualInstances} />
 }

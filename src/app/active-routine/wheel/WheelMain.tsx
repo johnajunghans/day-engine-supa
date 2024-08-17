@@ -3,8 +3,14 @@
 import { useRef, useState, useLayoutEffect } from "react";
 import WheelOutline from "./wheel-main-comps/WheelOutline";
 import WheelDaySelector from "./wheel-main-comps/WheelDaySelector";
+import { DayOfWeek, RitualInstance } from "@/app/lib/interfaces/rituals-interface";
+import WheelFunction from "./wheel-function";
 
-const WheelMain = () => {
+interface WheelMainProps {
+    ritualInstances: Record<DayOfWeek, RitualInstance[]>
+}
+
+const WheelMain: React.FC<WheelMainProps> = ({ ritualInstances }) => {
     const wheelMainRef = useRef<HTMLDivElement>(null);
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
@@ -39,7 +45,8 @@ const WheelMain = () => {
         <div id="wheel-main" ref={wheelMainRef} className="w-full h-full flex items-center justify-center">
             <svg width={svgSize} height={svgSize} overflow="visible">
                 {svgSize && <WheelOutline svgSize={svgSize} />}
-                {svgSize && <WheelDaySelector svgSize={svgSize} />}
+                {svgSize && <WheelFunction svgSize={svgSize} ritualInstances={ritualInstances} />}
+
             </svg>
         </div>
      );

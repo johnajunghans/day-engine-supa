@@ -1,9 +1,13 @@
+export type DayOfWeek = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
+
 export interface RitualInstance {
     id: number,
     created_at: string,
     day: string,
     startTime: string,
-    endTime: string
+    endTime: string,
+    ritual_id: number
+    name?: string
 }
 
 export interface Ritual {

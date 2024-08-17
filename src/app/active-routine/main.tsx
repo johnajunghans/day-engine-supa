@@ -7,11 +7,11 @@ import Rituals from "./rituals/rituals"
 import { useState } from "react"
 import WheelMain from "./wheel/WheelMain"
 import Navbar from "./navbar"
-import { Ritual, RitualInstance } from "../lib/interfaces/rituals-interface"
+import { Ritual, RitualInstance, DayOfWeek } from "../lib/interfaces/rituals-interface"
 
 interface MainProps {
     rituals: Ritual[],
-    ritualInstances: RitualInstance[]
+    ritualInstances: Record<DayOfWeek, RitualInstance[]>
 }
 
 const Main: React.FC<MainProps> = ({ rituals, ritualInstances }) => {
@@ -49,7 +49,7 @@ const Main: React.FC<MainProps> = ({ rituals, ritualInstances }) => {
                 {showGoals ? <Goals /> : <Rituals rituals={rituals} />}
             </Flex>
             <Flex id="wheel-container" bgColor={theme.light} border="1px solid var(--de-orange)" h="100%" px="1rem" borderRadius="md">
-                <WheelMain />    
+                <WheelMain ritualInstances={ritualInstances} />    
             </Flex>
         </Box>
     )

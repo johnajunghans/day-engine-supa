@@ -1,22 +1,23 @@
+import { DayOfWeek } from "@/app/lib/interfaces/rituals-interface";
 import { polarToRectCoordinates } from "../../../lib/functions/polarCoordinates";
-import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 interface WheelDaySelectorProps {
-    svgSize: number
+    svgSize: number,
+    setDay: Dispatch<SetStateAction<DayOfWeek>>,
+    activeDay: DayOfWeek
 }
 
-const WheelDaySelector: React.FC<WheelDaySelectorProps> = ({ svgSize }) => {
-
-    const [activeDay, setActiveDay] = useState("Mo")
+const WheelDaySelector: React.FC<WheelDaySelectorProps> = ({ svgSize, setDay, activeDay }) => {
 
     const center = svgSize/2
     const outerCircleRadius = svgSize/2 - 40;
     const innerCircleRadius = outerCircleRadius*0.36
 
-    const days = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
+    const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
-    function handleClick(day: string): void {
-        setActiveDay(day);
+    function handleClick(day: DayOfWeek): void {
+        setDay(day);
     }
 
     return (
@@ -32,7 +33,7 @@ const WheelDaySelector: React.FC<WheelDaySelectorProps> = ({ svgSize }) => {
                         A ${innerCircleRadius} ${innerCircleRadius} 1 0 1 ${polarToRectCoordinates(center, (index+1)*51.429+64.2855, innerCircleRadius).x} ${polarToRectCoordinates(center, (index+1)*51.429+64.2855, innerCircleRadius).y}
                         Z `} 
                         className="fill-white cursor-pointer peer stroke-1 stroke-[var(--light-grey)]"
-                        role="button" onClick={() => {handleClick(day)}}
+                        role="button" onClick={() => {handleClick(day as DayOfWeek)}}
                     />
                     <circle 
                         cx={polarToRectCoordinates(center, (index+0.5)*51.429+64.2855, innerCircleRadius*0.75).x} 
@@ -51,7 +52,7 @@ const WheelDaySelector: React.FC<WheelDaySelectorProps> = ({ svgSize }) => {
                         pointerEvents="none"
                         x={polarToRectCoordinates(center, (index+0.5)*51.429+64.2855, innerCircleRadius*0.75).x}
                         y={polarToRectCoordinates(center, (index+0.5)*51.429+64.2855, innerCircleRadius*0.75).y}
-                    >{day}</text>
+                    >{day.slice(0,2)}</text>
                 </g>  
             ))}
             <circle cx={center} cy={center} r={innerCircleRadius*0.3} role="button"
