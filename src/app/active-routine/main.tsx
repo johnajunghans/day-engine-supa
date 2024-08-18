@@ -26,21 +26,23 @@ const Main: React.FC<MainProps> = ({ rituals, ritualInstances }) => {
                 <Flex id="rituals-goals-tabs-container" h="60px" w="100%" align="center" justify="space-evenly" borderBottom="1px solid var(--de-orange)">
                     <Text as="button" 
                         w="100px" h="40px"
-                        bgColor={showGoals ? theme.dark : "unset"} 
+                        color="white"
+                        bgColor={theme.light} 
                         boxShadow={showGoals ? "0px 4px 4px rgba(0,0,0,0.5)" : "unset"} 
                         _hover={!showGoals ? {border: `1px solid ${theme.dark}`} : {}} 
                         borderColor="transparent"
-                        transition="box-shadow 200ms, border 200ms" 
+                        transition="box-shadow 100ms, border 100ms" 
                         borderRadius="md"
                         onClick={() => setShowGoals(true)}
                     >Goals</Text>
                     <Text as="button" 
                         w="100px" h="40px"
-                        bgColor={!showGoals ? theme.dark : "unset"}
+                        color="white"
+                        bgColor={theme.light} 
                         boxShadow={!showGoals ? "0px 4px 4px rgba(0,0,0,0.4)" : "unset"}
                         borderColor="transparent"
                         _hover={showGoals ? {border: `1px solid ${theme.dark}`} : {}}
-                        transition="box-shadow 200ms, border 200ms"
+                        transition="box-shadow 100ms, border 100ms"
                         borderRadius="md"
                         onClick={() => setShowGoals(false)}
                     >Rituals</Text>
@@ -49,7 +51,7 @@ const Main: React.FC<MainProps> = ({ rituals, ritualInstances }) => {
                 {showGoals ? <Goals /> : <Rituals rituals={rituals} />}
             </Flex>
             <Flex id="wheel-container" bgColor={theme.light} border="1px solid var(--de-orange)" h="100%" px="1rem" borderRadius="md">
-                <WheelMain ritualInstances={ritualInstances} />    
+                <WheelMain ritualInstances={ritualInstances} rituals={rituals} />    
             </Flex>
         </Box>
     )
