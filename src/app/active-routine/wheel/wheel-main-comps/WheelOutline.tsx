@@ -4,7 +4,8 @@ import { timeRawHoursToCoordinates } from '../../../lib/functions/polarCoordinat
 interface WheelOutlineProps {
     svgSize: number,
     miliTime?: boolean,
-    risingTime?: string
+    risingTime?: string,
+    outerCircleRadius: number
 }
 
 interface TimeMarkerProps {
@@ -12,10 +13,9 @@ interface TimeMarkerProps {
     index: number
 }
 
-const WheelOutline: React.FC<WheelOutlineProps> = ({ svgSize, miliTime=false, risingTime="06:00" }) => {
+const WheelOutline: React.FC<WheelOutlineProps> = ({ svgSize, miliTime=false, risingTime="06:00", outerCircleRadius }) => {
     
     const center = svgSize/2
-    const outerCircleRadius = svgSize/2 - 40;
     const innerCircleRadius = outerCircleRadius*0.36
 
     const rotations = [0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180, 195, 210, 225, 240, 255, 270, 285, 300, 315, 330, 345];

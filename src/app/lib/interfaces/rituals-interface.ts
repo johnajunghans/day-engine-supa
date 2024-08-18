@@ -4,8 +4,8 @@ export interface RitualInstance {
     id: number,
     created_at: string,
     day: string,
-    startTime: string,
-    endTime: string,
+    start_time: string,
+    end_time: string,
     ritual_id: number
     name?: string
 }

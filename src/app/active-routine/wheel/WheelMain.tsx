@@ -13,6 +13,7 @@ interface WheelMainProps {
 const WheelMain: React.FC<WheelMainProps> = ({ ritualInstances }) => {
     const wheelMainRef = useRef<HTMLDivElement>(null);
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+    
 
     function handleResize() {
         if (wheelMainRef.current) {
@@ -40,13 +41,13 @@ const WheelMain: React.FC<WheelMainProps> = ({ ritualInstances }) => {
     
     //checks if width or height is greater in WheelMain. The smaller of the two determines the size of the svg.
     const svgSize = dimensions.width >= dimensions.height ? dimensions.height : dimensions.width;
+    const outerCircleRadius = svgSize/2 - 40;
 
     return ( 
         <div id="wheel-main" ref={wheelMainRef} className="w-full h-full flex items-center justify-center">
             <svg width={svgSize} height={svgSize} overflow="visible">
-                {svgSize && <WheelOutline svgSize={svgSize} />}
-                {svgSize && <WheelFunction svgSize={svgSize} ritualInstances={ritualInstances} />}
-
+                {svgSize && <WheelOutline svgSize={svgSize} outerCircleRadius={outerCircleRadius} />}
+                {svgSize && <WheelFunction svgSize={svgSize} ritualInstances={ritualInstances} outerCircleRadius={outerCircleRadius} />}
             </svg>
         </div>
      );

@@ -60,7 +60,6 @@ export default async function ActiveRoutine() {
             }
             mappableRitualInstances[instance.day as DayOfWeek].push(updatedInstance)
         })
-        console.log(mappableRitualInstances)
     }
 
     return <Main rituals={rituals} ritualInstances={mappableRitualInstances} />
