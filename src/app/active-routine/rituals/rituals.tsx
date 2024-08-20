@@ -43,6 +43,13 @@ const Rituals: React.FC<Rituals> = ({ rituals }) => {
         }
     }, [initialRitualDelete])
 
+    function closeModalRegenState() {
+        setInitialRitualDelete(null);
+        setInitialRitualEdit(null)
+        closeDeleteModal();
+        closeEditModal();
+    }
+
     return ( 
         <Flex id="rituals-container"
             w="80%"
@@ -76,10 +83,10 @@ const Rituals: React.FC<Rituals> = ({ rituals }) => {
             <ModalMain isOpen={isAddModalOpen} onClose={closeAddModal} modalTitle="Create New Ritual">
                 <CreateRitual />
             </ModalMain>
-            <ModalMain isOpen={isEditModalOpen} onClose={closeEditModal} modalTitle={`Edit Ritual: ${initialRitualEdit?.name || ''}`}>
+            <ModalMain isOpen={isEditModalOpen} onClose={closeModalRegenState} modalTitle={`Edit Ritual: ${initialRitualEdit?.name || ''}`}>
                 {initialRitualEdit && <EditRitualForm initialRitual={initialRitualEdit} />}
             </ModalMain>
-            <ModalMain isOpen={isDeleteModalOpen} onClose={closeDeleteModal} modalTitle={`Delete Ritual: ${initialRitualDelete?.name || ''}`}>
+            <ModalMain isOpen={isDeleteModalOpen} onClose={closeModalRegenState} modalTitle={`Delete Ritual: ${initialRitualDelete?.name || ''}`}>
                 {initialRitualDelete && <DeleteRitualForm id={initialRitualDelete?.id} />}
             </ModalMain>
         </Flex>

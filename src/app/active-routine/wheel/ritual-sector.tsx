@@ -1,23 +1,21 @@
 import { polarToRectCoordinates, time24HrStringToCoordinates } from "@/app/lib/functions/polarCoordinates";
 import { RitualInstance } from "@/app/lib/interfaces/rituals-interface";
 import { Text } from "@chakra-ui/react";
+import { Dispatch, SetStateAction } from "react";
 
 interface RitualSectorProps {
     svgSize: number
     instance: RitualInstance
     outerCircleRadius: number
+    setSelectedInstance: Dispatch<SetStateAction<RitualInstance | null>>
 }
  
-const RitualSector: React.FC<RitualSectorProps> = ({ svgSize, instance, outerCircleRadius }) => {
+const RitualSector: React.FC<RitualSectorProps> = ({ svgSize, instance, outerCircleRadius, setSelectedInstance }) => {
 
     const center = svgSize/2
     const xy = {
         start: time24HrStringToCoordinates(instance.start_time, outerCircleRadius, center),
         end: time24HrStringToCoordinates(instance.end_time, outerCircleRadius, center)
-    }
-    
-    function reverseString(str: string): string {
-        return str.split('').reverse().join('');
     }
 
     const avgAngle = (xy.start[2]+xy.end[2])/2
@@ -27,7 +25,7 @@ const RitualSector: React.FC<RitualSectorProps> = ({ svgSize, instance, outerCir
 
     return (
         <g id={`${instance.name}-instance-${instance.id}`}>
-            <path 
+            <path
                 d={`
                     M ${center} ${center}
                     L ${xy.start[0]} ${xy.start[1]}
@@ -35,7 +33,8 @@ const RitualSector: React.FC<RitualSectorProps> = ({ svgSize, instance, outerCir
                     Z
                 `}
                 fill="white"
-                className=" drop-shadow-md"
+                className="drop-shadow-[0px_0px_4px_rgba(0,0,0,0.4)] hover:fill-[var(--light-grey)] duration-200 cursor-pointer"
+                onClick={() => setSelectedInstance(instance)}
             />
             
             {/* {instance.name && <text 
@@ -53,6 +52,7 @@ const RitualSector: React.FC<RitualSectorProps> = ({ svgSize, instance, outerCir
                         transformOrigin: 'center center',  // Ensures rotation around the center
                         whiteSpace: 'nowrap',  // Prevents text from wrapping, which might cause overlap
                       }}
+                      className=" pointer-events-none"
                 >{instance.name}</Text>
             </foreignObject>}
             

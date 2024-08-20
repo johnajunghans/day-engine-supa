@@ -20,9 +20,9 @@ const Main: React.FC<MainProps> = ({ rituals, ritualInstances }) => {
     const [showGoals, setShowGoals] = useState(false);
 
     return (
-        <Box id='account-main-content-container' as='main' display="grid" gridTemplateColumns="1fr 3fr 6fr" gap="1rem" minH="100vh" p="1rem" bgColor={theme.dark} overflow="hidden">
+        <Flex id='account-main-content-container' as='main' align="center" justify="flex-start" gap="1rem" minH="100vh" p="1rem" bgColor={theme.dark} overflow="hidden">
             <Navbar />
-            <Flex id="rituals-goals-container" flexDir="column" align="center" bgColor={theme.light} border="1px solid var(--de-orange)" h="100%" borderRadius="md">
+            <Flex id="rituals-goals-container" flexGrow="6" h="calc(100vh - 2rem)" minW="400px" flexDir="column" align="center" bgColor={theme.light} border="1px solid var(--de-orange)" borderRadius="md">
                 <Flex id="rituals-goals-tabs-container" h="60px" w="100%" align="center" justify="space-evenly" borderBottom="1px solid var(--de-orange)">
                     <Text as="button" 
                         w="100px" h="40px"
@@ -50,10 +50,10 @@ const Main: React.FC<MainProps> = ({ rituals, ritualInstances }) => {
                 </Flex>
                 {showGoals ? <Goals /> : <Rituals rituals={rituals} />}
             </Flex>
-            <Flex id="wheel-container" bgColor={theme.light} border="1px solid var(--de-orange)" h="100%" px="1rem" borderRadius="md">
+            <Flex id="wheel-container" flexGrow="3" bgColor={theme.light} border="1px solid var(--de-orange)" h="100%" px="1rem" borderRadius="md">
                 <WheelMain ritualInstances={ritualInstances} rituals={rituals} />    
             </Flex>
-        </Box>
+        </Flex>
     )
 }
 

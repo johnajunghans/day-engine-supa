@@ -45,7 +45,7 @@ const WheelMain: React.FC<WheelMainProps> = ({ ritualInstances, rituals }) => {
     const outerCircleRadius = svgSize/2 - 40;
 
     return ( 
-        <div id="wheel-main" ref={wheelMainRef} className="w-full h-full flex items-center justify-center">
+        <div id="wheel-main" ref={wheelMainRef} className="min-w-[calc(100vh-2rem)] min-h-[calc(100vh-2rem)] w-full h-full flex items-center justify-center">
             <svg width={svgSize} height={svgSize} overflow="visible">
                 {svgSize && <WheelOutline svgSize={svgSize} outerCircleRadius={outerCircleRadius} />}
                 {svgSize && <WheelFunction svgSize={svgSize} ritualInstances={ritualInstances} outerCircleRadius={outerCircleRadius} rituals={rituals} />}

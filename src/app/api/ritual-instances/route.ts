@@ -3,11 +3,11 @@ import { createClient } from "../../../../utils/supabase/server";
 
 
 export async function POST(request: Request) {
-    const instance = await request.json()
+    const instances = await request.json()
     const supabase = createClient();
 
     const { data, error } = await supabase.from('Ritual_Instances')
-        .insert(instance)
+        .insert(instances)
 
         if (error) {
             console.error('Supabase Error:', error);  // Log the error
@@ -21,9 +21,10 @@ export async function PUT(request: Request) {
         const updatedInstance = await request.json();
         const supabase = createClient();
     
-        const { data, error } = await supabase.from('Rituals')
+        const { data, error } = await supabase.from('Ritual_Instances')
             .update({
-                ...updatedInstance
+                ...(updatedInstance.start_time && { start_time: updatedInstance.start_time }),
+                ...(updatedInstance.end_time && { end_time: updatedInstance.end_time })
             })
             .eq('id', updatedInstance.id)
             .select()
@@ -48,5 +49,5 @@ export async function PUT(request: Request) {
             console.error('Supabase Error:', error);  // Log the error
             return NextResponse.json({ error: error.message }, { status: 500 });
         }
-        return NextResponse.json({ data }, { status: 204 })
+        return NextResponse.json({ data })
     }
