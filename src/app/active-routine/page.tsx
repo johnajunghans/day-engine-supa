@@ -42,6 +42,7 @@ export default async function ActiveRoutine() {
         throw new Error(ritualInstancesError.message)
     }
 
+    // create mappable object of ritual instances and include name based on ritualßß
     const mappableRitualInstances: Record<DayOfWeek, RitualInstance[]> = {
         Monday: [],
         Tuesday: [],
@@ -62,5 +63,50 @@ export default async function ActiveRoutine() {
         })
     }
 
-    return <Main rituals={rituals} ritualInstances={mappableRitualInstances} />
+    // fetch the active seasonal goal(s)
+    const { data: seasonalGoals, error: seasonalGoalsError } = await supabase
+        .from('Seaonal_Goals')
+        .select('*')
+        .eq('user_id', userData.user.id)
+    
+    if (seasonalGoalsError) {
+        console.log(seasonalGoalsError.message)
+        throw new Error(seasonalGoalsError.message)
+    }
+
+    // get all seasonal goal ids and export to array
+    const seasonalGoalIds = seasonalGoals.map((goal) => goal.id)
+
+    // fetch all monthly goals based on seasonal goal ids
+    const { data: monthlyGoals, error: monthlyGoalsError } = await supabase 
+        .from('Monthly_Goals')
+        .select('*')
+        .in('seasonal_goal_id', seasonalGoalIds)
+
+    if (monthlyGoalsError) {
+        console.log(monthlyGoalsError.message)
+        throw new Error(monthlyGoalsError.message)
+    }
+
+    // get all monthly goal ids and export into array
+    const monthlyGoalIds = monthlyGoals.map(goal => goal.id)
+
+    // fetch all actions based on monthly goal ids
+    const { data: actions, error: actionsError } = await supabase
+        .from('Actions')
+        .select('*')
+        .in('monthly_goal_id', monthlyGoalIds)
+    
+    if (actionsError) {
+        console.log(actionsError)
+        throw new Error(actionsError.message)
+    }
+
+    return <Main 
+            rituals={rituals} 
+            ritualInstances={mappableRitualInstances} 
+            seasonalGoals={seasonalGoals} 
+            monthlyGoals={monthlyGoals} 
+            actions={actions} 
+            />
 }

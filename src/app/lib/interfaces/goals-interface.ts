@@ -1,23 +1,27 @@
-export interface Goal {
-    createdOn: string,
-    lastUpdatedOn: string,
-    name: string,
-    description: string
+export interface MonthlyGoal {
+    id: number,
+    user_id: string,
+    created_at: string,
+    month: string,
+    seasonal_goal_id: number,
+    summary: string
 }
 
-export interface Goals {
-    createdOn: string,
-    lastUpdatedOn: string,
-    // "This is the season/month of..."
+export interface SeasonGoal {
+   id: number,
+   user_id: string,
+   created_at: string,
+   season: string,
+   summary: string
+}
+
+export interface Action {
+    id: number
+    user_id: string,
+    created_at: string,
+    monthly_goal_id: number,
     summary: string,
-    goals: Goal [],
-}
-
-export interface SeasonGoals {
-    data: Goals
-    months: {
-        one: Goals,
-        two: Goals,
-        three: Goals
-    }
+    day: string,
+    start_time: string,
+    end_time: string
 }
