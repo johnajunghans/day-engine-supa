@@ -14,6 +14,8 @@ export default async function ActiveRoutine() {
         redirect('/')
     }
 
+    console.log(userData.user.id)
+
     // Query all of the user's active rituals
     const { data: rituals, error: ritualsError } = await supabase
         .from('Rituals')
@@ -65,7 +67,7 @@ export default async function ActiveRoutine() {
 
     // fetch the active seasonal goal(s)
     const { data: seasonalGoals, error: seasonalGoalsError } = await supabase
-        .from('Seaonal_Goals')
+        .from('Seasonal_Goals')
         .select('*')
         .eq('user_id', userData.user.id)
     

@@ -18,10 +18,10 @@ interface MainProps {
     actions: Action[]
 }
 
-const Main: React.FC<MainProps> = ({ rituals, ritualInstances, seasonalGoals }) => {
+const Main: React.FC<MainProps> = ({ rituals, ritualInstances, seasonalGoals, monthlyGoals, actions }) => {
 
     const { theme } = useThemeContext()
-    const [showGoals, setShowGoals] = useState(false);
+    const [showGoals, setShowGoals] = useState(true);
 
     return (
         <Box id='account-main-content-container' as='main' display="grid" gridTemplateColumns="1fr 3fr 6fr" gap="1rem" minH="100vh" p="1rem" bgColor={theme.dark} overflow="hidden">
@@ -52,7 +52,7 @@ const Main: React.FC<MainProps> = ({ rituals, ritualInstances, seasonalGoals }) 
                     >Rituals</Text>
                         
                 </Flex>
-                {showGoals ? <Goals /> : <Rituals rituals={rituals} />}
+                {showGoals ? <Goals seasonalGoals={seasonalGoals} monthlyGoals={monthlyGoals} actions={actions} /> : <Rituals rituals={rituals} />}
             </Flex>
             <Flex id="wheel-container" bgColor={theme.light} border="1px solid var(--de-orange)" h="100%" px="1rem" borderRadius="md">
                 <WheelMain ritualInstances={ritualInstances} rituals={rituals} />    
