@@ -18,11 +18,10 @@ const Goals: FunctionComponent<GoalsProps> = ({ seasonalGoals, monthlyGoals, act
             {seasonalGoals && seasonalGoals.map(sGoal => (
                 <SeasonalGoalTile
                     key={sGoal.id}
-                    id={sGoal.id}
-                    summary={sGoal.summary}
-                    season={sGoal.season}
+                    seasonalGoal={sGoal}
                     year={year}
-                    monthlyGoals={monthlyGoals.filter(mGoal => mGoal.seasonal_goal_id === sGoal.id)} 
+                    monthlyGoals={monthlyGoals.filter(mGoal => mGoal.seasonal_goal_id === sGoal.id)}
+                    actions={actions}
                 />
             ))}
         </Flex>

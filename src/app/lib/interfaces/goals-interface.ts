@@ -19,7 +19,8 @@ export interface Action {
     id: number
     user_id: string,
     created_at: string,
-    monthly_goal_id: number,
+    monthly_goal_id: number | null,
+    seasonal_goal_id: number | null,
     summary: string,
     day: string,
     start_time: string,

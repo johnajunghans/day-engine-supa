@@ -1,11 +1,16 @@
-import { AddIcon } from "@chakra-ui/icons"
-import { Flex } from "@chakra-ui/react"
+import { AddIcon, ChevronRightIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons"
+import { Flex, IconButton } from "@chakra-ui/react"
 import { useThemeContext } from "../hooks/useThemeContext"
+import { MouseEventHandler } from "react"
 
 interface CreateNewBtnProps {
     position: string,
     handleClick: React.MouseEventHandler<HTMLDivElement>
-    
+}
+
+interface IconButtonProps {
+    onClick: MouseEventHandler<HTMLButtonElement>
+    expanded?: boolean
 }
 
 export const CreateNewBtn: React.FC<CreateNewBtnProps> = ({ position, handleClick }) => {
@@ -26,5 +31,42 @@ export const CreateNewBtn: React.FC<CreateNewBtnProps> = ({ position, handleClic
         >
             <AddIcon boxSize={7} color="white" />
         </Flex>
+    )
+}
+
+export const ExpandIconButton: React.FC<IconButtonProps> = ({ onClick, expanded }) => {
+
+    return (
+        <IconButton 
+            aria-label="edit ritual"
+            size="sm"
+            onClick={onClick}
+            icon={<ChevronRightIcon boxSize={6} className={`${expanded ? "rotate-90" : "rotate-180"} duration-100`} />}
+            p="0px"
+        />    
+    )  
+}
+
+export const EditIconButton: React.FC<IconButtonProps> = ({ onClick }) => {
+    return (
+        <IconButton 
+            aria-label="edit ritual"
+            size="sm"
+            onClick={onClick}
+            icon={<EditIcon boxSize={4} />}
+            p="0px"
+        />
+    )
+}
+
+export const DeleteIconButton: React.FC<IconButtonProps> = ({ onClick }) => {
+    return (
+        <IconButton 
+            aria-label="edit ritual"
+            size="sm"
+            onClick={onClick}
+            icon={<DeleteIcon boxSize={4} />}
+            p="0px"
+        />
     )
 }

@@ -1,16 +1,16 @@
-import { MonthlyGoal } from "@/app/lib/interfaces/goals-interface";
+import { Action, MonthlyGoal, SeasonGoal } from "@/app/lib/interfaces/goals-interface";
 import { Flex, Text } from "@chakra-ui/react";
 import { FunctionComponent, ReactNode } from "react";
+import GoalTile from "./goal-tile";
 
 interface SeasonalGoalTileProps {
-    id: number,
-    summary: string,
-    season: string,
+    seasonalGoal: SeasonGoal
     year: number,
     monthlyGoals: MonthlyGoal[]
+    actions: Action[]
 }
 
-interface GoalContainerProps {
+interface MonthlyGoalContainerProps {
     children: ReactNode,
     label: string,
 }
@@ -19,51 +19,41 @@ interface GoalTileProps {
     summary: string
 }
  
-const SeasonalGoalTile: FunctionComponent<SeasonalGoalTileProps> = ({ monthlyGoals, id, summary, season, year }) => {
+const SeasonalGoalTile: FunctionComponent<SeasonalGoalTileProps> = ({ monthlyGoals, seasonalGoal, year, actions }) => {
 
     let months = [];
 
-    if (season === 'Spring') {
+    if (seasonalGoal.season === 'Spring') {
         months = ["Aries", "Taurus", "Gemini"]
-    } else if (season === 'Summer') {
+    } else if (seasonalGoal.season === 'Summer') {
         months = ["Cancer", "Leo", "Virgo"]
-    } else if (season === 'Fall') {
+    } else if (seasonalGoal.season === 'Fall') {
         months = ["Libra", "Scorpio", "Sagittarius"]
-    } else if (season === 'Winter') {
+    } else if (seasonalGoal.season === 'Winter') {
         months = ["Capricorn", "Aquarius", "Pisces"]
     } else {
         throw new Error("Season is not defined properly.")
     }
 
-    const GoalContainer: FunctionComponent<GoalContainerProps> = ({ label, children }) => {
+    const MonthlyGoalContainer: FunctionComponent<MonthlyGoalContainerProps> = ({ label, children }) => {
         return (
-            <Flex border="1px solid white" flexDir="column" justify="center" align="center" borderRadius="md" w="100%" minH="100px" position="relative">
-                <Text bgColor="white" borderRadius="5px" fontSize="12px" p="3px" position="absolute" top="-10px" left="-10px">{label}</Text>
+            <Flex flexDir="column" justify="center" align="center" borderRadius="md" w="100%" p="1rem" position="relative">
+                <Text color="white" fontSize="12px" p="3px" position="absolute" top="-10px" left="10px">{label.toUpperCase()}</Text>
                 { children }
             </Flex>
         )
     }
 
-    const GoalTile: FunctionComponent<GoalTileProps> = ({ summary }) => {
-        return (
-            <Flex width="90%" height="50px" bgColor="rgba(255,255,255,0.8)" border="1px solid white" borderRadius="md" px="1rem" justify="flex-start">
-                <Text>{summary}</Text>
-            </Flex>
-        )
-    }
-
     return ( 
-        <Flex id={`seasonal-goal-${id}`} border="1px solid white" p="2rem 1rem 1rem" gap="1rem" flexDir="column" borderRadius="md" w="100%" minH="100px" position="relative">
-            <Text bgColor="white" borderRadius="5px" fontSize="12px" p="3px" position="absolute" top="-10px" left="-10px">{`${season.toUpperCase()}-${year}`}</Text>
-            <Flex width="100%" height="50px" bgColor="rgba(255,255,255,0.8)" border="1px solid white" borderRadius="md" px="1rem" justify="flex-start">
-                <Text>{summary}</Text>
-            </Flex>
+        <Flex id={`seasonal-goal-${seasonalGoal.id}`} border="1px solid white" p="2rem 1rem 1rem" gap="1rem" flexDir="column" borderRadius="md" w="100%" minH="100px" position="relative">
+            <Text bgColor="white" borderRadius="5px" fontSize="12px" p="3px" position="absolute" top="-10px" left="-10px">{`${seasonalGoal.season.toUpperCase()}-${year}`}</Text>
+            <GoalTile summary={seasonalGoal.summary} type="season" actions={actions.filter(action => action.seasonal_goal_id ? action.seasonal_goal_id === seasonalGoal.id : false)} />
             {months.map(month => (
-                <GoalContainer label={month}>
+                <MonthlyGoalContainer key={month} label={month}>
                     {monthlyGoals.filter(goal => goal.month === month).map(goal => (
-                        <GoalTile summary={goal.summary} />
+                        <GoalTile key={goal.id} summary={goal.summary} type="month" actions={actions.filter(action => action.monthly_goal_id ? action.monthly_goal_id === goal.id : false)} />
                     ))}
-                </GoalContainer>
+                </MonthlyGoalContainer>
             ))}
         </Flex>
      );

@@ -94,10 +94,17 @@ export default async function ActiveRoutine() {
     const monthlyGoalIds = monthlyGoals.map(goal => goal.id)
 
     // fetch all actions based on monthly goal ids
+    // const { data: actions, error: actionsError } = await supabase
+    //     .from('Actions')
+    //     .select('*')
+    //     .in('monthly_goal_id', monthlyGoalIds)
+
     const { data: actions, error: actionsError } = await supabase
         .from('Actions')
         .select('*')
-        .in('monthly_goal_id', monthlyGoalIds)
+        .or(
+            `monthly_goal_id.in.(${monthlyGoalIds.join(',')}),seasonal_goal_id.in.(${seasonalGoalIds.join(',')})`
+        );
     
     if (actionsError) {
         console.log(actionsError)

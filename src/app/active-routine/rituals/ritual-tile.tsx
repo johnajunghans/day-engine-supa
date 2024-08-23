@@ -4,6 +4,7 @@ import { Box, Flex, IconButton, Text, useDisclosure } from "@chakra-ui/react";
 import { Dispatch, SetStateAction, useState } from "react";
 import EditRitualForm from "./edit-ritual-form";
 import DeleteRitualForm from "./delete-ritual-form";
+import { DeleteIconButton, EditIconButton, ExpandIconButton } from "@/app/components/buttons";
 
 interface Ritual {
     id: number,
@@ -68,27 +69,9 @@ const RitualTile: React.FC<RitualTileProps> = ({ id, name, description, setIniti
                     justify="center"
                     gap="0.5rem"
                 >
-                    <IconButton 
-                        aria-label="edit ritual"
-                        size="sm"
-                        onClick={handleClickEdit}
-                        icon={<EditIcon boxSize={4}  />}
-                        p="0px"
-                    />
-                    <IconButton
-                        aria-label="edit ritual"
-                        size="sm"
-                        onClick={handleClickDelete}
-                        icon={<DeleteIcon boxSize={4} />}
-                        p="0px"
-                    />
-                    <IconButton 
-                        aria-label="edit ritual"
-                        size="sm"
-                        onClick={() => setExpanded(!expanded)}
-                        icon={<ChevronRightIcon boxSize={6} className={`${expanded ? "rotate-90" : "rotate-180"} duration-100`} />}
-                        p="0px"
-                    />
+                    <EditIconButton onClick={handleClickEdit} />
+                    <DeleteIconButton onClick={handleClickDelete} />
+                    {description && <ExpandIconButton onClick={() => setExpanded(!expanded)} expanded={expanded} />}
                 </Flex>
             </Flex>
             {expanded && <Text id={`ritual-${id}-description`}>{description ? description : "This is a test description of a habit"}</Text>}
