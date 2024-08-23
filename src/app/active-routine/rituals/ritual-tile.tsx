@@ -69,9 +69,9 @@ const RitualTile: React.FC<RitualTileProps> = ({ id, name, description, setIniti
                     justify="center"
                     gap="0.5rem"
                 >
-                    <EditIconButton onClick={handleClickEdit} />
-                    <DeleteIconButton onClick={handleClickDelete} />
-                    {description && <ExpandIconButton onClick={() => setExpanded(!expanded)} expanded={expanded} />}
+                    <EditIconButton onClick={handleClickEdit} label="open-update-ritual-modal" />
+                    <DeleteIconButton onClick={handleClickDelete} label="open-delete-ritual-modal" />
+                    {description && <ExpandIconButton label="show-ritual-description" onClick={() => setExpanded(!expanded)} expanded={expanded} />}
                 </Flex>
             </Flex>
             {expanded && <Text id={`ritual-${id}-description`}>{description ? description : "This is a test description of a habit"}</Text>}

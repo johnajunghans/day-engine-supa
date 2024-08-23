@@ -19,7 +19,7 @@ const GoalTile: FunctionComponent<GoalTileProps> = ({ summary, type, actions }) 
         <Flex flexDir="column" align="center" width="100%" height={isExpanded ? "auto" : "50px"} bgColor="rgba(255,255,255,0.8)" border="1px solid white" borderRadius="md" >
             <Flex width="100%" h="50px" px="1rem" align="center" justify="space-between">
                 <Text>{summary}</Text>
-                {actions.length > 0 && <ExpandIconButton onClick={() => setIsExpanded(!isExpanded)} expanded={isExpanded} />}    
+                {actions.length > 0 && <ExpandIconButton label="show-goal-actions" onClick={() => setIsExpanded(!isExpanded)} expanded={isExpanded} />}    
             </Flex>
             {isExpanded && <UnorderedList w="90%" mb="1rem">
                 {actions.map(action => (

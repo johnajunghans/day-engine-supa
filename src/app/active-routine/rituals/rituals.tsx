@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { AddIcon } from "@chakra-ui/icons";
 import EditRitualForm from "./edit-ritual-form";
 import DeleteRitualForm from "./delete-ritual-form";
+import { AddIconButton } from "@/app/components/buttons";
 
 
 interface Rituals {
@@ -71,15 +72,7 @@ const Rituals: React.FC<Rituals> = ({ rituals }) => {
                     setInitialRitualDelete={setInitialRitualDelete}
                 />
             ))}
-            <IconButton 
-                size="sm"
-                bg="rgba(255,255,255,0.8)"
-                border="1px solid white"
-                _hover={{bg: "rgba(255,255,255,1)"}}
-                aria-label="create ritual"
-                icon={<AddIcon boxSize={4} />}
-                onClick={openAddModal}
-            />
+            <AddIconButton onClick={openAddModal} label="open-post-ritual-modal" />
             <ModalMain isOpen={isAddModalOpen} onClose={closeAddModal} modalTitle="Create New Ritual">
                 <CreateRitual />
             </ModalMain>
