@@ -3,7 +3,7 @@ import { Button, FormLabel, HStack, Input, Radio, RadioGroup, Stack, VStack } fr
 import { FormEvent, FunctionComponent, useState } from "react";
 
 interface AddGoalFormProps {
-   addModalData: {seasonalGoal: SeasonGoal, months: string[]} | null
+   addModalData: {season: string, months: string[]} | null
    closeModal: VoidFunction
 }
  
@@ -20,7 +20,7 @@ const AddGoalForm: FunctionComponent<AddGoalFormProps> = ({ addModalData, closeM
 
         const newGoal = {
             summary,
-            ...(month ? { month, seasonal_goal_id: addModalData?.seasonalGoal.id } : { season: addModalData?.seasonalGoal.season })
+            ...(month ? { month } : { season: addModalData?.season })
         }
 
         const res = await fetch(`http://localhost:3000/api/${goalType}-goals`, {

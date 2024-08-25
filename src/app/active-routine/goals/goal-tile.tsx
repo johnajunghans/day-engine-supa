@@ -13,8 +13,6 @@ const GoalTile: FunctionComponent<GoalTileProps> = ({ summary, type, actions }) 
 
     const [isExpanded, setIsExpanded] = useState(false)
 
-    console.log(type, actions)
-
     return ( 
         <Flex flexDir="column" align="center" width="100%" height={isExpanded ? "auto" : "50px"} bgColor="rgba(255,255,255,0.8)" border="1px solid white" borderRadius="md" >
             <Flex width="100%" h="50px" px="1rem" align="center" justify="space-between">

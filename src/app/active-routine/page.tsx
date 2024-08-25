@@ -2,6 +2,7 @@ import Main from "./main";
 import { redirect } from "next/navigation";
 import { createClient } from "../../../utils/supabase/server";
 import { RitualInstance, DayOfWeek } from "../lib/interfaces/rituals-interface";
+import { getMonthsGivenSeason, getSeason } from "../lib/functions/season-functions";
 
 export default async function ActiveRoutine() {
 
@@ -14,7 +15,7 @@ export default async function ActiveRoutine() {
         redirect('/')
     }
 
-    console.log(userData.user.id)
+    // console.log(userData.user.id)
 
     // Query all of the user's active rituals
     const { data: rituals, error: ritualsError } = await supabase
@@ -65,11 +66,18 @@ export default async function ActiveRoutine() {
         })
     }
 
+    // FOR DEV, CURRENT SEASON HARDCODED AS FALL
+    // const currentSeason = getSeason()
+    const currentSeason = "Fall"
+
+    const months = getMonthsGivenSeason(currentSeason)
+
     // fetch the active seasonal goal(s)
     const { data: seasonalGoals, error: seasonalGoalsError } = await supabase
         .from('Seasonal_Goals')
         .select('*')
         .eq('user_id', userData.user.id)
+        .eq('season', currentSeason)
     
     if (seasonalGoalsError) {
         console.log(seasonalGoalsError.message)
@@ -83,7 +91,7 @@ export default async function ActiveRoutine() {
     const { data: monthlyGoals, error: monthlyGoalsError } = await supabase 
         .from('Monthly_Goals')
         .select('*')
-        .in('seasonal_goal_id', seasonalGoalIds)
+        .in('month', months);
 
     if (monthlyGoalsError) {
         console.log(monthlyGoalsError.message)
