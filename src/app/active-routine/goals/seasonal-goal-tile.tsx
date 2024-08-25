@@ -11,6 +11,7 @@ interface SeasonalGoalsTileProps {
     monthlyGoals: MonthlyGoal[]
     actions: Action[]
     setAddModalData: Dispatch<SetStateAction<{season: string, months: string[]} | null>>
+    setEditDeleteModalData: Dispatch<SetStateAction<{initialGoal: SeasonGoal | MonthlyGoal, months: string[] | null} | null>>
 }
 
 interface MonthlyGoalContainerProps {
@@ -18,7 +19,7 @@ interface MonthlyGoalContainerProps {
     label: string,
 }
  
-const SeasonalGoalsTile: FunctionComponent<SeasonalGoalsTileProps> = ({ monthlyGoals, seasonalGoals, year, actions, setAddModalData }) => {
+const SeasonalGoalsTile: FunctionComponent<SeasonalGoalsTileProps> = ({ monthlyGoals, seasonalGoals, year, actions, setAddModalData, setEditDeleteModalData }) => {
 
     // IN FUTURE, SEASON VARIABLE SHOULD BE TAKEN FROM SOME LAYER OF CONTEXT
     const season = "Fall"
@@ -40,9 +41,11 @@ const SeasonalGoalsTile: FunctionComponent<SeasonalGoalsTileProps> = ({ monthlyG
                 {seasonalGoals.length > 0 && seasonalGoals.map(goal => (
                     <GoalTile 
                         key={goal.id} 
-                        summary={goal.summary} 
+                        goal={goal}
                         type="season" 
                         actions={actions.filter(action => action.seasonal_goal_id ? action.seasonal_goal_id === goal.id : false)} 
+                        setEditDeleteModalData={setEditDeleteModalData}
+                        months={null}
                     />
                 ))}
             </Flex>
@@ -52,9 +55,11 @@ const SeasonalGoalsTile: FunctionComponent<SeasonalGoalsTileProps> = ({ monthlyG
                         {monthlyGoals.length > 0 && monthlyGoals.filter(goal => goal.month === month).map(goal => (
                             <GoalTile 
                                 key={goal.id} 
-                                summary={goal.summary} 
+                                goal={goal}
                                 type="month" 
-                                actions={actions.filter(action => action.monthly_goal_id ? action.monthly_goal_id === goal.id : false)} 
+                                actions={actions.filter(action => action.monthly_goal_id ? action.monthly_goal_id === goal.id : false)}
+                                setEditDeleteModalData={setEditDeleteModalData}
+                                months={months}
                             />
                         ))}
                     </MonthlyGoalContainer>

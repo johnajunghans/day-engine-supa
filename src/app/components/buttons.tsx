@@ -1,24 +1,12 @@
 import { AddIcon, ChevronRightIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons"
 import { Box, Button, Flex, IconButton, Text } from "@chakra-ui/react"
 import { useThemeContext } from "../hooks/useThemeContext"
-import { MouseEventHandler } from "react"
+import { FunctionComponent, MouseEventHandler } from "react"
 import Image from "next/image"
 
 interface CreateNewBtnProps {
     position: string,
     onClick: MouseEventHandler<HTMLDivElement>
-}
-
-interface IconButtonProps {
-    onClick: MouseEventHandler<HTMLButtonElement>
-    expanded?: boolean
-    label: string
-}
-
-interface RectBtnWithTextProps {
-    onClick: MouseEventHandler<HTMLButtonElement>
-    text?: string
-    id: string
 }
 
 export const CreateNewBtn: React.FC<CreateNewBtnProps> = ({ position, onClick }) => {
@@ -40,6 +28,12 @@ export const CreateNewBtn: React.FC<CreateNewBtnProps> = ({ position, onClick })
             <Image src="/plus.svg" alt="add" width={40} height={40} />
         </Flex>
     )
+}
+
+interface IconButtonProps {
+    onClick: MouseEventHandler<HTMLButtonElement>
+    expanded?: boolean
+    label: string
 }
 
 export const ExpandIconButton: React.FC<IconButtonProps> = ({ onClick, expanded, label }) => {
@@ -93,6 +87,12 @@ export const AddIconButton: React.FC<IconButtonProps> = ({ onClick, label }) => 
     )
 }
 
+interface RectBtnWithTextProps {
+    onClick: MouseEventHandler<HTMLButtonElement>
+    text?: string
+    id: string
+}
+
 export const RectBtnWithText: React.FC<RectBtnWithTextProps> = ({ onClick, text, id }) => {
 
     return (
@@ -122,3 +122,35 @@ export const RectBtnWithText: React.FC<RectBtnWithTextProps> = ({ onClick, text,
         </Button>
     )
 }
+
+interface ConfirmDeleteButtonProps {
+    adjustedWidth: number,
+    onClick: MouseEventHandler<HTMLButtonElement>
+    isLoading: boolean
+    confirmDelete: boolean
+    text: string
+}
+
+export const ConfirmDeleteButton: FunctionComponent<ConfirmDeleteButtonProps> = ({ adjustedWidth, onClick, isLoading, text, confirmDelete }) => {
+    
+    return (
+        <Button
+            display="flex"
+            gap="0.5rem"
+            alignContent="center"
+            justifyContent="center"
+            id="delete-goal-button"
+            w={confirmDelete ? `${adjustedWidth}px` : "40px"}
+            transition="75ms"
+            type="button" 
+            colorScheme="red"
+            onClick={onClick}
+            isLoading={isLoading}
+        >
+            <DeleteIcon boxSize={4} />
+            {confirmDelete && <Text>{text}</Text>}
+        </Button>  
+    )
+}
+    
+    
