@@ -10,6 +10,7 @@ import Navbar from "./navbar"
 import { Ritual, RitualInstance, DayOfWeek } from "../lib/interfaces/rituals-interface"
 import { Action, MonthlyGoal, SeasonGoal } from "../lib/interfaces/goals-interface"
 import { SeasonalGoalsContextProvider } from "../context/db-context/seasonal-goals-context"
+import { MonthlyGoalsContextProvider } from "../context/db-context/monthly-goals-context"
 
 interface MainProps {
     rituals: Ritual[],
@@ -55,7 +56,9 @@ const Main: React.FC<MainProps> = ({ rituals, ritualInstances, seasonalGoals, mo
                     <Tab name="Rituals" />
                 </Flex>
                 <SeasonalGoalsContextProvider initialState={seasonalGoals}>
-                    {activeTab === "Goals" ? <Goals monthlyGoals={monthlyGoals} actions={actions} /> : <Rituals rituals={rituals} />}
+                    <MonthlyGoalsContextProvider initialState={monthlyGoals}>
+                        {activeTab === "Goals" ? <Goals actions={actions} /> : <Rituals rituals={rituals} />}
+                    </MonthlyGoalsContextProvider>
                 </SeasonalGoalsContextProvider>
             </Flex>
             <Flex id="wheel-container" bgColor={theme.light} border="1px solid var(--de-orange)" h="100%" px="1rem" borderRadius="md">

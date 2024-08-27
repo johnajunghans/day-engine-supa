@@ -1,4 +1,4 @@
-import { MonthlyGoal, SeasonGoal } from "@/app/lib/interfaces/goals-interface";
+import { SeasonGoal } from "@/app/lib/interfaces/goals-interface";
 import { createContext, Dispatch, FunctionComponent, ReactNode, Reducer, useReducer } from "react";
 
 interface SeasonalGoalsContextProps {
@@ -22,6 +22,10 @@ const goalsReducer = (state: SeasonGoal[], action: reducerAction): SeasonGoal[] 
   switch (action.type) {
     case 'POST':
       return [...state, action.payload]
+    case 'PUT':
+      return state.map(item => item.id === action.payload.id ? { ...item, ...action.payload } : item)
+    case 'DELETE':
+      return state.filter(item => item.id !== action.payload.id)
     default: 
       return state
   }

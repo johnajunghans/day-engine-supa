@@ -8,13 +8,15 @@ export async function POST(request: Request) {
 
     const { data, error } = await supabase.from('Seasonal_Goals')
         .insert(newGoal)
+        .select()
+        .single()
 
         if (error) {
             console.error('Supabase Error:', error);  // Log the error
             return NextResponse.json({ error: error.message }, { status: 500 });
         }
     
-        return NextResponse.json({ data }, { status: 201 })
+        return NextResponse.json( data , { status: 201 })
 }
 
 export async function PUT(request: Request) {
@@ -27,13 +29,14 @@ export async function PUT(request: Request) {
             })
             .eq('id', updatedGoal.id)
             .select()
+            .single()
     
             if (error) {
                 console.error('Supabase Error:', error);  // Log the error
                 return NextResponse.json({ error: error.message }, { status: 500 });
             }
 
-            return NextResponse.json({ data }, { status: 201 })
+            return NextResponse.json( data , { status: 201 })
     }
 
     export async function DELETE(request: Request) {
@@ -48,5 +51,5 @@ export async function PUT(request: Request) {
             console.error('Supabase Error:', error);  // Log the error
             return NextResponse.json({ error: error.message }, { status: 500 });
         }
-        return NextResponse.json({ data })
+        return NextResponse.json({ status: 204 })
     }

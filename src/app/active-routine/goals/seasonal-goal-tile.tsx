@@ -5,21 +5,20 @@ import GoalTile from "./goal-tile";
 import { AddIconButton, CreateNewBtn, RectBtnWithText } from "@/app/components/buttons";
 import { getMonthsGivenSeason } from "@/app/lib/functions/season-functions";
 import { useSeasonalGoalsContext } from "@/app/hooks/db-context-hooks/useSeasonalGoalsContext";
+import { useMonthlyGoalsContext } from "@/app/hooks/db-context-hooks/useMonthlyGoalsContext";
 
 interface SeasonalGoalsTileProps {
     year: number,
-    monthlyGoals: MonthlyGoal[]
     actions: Action[]
     setAddModalData: Dispatch<SetStateAction<{season: string, months: string[]} | null>>
     setEditDeleteModalData: Dispatch<SetStateAction<{initialGoal: SeasonGoal | MonthlyGoal, months: string[] | null} | null>>
 }
 
 interface MonthlyGoalContainerProps {
-    children: ReactNode,
     label: string,
 }
  
-const SeasonalGoalsTile: FunctionComponent<SeasonalGoalsTileProps> = ({ monthlyGoals, year, actions, setAddModalData, setEditDeleteModalData }) => {
+const SeasonalGoalsTile: FunctionComponent<SeasonalGoalsTileProps> = ({ year, actions, setAddModalData, setEditDeleteModalData }) => {
 
     // IN FUTURE, SEASON VARIABLE SHOULD BE TAKEN FROM SOME LAYER OF CONTEXT
     const season = "Fall"
@@ -45,11 +44,23 @@ const SeasonalGoalsTile: FunctionComponent<SeasonalGoalsTileProps> = ({ monthlyG
         ) 
     }
 
-    const MonthlyGoalContainer: FunctionComponent<MonthlyGoalContainerProps> = ({ label, children }) => {
+    const MonthlyGoalContainer: FunctionComponent<MonthlyGoalContainerProps> = ({ label }) => {
+
+        const { monthlyGoalsState: monthlyGoals } = useMonthlyGoalsContext()
+
         return (
             <Flex flexDir="column" justify="center" align="center" gap="0.5rem" borderRadius="md" w="100%" position="relative">
                 <Text color="white" fontSize="12px" p="3px" position="absolute" top="-25px" left="0px">{label.toUpperCase()}</Text>
-                { children }
+                {monthlyGoals.length > 0 && monthlyGoals.filter(goal => goal.month === label).map(goal => (
+                    <GoalTile 
+                        key={goal.id} 
+                        goal={goal}
+                        type="month" 
+                        actions={actions.filter(action => action.monthly_goal_id ? action.monthly_goal_id === goal.id : false)}
+                        setEditDeleteModalData={setEditDeleteModalData}
+                        months={months}
+                    />
+                ))}
             </Flex>
         )
     }
@@ -60,18 +71,7 @@ const SeasonalGoalsTile: FunctionComponent<SeasonalGoalsTileProps> = ({ monthlyG
             <SeasonalGoalsContainer />
             {months.map(month => (
                 <Flex key={month} flexDir="column" gap="1.5rem" px="1rem" mt="1rem">
-                    <MonthlyGoalContainer label={month}>
-                        {monthlyGoals.length > 0 && monthlyGoals.filter(goal => goal.month === month).map(goal => (
-                            <GoalTile 
-                                key={goal.id} 
-                                goal={goal}
-                                type="month" 
-                                actions={actions.filter(action => action.monthly_goal_id ? action.monthly_goal_id === goal.id : false)}
-                                setEditDeleteModalData={setEditDeleteModalData}
-                                months={months}
-                            />
-                        ))}
-                    </MonthlyGoalContainer>
+                    <MonthlyGoalContainer label={month} /> 
                 </Flex>
             ))}
             {/* <RectBtnWithText id="add-goal-btn" text="Add Goal" onClick={() => setAddModalData({seasonalGoals: seasonalGoals, months: months})} /> */}

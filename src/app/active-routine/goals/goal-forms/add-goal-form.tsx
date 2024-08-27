@@ -1,3 +1,4 @@
+import { useMonthlyGoalsContext } from "@/app/hooks/db-context-hooks/useMonthlyGoalsContext";
 import { useSeasonalGoalsContext } from "@/app/hooks/db-context-hooks/useSeasonalGoalsContext";
 import { genRandomNumber } from "@/app/lib/functions/util-functions";
 import { SeasonGoal } from "@/app/lib/interfaces/goals-interface";
@@ -17,6 +18,7 @@ const AddGoalForm: FunctionComponent<AddGoalFormProps> = ({ addModalData, closeM
     const [isLoading, setIsLoading] = useState(false)
 
     const { seasonalGoalsDispatch } = useSeasonalGoalsContext()
+    const { monthlyGoalsDispatch } = useMonthlyGoalsContext()
 
     async function handleSubmit(e: FormEvent) {
         e.preventDefault()
@@ -35,19 +37,14 @@ const AddGoalForm: FunctionComponent<AddGoalFormProps> = ({ addModalData, closeM
         })
 
         if (res.ok) {
-            // if (goalType === "seasonal") {
-            //     const newSeasonalGoal = {
-            //         ...newGoal, id: 
-            //     }
-            //     seasonalGoalsDispatch('POST', )
-            // }
+            const newGoal = await res.json()
+            if (goalType === "seasonal") {
+                seasonalGoalsDispatch({ type: 'POST', payload: newGoal })
+            }
 
-            // if (goalType === "monthly") {
-
-            // }
-            const data = await res.json()
-            console.log(res)
-            console.log(data)
+            if (goalType === "monthly") {
+                monthlyGoalsDispatch({ type: 'POST', payload: newGoal })
+            }
             closeModal()
         }
 

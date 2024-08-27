@@ -8,11 +8,10 @@ import AddGoalForm from "./goal-forms/add-goal-form";
 import EditDeleteGoalForm from "./goal-forms/edit-delete-goal-form";
 
 interface GoalsProps {
-    monthlyGoals: MonthlyGoal[],
     actions: Action[]
 }
  
-const Goals: FunctionComponent<GoalsProps> = ({ monthlyGoals, actions }) => {
+const Goals: FunctionComponent<GoalsProps> = ({ actions }) => {
 
     const [addModalData, setAddModalData] = useState<{season: string, months: string[]} | null>(null)
     const [editDeleteModalData, setEditDeleteModalData] = useState<{initialGoal: SeasonGoal | MonthlyGoal, months: string[] | null} | null>(null)
@@ -38,7 +37,6 @@ const Goals: FunctionComponent<GoalsProps> = ({ monthlyGoals, actions }) => {
         <Flex id="goals-container" width="100%" h="100%" p="1rem" flexDir="column" justify="flex-start" align="center" pos="relative">
                 <SeasonalGoalTile
                     year={year}
-                    monthlyGoals={monthlyGoals}
                     actions={actions}
                     setAddModalData={setAddModalData}
                     setEditDeleteModalData={setEditDeleteModalData}

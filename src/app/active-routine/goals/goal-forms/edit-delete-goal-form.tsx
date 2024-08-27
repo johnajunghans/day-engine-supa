@@ -1,4 +1,6 @@
 import { ConfirmDeleteButton } from "@/app/components/buttons";
+import { useMonthlyGoalsContext } from "@/app/hooks/db-context-hooks/useMonthlyGoalsContext";
+import { useSeasonalGoalsContext } from "@/app/hooks/db-context-hooks/useSeasonalGoalsContext";
 import useClose from "@/app/hooks/useClose";
 import { MonthlyGoal, SeasonGoal } from "@/app/lib/interfaces/goals-interface";
 import { DeleteIcon } from "@chakra-ui/icons";
@@ -12,6 +14,9 @@ interface EditDeleteGoalFormProps {
 }
  
 const EditDeleteGoalForm: FunctionComponent<EditDeleteGoalFormProps> = ({ initialGoal, months=null, closeModal }) => {
+
+    const { seasonalGoalsDispatch } = useSeasonalGoalsContext()
+    const { monthlyGoalsDispatch } = useMonthlyGoalsContext()
 
     const [isEditLoading, setIsEditLoading] = useState(false)
     const [isDeleteLoading, setIsDeleteLoading] = useState(false)
@@ -39,6 +44,14 @@ const EditDeleteGoalForm: FunctionComponent<EditDeleteGoalFormProps> = ({ initia
         })
 
         if (res.ok) {
+            const newGoal = await res.json()
+            if (goalType === "seasonal") {
+                seasonalGoalsDispatch({ type: 'PUT', payload: newGoal })
+            }
+
+            if (goalType === "monthly") {
+                monthlyGoalsDispatch({ type: 'PUT', payload: newGoal})
+            }
             closeModal()
         }
     }
@@ -56,6 +69,13 @@ const EditDeleteGoalForm: FunctionComponent<EditDeleteGoalFormProps> = ({ initia
             })
 
             if (res.ok) {
+                if (goalType === "seasonal") {
+                    seasonalGoalsDispatch({ type: 'DELETE', payload: initialGoal as SeasonGoal })
+                }
+    
+                if (goalType === "monthly") {
+                    monthlyGoalsDispatch({ type: 'DELETE', payload: initialGoal as MonthlyGoal})
+                }
                 closeModal()
             }
         }
