@@ -4,9 +4,9 @@ import { Dispatch, FunctionComponent, MouseEventHandler, ReactNode, SetStateActi
 import GoalTile from "./goal-tile";
 import { AddIconButton, CreateNewBtn, RectBtnWithText } from "@/app/components/buttons";
 import { getMonthsGivenSeason } from "@/app/lib/functions/season-functions";
+import { useSeasonalGoalsContext } from "@/app/hooks/db-context-hooks/useSeasonalGoalsContext";
 
 interface SeasonalGoalsTileProps {
-    seasonalGoals: SeasonGoal[]
     year: number,
     monthlyGoals: MonthlyGoal[]
     actions: Action[]
@@ -19,11 +19,31 @@ interface MonthlyGoalContainerProps {
     label: string,
 }
  
-const SeasonalGoalsTile: FunctionComponent<SeasonalGoalsTileProps> = ({ monthlyGoals, seasonalGoals, year, actions, setAddModalData, setEditDeleteModalData }) => {
+const SeasonalGoalsTile: FunctionComponent<SeasonalGoalsTileProps> = ({ monthlyGoals, year, actions, setAddModalData, setEditDeleteModalData }) => {
 
     // IN FUTURE, SEASON VARIABLE SHOULD BE TAKEN FROM SOME LAYER OF CONTEXT
     const season = "Fall"
     const months = getMonthsGivenSeason(season)
+
+    const SeasonalGoalsContainer = () => {
+
+        const { seasonalGoalsState } = useSeasonalGoalsContext()
+
+        return (
+            <Flex flexDir="column" gap="0.5rem">
+                {seasonalGoalsState.length > 0 && seasonalGoalsState.map(goal => (
+                    <GoalTile 
+                        key={goal.id} 
+                        goal={goal}
+                        type="season" 
+                        actions={actions.filter(action => action.seasonal_goal_id ? action.seasonal_goal_id === goal.id : false)} 
+                        setEditDeleteModalData={setEditDeleteModalData}
+                        months={null}
+                    />
+                ))}
+            </Flex>
+        ) 
+    }
 
     const MonthlyGoalContainer: FunctionComponent<MonthlyGoalContainerProps> = ({ label, children }) => {
         return (
@@ -36,19 +56,8 @@ const SeasonalGoalsTile: FunctionComponent<SeasonalGoalsTileProps> = ({ monthlyG
 
     return (
         <Flex id={`${season}-${year}-goals`} border="1px solid white" p="2rem 1rem 1rem" gap="1rem" mt="0.5rem" flexDir="column" borderRadius="md" w="100%" minH="100px" position="relative">
-            <Text bgColor="white" borderRadius="5px" fontSize="14px" p="4px" position="absolute" top="-15px" left="-10px">{`${season}-${year}`}</Text>
-            <Flex flexDir="column" gap="0.5rem">
-                {seasonalGoals.length > 0 && seasonalGoals.map(goal => (
-                    <GoalTile 
-                        key={goal.id} 
-                        goal={goal}
-                        type="season" 
-                        actions={actions.filter(action => action.seasonal_goal_id ? action.seasonal_goal_id === goal.id : false)} 
-                        setEditDeleteModalData={setEditDeleteModalData}
-                        months={null}
-                    />
-                ))}
-            </Flex>
+            <Text bgColor="white" borderRadius="5px" fontSize="14px" p="4px" position="absolute" top="-15px" left="-10px">{`${season.toUpperCase()}-${year}`}</Text>
+            <SeasonalGoalsContainer />
             {months.map(month => (
                 <Flex key={month} flexDir="column" gap="1.5rem" px="1rem" mt="1rem">
                     <MonthlyGoalContainer label={month}>

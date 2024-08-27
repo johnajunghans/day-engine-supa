@@ -4,6 +4,7 @@ import { createClient } from "../../../utils/supabase/server";
 import { RitualInstance, DayOfWeek } from "../lib/interfaces/rituals-interface";
 import { getMonthsGivenSeason, getSeason } from "../lib/functions/season-functions";
 
+
 export default async function ActiveRoutine() {
 
     // Create instance of Supabase
@@ -119,11 +120,15 @@ export default async function ActiveRoutine() {
         throw new Error(actionsError.message)
     }
 
-    return <Main 
-            rituals={rituals} 
-            ritualInstances={mappableRitualInstances} 
-            seasonalGoals={seasonalGoals} 
-            monthlyGoals={monthlyGoals} 
-            actions={actions} 
+    console.log("All data fetched from server")
+
+    return (
+            <Main 
+                rituals={rituals} 
+                ritualInstances={mappableRitualInstances} 
+                seasonalGoals={seasonalGoals} 
+                monthlyGoals={monthlyGoals} 
+                actions={actions} 
             />
+        )
 }

@@ -19,6 +19,7 @@ interface ThemeContextProviderProps {
 }
 
 export const ThemeContextProvider: React.FC<ThemeContextProviderProps> = ({ children }) => {
+    
     const savedTheme = JSON.parse(localStorage.getItem("theme") ?? "null");
     
     const [theme, setTheme] = useState<Theme>(savedTheme ? savedTheme : { dark: "var(--blue-dark)", light: "var(--blue-light)" });

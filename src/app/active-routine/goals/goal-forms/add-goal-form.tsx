@@ -1,3 +1,5 @@
+import { useSeasonalGoalsContext } from "@/app/hooks/db-context-hooks/useSeasonalGoalsContext";
+import { genRandomNumber } from "@/app/lib/functions/util-functions";
 import { SeasonGoal } from "@/app/lib/interfaces/goals-interface";
 import { Button, FormLabel, HStack, Input, Radio, RadioGroup, Stack, VStack } from "@chakra-ui/react";
 import { FormEvent, FunctionComponent, useState } from "react";
@@ -10,17 +12,20 @@ interface AddGoalFormProps {
 const AddGoalForm: FunctionComponent<AddGoalFormProps> = ({ addModalData, closeModal }) => {
 
     const [month, setMonth] = useState("")
-    const [goalType, setGoalType] = useState("")
+    const [goalType, setGoalType] = useState<"seasonal" | "monthly" | null>(null)
     const [summary, setSummary] = useState("")
     const [isLoading, setIsLoading] = useState(false)
+
+    const { seasonalGoalsDispatch } = useSeasonalGoalsContext()
 
     async function handleSubmit(e: FormEvent) {
         e.preventDefault()
         setIsLoading(true)
 
         const newGoal = {
+            // map_id: genRandomNumber(),
             summary,
-            ...(month ? { month } : { season: addModalData?.season })
+            ...(goalType === "monthly" ? { month } : { season: addModalData?.season })
         }
 
         const res = await fetch(`http://localhost:3000/api/${goalType}-goals`, {
@@ -30,7 +35,19 @@ const AddGoalForm: FunctionComponent<AddGoalFormProps> = ({ addModalData, closeM
         })
 
         if (res.ok) {
-            setIsLoading(false)
+            // if (goalType === "seasonal") {
+            //     const newSeasonalGoal = {
+            //         ...newGoal, id: 
+            //     }
+            //     seasonalGoalsDispatch('POST', )
+            // }
+
+            // if (goalType === "monthly") {
+
+            // }
+            const data = await res.json()
+            console.log(res)
+            console.log(data)
             closeModal()
         }
 

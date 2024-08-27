@@ -8,11 +8,13 @@ export async function POST(request: Request) {
 
     const { data, error } = await supabase.from('Monthly_Goals')
         .insert(newGoal)
+        .select()
 
         if (error) {
             console.error('Supabase Error:', error);  // Log the error
             return NextResponse.json({ error: error.message }, { status: 500 });
         }
+        console.log(data, error)
     
         return NextResponse.json({ data }, { status: 201 })
 }

@@ -8,11 +8,12 @@ export interface MonthlyGoal {
 }
 
 export interface SeasonGoal {
-   id: number,
-   user_id: string,
-   created_at: string,
+   id?: number,
+   user_id?: string,
+   created_at?: string,
    season: string,
-   summary: string
+   summary: string,
+   map_id: number
 }
 
 export interface Action {
