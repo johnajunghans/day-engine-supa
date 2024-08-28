@@ -35,7 +35,7 @@ export default async function ActiveRoutine() {
     const ritualIds = rituals.map((ritual) => ritual.id)
 
     // Use ritualIds array to query all of the relevant ritualInstances
-    const { data: ritualInstances, error: ritualInstancesError } = await supabase
+    const { data: ritualInstances, error: ritualInstancesError }: { data: RitualInstance[] | null, error: any } = await supabase
         .from('Ritual_Instances')
         .select('*')
         .in('ritual_id', ritualIds)
@@ -57,13 +57,15 @@ export default async function ActiveRoutine() {
         Sunday: []
     }
 
-    if (ritualInstances.length > 0) {
+    if (ritualInstances && ritualInstances.length > 0) {
         ritualInstances.forEach(instance => {
             // update the ritual instance to include the name that corresponds to the ritual
-            const updatedInstance = {
-                ...instance, name: rituals.filter(ritual => ritual.id === instance.ritual_id)[0].name
-            }
-            mappableRitualInstances[instance.day as DayOfWeek].push(updatedInstance)
+            // const updatedInstance = {
+            //     ...instance, name: rituals.filter(ritual => ritual.id === instance.ritual_id)[0].name
+            // }
+            instance.days.forEach(day => {
+                mappableRitualInstances[day as DayOfWeek].push(instance)
+            }) 
         })
     }
 
@@ -120,7 +122,7 @@ export default async function ActiveRoutine() {
         throw new Error(actionsError.message)
     }
 
-    console.log("All data fetched from server")
+    console.log("All data fetched from")
 
     return (
             <Main 

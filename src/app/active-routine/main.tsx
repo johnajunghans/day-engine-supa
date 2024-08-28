@@ -12,6 +12,7 @@ import { Action, MonthlyGoal, SeasonGoal } from "../lib/interfaces/goals-interfa
 import { SeasonalGoalsContextProvider } from "../context/db-context/seasonal-goals-context"
 import { MonthlyGoalsContextProvider } from "../context/db-context/monthly-goals-context"
 import { RitualsContextProvider } from "../context/db-context/rituals-context"
+import { RitualInstanceContext, RitualInstanceProvider } from "../context/db-context/ritual-instances-context"
 
 interface MainProps {
     rituals: Ritual[],
@@ -51,22 +52,24 @@ const Main: React.FC<MainProps> = ({ rituals, ritualInstances, seasonalGoals, mo
     return (
         <Box id='account-main-content-container' as='main' display="grid" gridTemplateColumns="1fr 3fr 6fr" gap="1rem" minH="100vh" p="1rem" bgColor={theme.dark} overflow="hidden">
             <Navbar />
-            <Flex id="rituals-goals-container" height="calc(100vh - 2rem)" overflow="auto" overflowX="hidden" flexDir="column" minW="400px"  align="center" bgColor={theme.light} border="1px solid var(--de-orange)" borderRadius="md">
-                <Flex id="rituals-goals-tabs-container" h="60px" w="100%" align="center" justify="space-evenly" borderBottom="1px solid var(--de-orange)">
-                    <Tab name="Goals" />
-                    <Tab name="Rituals" />
+            <RitualsContextProvider initialValue={rituals}>
+                <Flex id="rituals-goals-container" height="calc(100vh - 2rem)" overflow="auto" overflowX="hidden" flexDir="column" minW="400px"  align="center" bgColor={theme.light} border="1px solid var(--de-orange)" borderRadius="md">
+                    <Flex id="rituals-goals-tabs-container" h="60px" w="100%" align="center" justify="space-evenly">
+                        <Tab name="Goals" />
+                        <Tab name="Rituals" />
+                    </Flex>
+                    <SeasonalGoalsContextProvider initialState={seasonalGoals}>
+                        <MonthlyGoalsContextProvider initialState={monthlyGoals}>
+                            {activeTab === "Goals" ? <Goals actions={actions} /> : <Rituals />}  
+                        </MonthlyGoalsContextProvider>
+                    </SeasonalGoalsContextProvider>
                 </Flex>
-                <SeasonalGoalsContextProvider initialState={seasonalGoals}>
-                    <MonthlyGoalsContextProvider initialState={monthlyGoals}>
-                        <RitualsContextProvider initialValue={rituals}>
-                            {activeTab === "Goals" ? <Goals actions={actions} /> : <Rituals />}
-                        </RitualsContextProvider>
-                    </MonthlyGoalsContextProvider>
-                </SeasonalGoalsContextProvider>
-            </Flex>
-            <Flex id="wheel-container" bgColor={theme.light} border="1px solid var(--de-orange)" h="100%" px="1rem" borderRadius="md">
-                <WheelMain ritualInstances={ritualInstances} rituals={rituals} />    
-            </Flex>
+                <Flex id="wheel-container" bgColor={theme.light} border="1px solid var(--de-orange)" h="100%" px="1rem" borderRadius="md">
+                    <RitualInstanceProvider initialValue={ritualInstances}>
+                        <WheelMain ritualInstances={ritualInstances} rituals={rituals} />
+                    </RitualInstanceProvider>   
+                </Flex>
+            </RitualsContextProvider>
         </Box>
     )
 }

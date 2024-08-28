@@ -44,7 +44,7 @@ const WheelFunction: React.FC<WheelFunctionProps> = ({ ritualInstances, svgSize,
             <WheelDaySelector svgSize={svgSize} setDay={setDay} activeDay={day} outerCircleRadius={outerCircleRadius} openAddModal={onOpen} />
             <foreignObject overflow="visible">
                 <ModalMain isOpen={isOpen} onClose={onClose} modalTitle="Create New Ritual Instance" >
-                    <CreateInstanceForm rituals={rituals} day={day} />   
+                    <CreateInstanceForm rituals={rituals} day={day} closeModal={onClose} />   
                 </ModalMain>
                 {selectedInstance && <ModalMain isOpen={isEditDeleteModalOpen} onClose={closeModalRegenState} modalTitle={`Update Ritual Instance: ${selectedInstance?.name}`}>
                     <EditDeleteInstanceForm instance={selectedInstance} />

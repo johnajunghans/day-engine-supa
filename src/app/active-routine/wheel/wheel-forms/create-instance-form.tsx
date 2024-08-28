@@ -1,69 +1,67 @@
-import { Ritual, RitualInstance } from "@/app/lib/interfaces/rituals-interface";
+import { useRitualInstanceContext } from "@/app/hooks/db-context-hooks/useRitualInstanceContext";
+import { useRitualsContext } from "@/app/hooks/db-context-hooks/useRitualsContext";
+import { DayOfWeek, Ritual, RitualInstance } from "@/app/lib/interfaces/rituals-interface";
 import { Button, Checkbox, CheckboxGroup, Input, Radio, RadioGroup, Stack, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { FormEvent, FunctionComponent, useState } from "react";
 
 interface CreateInstanceFormProps {
     rituals: Ritual[]
-    day: string
-}
-
-interface NewInstance {
-    start_time: string,
-    end_time: string,
-    day: string | number,
-    ritual_id: number
+    day: DayOfWeek
+    closeModal: VoidFunction
 }
  
-const CreateInstanceForm: FunctionComponent<CreateInstanceFormProps> = ({ rituals, day }) => {
+const CreateInstanceForm: FunctionComponent<CreateInstanceFormProps> = ({ day, closeModal }) => {
+
+    const { ritualsState: rituals } = useRitualsContext()
+
+    const { ritualInstanceDispatch } = useRitualInstanceContext()
 
     const [selectedRitual, setSelectedRitual] = useState("")
     const [startTime, setStartTime] = useState("");
     const [endTime, setEndTime] = useState("");
-    const [activeDays, setActiveDays] = useState<Array<(string | number)>>([day])
+    const [activeDays, setActiveDays] = useState<DayOfWeek[]>([day])
     const [isLoading, setIsLoading] = useState(false);
-
-    const router = useRouter()
     
     async function handleSubmit(e: FormEvent) {
         e.preventDefault();
         setIsLoading(true)
 
         // generate array of new instances based on how many days
-        const newInstances: NewInstance[] = [];
-        activeDays.map(day => {
+        const parsedRitual = JSON.parse(selectedRitual) as Ritual
             const newInstance = {
                 start_time: startTime,
                 end_time: endTime,
-                day: day,
-                ritual_id: Number(selectedRitual)
+                days: activeDays,
+                ritual_id: parsedRitual.id,
+                name: parsedRitual.name
             }
-            newInstances.push(newInstance)
-        })
 
         const res = await fetch('http://localhost:3000/api/ritual-instances', {
             method: 'POST',
             headers: { "Content-Type": "application/json"},
-            body: JSON.stringify(newInstances)
+            body: JSON.stringify(newInstance)
         })
 
         if (res.ok) {
-            setIsLoading(false)
-            router.refresh()
+            const newInstance = await res.json()
+            console.log(newInstance)
+            ritualInstanceDispatch({ type: "POST", payload: newInstance})
+            closeModal()
         }
     }
 
     return ( 
         <form onSubmit={handleSubmit}>
             <VStack>
-                <RadioGroup name="ritual-selector" onChange={setSelectedRitual} value={selectedRitual}>
+                <RadioGroup name="ritual-selector" onChange={setSelectedRitual} value={selectedRitual} aria-required={true}>
                     <Stack direction='row'>
                         {rituals.map(ritual => (
-                            <Radio key={ritual.id} value={`${ritual.id}`}>{ritual.name}</Radio>
+                            <Radio key={ritual.id} value={JSON.stringify(ritual)}>{ritual.name}</Radio>
                         ))}
                     </Stack>
                 </RadioGroup>
-                <CheckboxGroup defaultValue={[day]} onChange={setActiveDays}>
+                <CheckboxGroup defaultValue={[day]} onChange={setActiveDays} required>
                     <Stack direction="row">
                         <Checkbox value="Monday">Monday</Checkbox>
                         <Checkbox value="Tuesday">Tuesday</Checkbox>
@@ -79,15 +77,21 @@ const CreateInstanceForm: FunctionComponent<CreateInstanceFormProps> = ({ ritual
                 <Input id="create-instance-form-start-input"
                     type="time" 
                     value={startTime} 
-                    onChange={e => setStartTime(e.target.value)} 
+                    onChange={e => setStartTime(e.target.value)}
+                    required 
                 />
                 <Input id="create-instance-form-end-input"
                     type="time" 
                     value={endTime} 
                     onChange={e => setEndTime(e.target.value)} 
+                    required
                 />
             </VStack>
-            <Button type="submit" isLoading={isLoading}>Submit</Button>
+            <Button 
+                type="submit" 
+                isLoading={isLoading} 
+                disabled={!selectedRitual || !startTime || !endTime || !activeDays}
+            >Submit</Button>
         </form>
      );
 }
