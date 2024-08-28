@@ -1,34 +1,27 @@
-import { Ritual } from "@/app/lib/interfaces/rituals-interface";
 import { Flex, IconButton, useDisclosure } from "@chakra-ui/react";
 import RitualTile from "./ritual-tile";
 import ModalMain from "@/app/components/modal";
-import CreateRitual from "./create-ritual-form";
+import CreateRitualForm from "./create-ritual-form";
 import { useEffect, useState } from "react";
-import { AddIcon } from "@chakra-ui/icons";
-import EditRitualForm from "./edit-ritual-form";
-import DeleteRitualForm from "./delete-ritual-form";
+import EditDeleteRitualForm from "./edit-delete-ritual-form";
 import { AddIconButton } from "@/app/components/buttons";
+import { useRitualsContext } from "@/app/hooks/db-context-hooks/useRitualsContext";
+import { Ritual } from "@/app/lib/interfaces/rituals-interface";
 
 
 interface Rituals {
-    rituals: Ritual[]
+    
 }
 
-interface InitialRitual {
-    id: number,
-    name: string,
-    description?: string
-}
+const Rituals: React.FC<Rituals> = () => {
 
-const Rituals: React.FC<Rituals> = ({ rituals }) => {
+    const { ritualsState: rituals } = useRitualsContext()
 
     const { isOpen: isAddModalOpen, onClose: closeAddModal, onOpen: openAddModal } = useDisclosure()
     const { isOpen: isEditModalOpen, onClose: closeEditModal, onOpen: openEditModal } = useDisclosure()
-    const { isOpen: isDeleteModalOpen, onClose: closeDeleteModal, onOpen: openDeleteModal } = useDisclosure()
 
     // state that holds the value of the specific ritual being selected during edit or delete requests
-    const [initialRitualEdit, setInitialRitualEdit] = useState<InitialRitual | null>(null);
-    const [initialRitualDelete, setInitialRitualDelete] = useState<InitialRitual | null>(null);
+    const [initialRitualEdit, setInitialRitualEdit] = useState<Ritual | null>(null);
 
     // opens the edit modal when the edit state changes
     useEffect(() => {
@@ -37,17 +30,8 @@ const Rituals: React.FC<Rituals> = ({ rituals }) => {
         }   
     }, [initialRitualEdit])
 
-    // opens the delete modal when the delete state changes
-    useEffect(() => {
-        if (initialRitualDelete) {
-           openDeleteModal() 
-        }
-    }, [initialRitualDelete])
-
     function closeModalRegenState() {
-        setInitialRitualDelete(null);
         setInitialRitualEdit(null)
-        closeDeleteModal();
         closeEditModal();
     }
 
@@ -59,28 +43,22 @@ const Rituals: React.FC<Rituals> = ({ rituals }) => {
             flexDir="column" 
             align="flex-start" 
             justify="flex-start" 
-            gap="1rem" 
+            gap="0.5rem" 
             py="1rem"
         >
             {rituals.map(ritual => (
                 <RitualTile 
                     key={ritual.id}
-                    id={ritual.id ?? 0} 
-                    name={ritual.name} 
-                    description={ritual?.description ?? ''}
+                    ritual={ritual}
                     setInitialRitualEdit={setInitialRitualEdit}
-                    setInitialRitualDelete={setInitialRitualDelete}
                 />
             ))}
             <AddIconButton onClick={openAddModal} label="open-post-ritual-modal" />
             <ModalMain isOpen={isAddModalOpen} onClose={closeAddModal} modalTitle="Create New Ritual">
-                <CreateRitual />
+                <CreateRitualForm closeModal={closeAddModal} />
             </ModalMain>
             <ModalMain isOpen={isEditModalOpen} onClose={closeModalRegenState} modalTitle={`Edit Ritual: ${initialRitualEdit?.name || ''}`}>
-                {initialRitualEdit && <EditRitualForm initialRitual={initialRitualEdit} />}
-            </ModalMain>
-            <ModalMain isOpen={isDeleteModalOpen} onClose={closeModalRegenState} modalTitle={`Delete Ritual: ${initialRitualDelete?.name || ''}`}>
-                {initialRitualDelete && <DeleteRitualForm id={initialRitualDelete?.id} />}
+                {initialRitualEdit && <EditDeleteRitualForm closeModal={closeEditModal} initialRitual={initialRitualEdit} />}
             </ModalMain>
         </Flex>
      );

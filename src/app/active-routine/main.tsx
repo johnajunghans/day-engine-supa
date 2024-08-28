@@ -11,6 +11,7 @@ import { Ritual, RitualInstance, DayOfWeek } from "../lib/interfaces/rituals-int
 import { Action, MonthlyGoal, SeasonGoal } from "../lib/interfaces/goals-interface"
 import { SeasonalGoalsContextProvider } from "../context/db-context/seasonal-goals-context"
 import { MonthlyGoalsContextProvider } from "../context/db-context/monthly-goals-context"
+import { RitualsContextProvider } from "../context/db-context/rituals-context"
 
 interface MainProps {
     rituals: Ritual[],
@@ -57,7 +58,9 @@ const Main: React.FC<MainProps> = ({ rituals, ritualInstances, seasonalGoals, mo
                 </Flex>
                 <SeasonalGoalsContextProvider initialState={seasonalGoals}>
                     <MonthlyGoalsContextProvider initialState={monthlyGoals}>
-                        {activeTab === "Goals" ? <Goals actions={actions} /> : <Rituals rituals={rituals} />}
+                        <RitualsContextProvider initialValue={rituals}>
+                            {activeTab === "Goals" ? <Goals actions={actions} /> : <Rituals />}
+                        </RitualsContextProvider>
                     </MonthlyGoalsContextProvider>
                 </SeasonalGoalsContextProvider>
             </Flex>

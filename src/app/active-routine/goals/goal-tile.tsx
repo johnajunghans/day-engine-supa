@@ -16,10 +16,10 @@ const GoalTile: FunctionComponent<GoalTileProps> = ({ goal, months, type, action
     const [isExpanded, setIsExpanded] = useState(false)
 
     return ( 
-        <Flex flexDir="column" align="center" width="100%" height={isExpanded ? "auto" : "50px"} bgColor="rgba(255,255,255,0.8)" border="1px solid white" borderRadius="md" >
-            <Flex width="100%" h="50px" px="1rem" align="center" justify="space-between">
+        <Flex flexDir="column" align="center" width="100%" height={isExpanded ? "auto" : "40px"} bgColor="rgba(255,255,255,0.8)" border="1px solid white" borderRadius="md" >
+            <Flex width="100%" h="40px" pl="0.5rem" pr="0.25rem" align="center" justify="space-between">
                 <Text>{goal.summary}</Text>
-                <Flex gap="0.5rem">
+                <Flex align="center">
                     <EditIconButton 
                         label="open-update-delete-goal-modal" 
                         onClick={() => setEditDeleteModalData({initialGoal: goal, months: months ? months : null})} 

@@ -103,6 +103,7 @@ const EditDeleteGoalForm: FunctionComponent<EditDeleteGoalFormProps> = ({ initia
                         isDisabled={summary === initialGoal.summary && ('month' in initialGoal && month === initialGoal.month)}
                     >Submit</Button>
                     <ConfirmDeleteButton 
+                        id="delete-goal-button"
                         text="Delete Goal"
                         onClick={handleDeleteGoal}
                         isLoading={isDeleteLoading}

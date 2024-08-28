@@ -1,25 +1,19 @@
 import { Button, Flex, HStack, Input, Text, Textarea, VStack } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
-import RitualTile from "./ritual-tile";
+import { useRitualsContext } from "@/app/hooks/db-context-hooks/useRitualsContext";
 
-interface CreateRitualProps {
-    
+interface CreateRitualFormProps {
+    closeModal: VoidFunction
 }
 
-interface Ritual {
-    name: string;
-    description: string;
-}
+const CreateRitualForm: React.FC<CreateRitualFormProps> = ({ closeModal }) => {
 
-const CreateRitual: React.FC<CreateRitualProps> = () => {
+    const { ritualsDispatch } = useRitualsContext()
 
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const [rituals, setRituals] = useState<Ritual[]>([]);
-
-    const router = useRouter()
+    const [rituals, setRituals] = useState<{name: string, description: string}[]>([]);
 
     function handleAddRitual() {
         const newRitual = { name, description }
@@ -38,9 +32,10 @@ const CreateRitual: React.FC<CreateRitualProps> = () => {
             body: JSON.stringify(rituals)
         })
 
-        if (res.status === 201) {
-            setIsLoading(false);
-            router.refresh()
+        if (res.ok) {
+            const newRitual = await res.json()
+            ritualsDispatch({ type: "POST", payload: newRitual })
+            closeModal()
         }
     }
 
@@ -88,5 +83,5 @@ const CreateRitual: React.FC<CreateRitualProps> = () => {
      );
 }
 
-export default CreateRitual
+export default CreateRitualForm
  

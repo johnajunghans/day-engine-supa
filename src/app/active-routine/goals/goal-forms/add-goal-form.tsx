@@ -1,7 +1,5 @@
 import { useMonthlyGoalsContext } from "@/app/hooks/db-context-hooks/useMonthlyGoalsContext";
 import { useSeasonalGoalsContext } from "@/app/hooks/db-context-hooks/useSeasonalGoalsContext";
-import { genRandomNumber } from "@/app/lib/functions/util-functions";
-import { SeasonGoal } from "@/app/lib/interfaces/goals-interface";
 import { Button, FormLabel, HStack, Input, Radio, RadioGroup, Stack, VStack } from "@chakra-ui/react";
 import { FormEvent, FunctionComponent, useState } from "react";
 

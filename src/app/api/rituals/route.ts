@@ -11,13 +11,15 @@ export async function POST(request: Request) {
 
     const { data, error } = await supabase.from('Rituals')
         .insert(rituals)
+        .select()
+        .single()
 
         if (error) {
             console.error('Supabase Error:', error);  // Log the error
             return NextResponse.json({ error: error.message }, { status: 500 });
         }
     
-        return NextResponse.json({ data }, { status: 201 })
+        return NextResponse.json( data , { status: 201 })
 }
 
 // PUT: update a ritual
@@ -33,13 +35,13 @@ export async function PUT(request: Request) {
         })
         .eq('id', updatedRitual.id)
         .select()
+        .single()
 
         if (error) {
             console.error('Supabase Error:', error);  // Log the error
             return NextResponse.json({ error: error.message }, { status: 500 });
         }
-        console.log(updatedRitual, data)
-        return NextResponse.json({ data }, { status: 201 })
+        return NextResponse.json( data , { status: 201 })
 }
 
 // DELETE: delete a ritual
@@ -47,7 +49,7 @@ export async function DELETE(request: Request) {
     const ritualId = await request.json()
     const supabase = createClient()
 
-    const { data, error } = await supabase.from('Rituals')
+    const { error } = await supabase.from('Rituals')
         .delete()
         .eq('id', ritualId)
 
@@ -55,5 +57,5 @@ export async function DELETE(request: Request) {
         console.error('Supabase Error:', error);  // Log the error
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
-    return NextResponse.json({ data }, { status: 204 })
+    return NextResponse.json({ status: 204 })
 }

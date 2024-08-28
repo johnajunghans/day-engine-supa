@@ -39,11 +39,21 @@ interface IconButtonProps {
 export const ExpandIconButton: React.FC<IconButtonProps> = ({ onClick, expanded, label }) => {
 
     return (
-        <IconButton 
+        <IconButton
+            w="30px" h="30px"
+            bgColor="transparent"
+            _hover={{bgColor: "var(--light-grey)"}}
+            transition="100ms"
             aria-label={label}
             size="sm"
             onClick={onClick}
-            icon={<ChevronRightIcon boxSize={6} className={`${expanded ? "rotate-90" : "rotate-180"} duration-100`} />}
+            icon={
+                <ChevronRightIcon 
+                    boxSize={6} 
+                
+                    className={`${expanded ? "rotate-90" : "rotate-180"} duration-100`} 
+                />
+            }
             p="0px"
         />    
     )  
@@ -51,7 +61,11 @@ export const ExpandIconButton: React.FC<IconButtonProps> = ({ onClick, expanded,
 
 export const EditIconButton: React.FC<IconButtonProps> = ({ onClick, label }) => {
     return (
-        <IconButton 
+        <IconButton
+            w="30px" h="30px"
+            bgColor="transparent"
+            _hover={{bgColor: "var(--light-grey)"}}
+            transition="100ms"
             aria-label={label}
             size="sm"
             onClick={onClick}
@@ -129,9 +143,10 @@ interface ConfirmDeleteButtonProps {
     isLoading: boolean
     confirmDelete: boolean
     text: string
+    id: string
 }
 
-export const ConfirmDeleteButton: FunctionComponent<ConfirmDeleteButtonProps> = ({ adjustedWidth, onClick, isLoading, text, confirmDelete }) => {
+export const ConfirmDeleteButton: FunctionComponent<ConfirmDeleteButtonProps> = ({ id, adjustedWidth, onClick, isLoading, text, confirmDelete }) => {
     
     return (
         <Button
@@ -139,7 +154,7 @@ export const ConfirmDeleteButton: FunctionComponent<ConfirmDeleteButtonProps> = 
             gap="0.5rem"
             alignContent="center"
             justifyContent="center"
-            id="delete-goal-button"
+            id={id}
             w={confirmDelete ? `${adjustedWidth}px` : "40px"}
             transition="75ms"
             type="button" 
