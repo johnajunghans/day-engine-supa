@@ -19,14 +19,32 @@ interface RitualInstanceProviderProps {
 export const RitualInstanceContext = createContext<RitualInstanceContextProps | null>(null)
 
 const ritualInstanceReducer = (state: Record<DayOfWeek, RitualInstance[]>, action: RitualAction): Record<DayOfWeek, RitualInstance[]> => {
+    const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    const newState = { ...state }
     switch (action.type) {
+
         case 'POST':
-            action.payload.days.forEach(day => state[day].push(action.payload))
-            return state
-        // case 'PUT':
-        //     return state.map(item => item.id === action.payload.id ? { ...item, ...action.payload } : item)
-        // case 'DELETE':
-        //     return state.filter(item => item.id !== action.payload.id)
+            action.payload.days.forEach(day => newState[day].push(action.payload))
+            return newState
+
+        case 'PUT':
+            weekday.forEach(day => {
+                const updatedArray = newState[day as DayOfWeek].map(item => {
+                    if (item.id !== action.payload.id) return item
+                    else if (action.payload.days.includes(day as DayOfWeek)) return action.payload
+                    else return null
+                }).filter(item => item !== null)
+                newState[day as DayOfWeek] = updatedArray
+            })
+            console.log(newState)
+            return newState
+
+        case 'DELETE':
+            action.payload.days.forEach(day => {
+                newState[day].filter(item => action.payload.id !== item.id)
+            })
+            return newState
+
         default:
             return state
     }

@@ -27,7 +27,7 @@ export default function Navbar() {
     }
 
     return (
-        <Flex id='account-nav-bar' as='header' h="100%" minW="100px" maxW="200px" pos="relative" flexDir="column" align="center" justify="flex-end" px="0.75rem" overflow="hidden">
+        <Flex id='account-nav-bar' as='header' h="100%" minW="100px" bgColor={theme.dark} maxW="200px" pos="relative" flexDir="column" align="center" justify="flex-end" px="0.75rem" overflow="hidden" borderRight="1px solid var(--de-orange)">
             <Image src="/logo.png" priority={true} alt="logo-image" width={150} height={150} className="absolute top-4 left-[calc(50% - 75px)] animate-logo-spin" />
             <Flex id="right-hand-nav-container" mb="1rem" align="flex-end" gap="1rem">
                 <ThemeSelector isVertical={true} />

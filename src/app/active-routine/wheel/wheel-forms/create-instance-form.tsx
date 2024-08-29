@@ -3,15 +3,15 @@ import { useRitualsContext } from "@/app/hooks/db-context-hooks/useRitualsContex
 import { DayOfWeek, Ritual, RitualInstance } from "@/app/lib/interfaces/rituals-interface";
 import { Button, Checkbox, CheckboxGroup, Input, Radio, RadioGroup, Stack, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { FormEvent, FunctionComponent, useState } from "react";
+import { Dispatch, FormEvent, FunctionComponent, useState } from "react";
 
 interface CreateInstanceFormProps {
-    rituals: Ritual[]
     day: DayOfWeek
     closeModal: VoidFunction
+    setToastData: Dispatch<{ success: string, error: string }>
 }
  
-const CreateInstanceForm: FunctionComponent<CreateInstanceFormProps> = ({ day, closeModal }) => {
+const CreateInstanceForm: FunctionComponent<CreateInstanceFormProps> = ({ day, closeModal, setToastData }) => {
 
     const { ritualsState: rituals } = useRitualsContext()
 
@@ -43,10 +43,18 @@ const CreateInstanceForm: FunctionComponent<CreateInstanceFormProps> = ({ day, c
             body: JSON.stringify(newInstance)
         })
 
+        if (!res.ok) {
+            const error: Error = await res.json()
+            console.log(error.message)
+            setToastData({ success: "", error: error.message })
+            closeModal()
+        }
+
         if (res.ok) {
             const newInstance = await res.json()
             console.log(newInstance)
             ritualInstanceDispatch({ type: "POST", payload: newInstance})
+            setToastData({ success: "Instance Created", error: "" })
             closeModal()
         }
     }

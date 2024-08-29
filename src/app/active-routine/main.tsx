@@ -12,7 +12,9 @@ import { Action, MonthlyGoal, SeasonGoal } from "../lib/interfaces/goals-interfa
 import { SeasonalGoalsContextProvider } from "../context/db-context/seasonal-goals-context"
 import { MonthlyGoalsContextProvider } from "../context/db-context/monthly-goals-context"
 import { RitualsContextProvider } from "../context/db-context/rituals-context"
-import { RitualInstanceContext, RitualInstanceProvider } from "../context/db-context/ritual-instances-context"
+import { RitualInstanceProvider } from "../context/db-context/ritual-instances-context"
+import { ActionsContextProvider } from "../context/db-context/actions-context"
+import Actions from "./actions/actions"
 
 interface MainProps {
     rituals: Ritual[],
@@ -22,7 +24,7 @@ interface MainProps {
     actions: Action[]
 }
 
-type TabName = "Goals" | "Rituals"
+type TabName = "Goals" | "Rituals" | "Actions"
 interface TabProps {
     name: TabName
 }
@@ -38,8 +40,7 @@ const Main: React.FC<MainProps> = ({ rituals, ritualInstances, seasonalGoals, mo
             <Text as="button" 
                 w="100px" h="40px"
                 color="white"
-                bgColor={theme.light} 
-                boxShadow={activeTab === name ? "0px 4px 4px rgba(0,0,0,0.5)" : "unset"} 
+                bgColor={activeTab === name ? theme.dark : "unset"} 
                 _hover={activeTab !== name ? {border: `1px solid ${theme.dark}`} : {}} 
                 borderColor="transparent"
                 transition="box-shadow 100ms, border 100ms" 
@@ -50,25 +51,31 @@ const Main: React.FC<MainProps> = ({ rituals, ritualInstances, seasonalGoals, mo
     }
 
     return (
-        <Box id='account-main-content-container' as='main' display="grid" gridTemplateColumns="1fr 3fr 6fr" gap="1rem" minH="100vh" p="1rem" bgColor={theme.dark} overflow="hidden">
+        <Box id='account-main-content-container' as='main' display="grid" gridTemplateColumns="1fr 4fr 6fr" gap="1rem" h="100vh" bgColor={theme.light} overflow="hidden">
             <Navbar />
             <RitualsContextProvider initialValue={rituals}>
-                <Flex id="rituals-goals-container" height="calc(100vh - 2rem)" overflow="auto" overflowX="hidden" flexDir="column" minW="400px"  align="center" bgColor={theme.light} border="1px solid var(--de-orange)" borderRadius="md">
-                    <Flex id="rituals-goals-tabs-container" h="60px" w="100%" align="center" justify="space-evenly">
-                        <Tab name="Goals" />
-                        <Tab name="Rituals" />
+                <ActionsContextProvider initialValue={actions}>
+                    <Flex id="rituals-goals-container" height="100%" overflow="auto" margin="0 auto" overflowX="hidden" flexDir="column" width="90%" minW="400px" align="center">
+                        <Flex id="rituals-goals-tabs-container" h="60px" w="100%" align="center" justify="space-evenly">
+                            <Tab name="Goals" />
+                            <Tab name="Rituals" />
+                            <Tab name="Actions" />
+                        </Flex>
+                        <SeasonalGoalsContextProvider initialState={seasonalGoals}>
+                            <MonthlyGoalsContextProvider initialState={monthlyGoals}>
+                                {activeTab === "Goals" ? <Goals actions={actions} /> 
+                                    : activeTab === "Rituals" ? <Rituals />
+                                    : <Actions />
+                                }  
+                            </MonthlyGoalsContextProvider>
+                        </SeasonalGoalsContextProvider>
                     </Flex>
-                    <SeasonalGoalsContextProvider initialState={seasonalGoals}>
-                        <MonthlyGoalsContextProvider initialState={monthlyGoals}>
-                            {activeTab === "Goals" ? <Goals actions={actions} /> : <Rituals />}  
-                        </MonthlyGoalsContextProvider>
-                    </SeasonalGoalsContextProvider>
-                </Flex>
-                <Flex id="wheel-container" bgColor={theme.light} border="1px solid var(--de-orange)" h="100%" px="1rem" borderRadius="md">
-                    <RitualInstanceProvider initialValue={ritualInstances}>
-                        <WheelMain ritualInstances={ritualInstances} rituals={rituals} />
-                    </RitualInstanceProvider>   
-                </Flex>
+                    <Flex id="wheel-container" h="100%">
+                        <RitualInstanceProvider initialValue={ritualInstances}>
+                            <WheelMain ritualInstances={ritualInstances} rituals={rituals} />
+                        </RitualInstanceProvider>   
+                    </Flex>
+                </ActionsContextProvider>
             </RitualsContextProvider>
         </Box>
     )

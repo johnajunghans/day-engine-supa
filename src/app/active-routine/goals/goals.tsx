@@ -6,19 +6,21 @@ import { CreateNewBtn } from "@/app/components/buttons";
 import ModalMain from "@/app/components/modal";
 import AddGoalForm from "./goal-forms/add-goal-form";
 import EditDeleteGoalForm from "./goal-forms/edit-delete-goal-form";
+import { useActionsContext } from "@/app/hooks/db-context-hooks/useActionsContext";
 
 interface GoalsProps {
-    actions: Action[]
 }
  
-const Goals: FunctionComponent<GoalsProps> = ({ actions }) => {
+const Goals: FunctionComponent<GoalsProps> = () => {
 
     const [addModalData, setAddModalData] = useState<{season: string, months: string[]} | null>(null)
     const [editDeleteModalData, setEditDeleteModalData] = useState<{initialGoal: SeasonGoal | MonthlyGoal, months: string[] | null} | null>(null)
 
     const { isOpen: isAddGoalModalOpen, onClose: closeAddGoalModal, onOpen: openAddGoalModal } = useDisclosure()
     const { isOpen: isEditDeleteGoalModalOpen, onClose: closeEditDeleteGoalModal, onOpen: openEditDeleteGoalModal } = useDisclosure()
-    
+
+    const { actionsState: actions } = useActionsContext()
+     
     const year = new Date().getFullYear()
 
     useEffect(() => {
@@ -35,13 +37,12 @@ const Goals: FunctionComponent<GoalsProps> = ({ actions }) => {
 
     return ( 
         <Flex id="goals-container" width="100%" h="100%" p="1rem" flexDir="column" justify="flex-start" align="center" pos="relative">
-                <SeasonalGoalTile
-                    year={year}
-                    actions={actions}
-                    setAddModalData={setAddModalData}
-                    setEditDeleteModalData={setEditDeleteModalData}
-                />
-            {/* <CreateNewBtn onClick={openAddGoalModal} position="bottom-5 left-5" /> */}
+            <SeasonalGoalTile
+                year={year}
+                actions={actions}
+                setAddModalData={setAddModalData}
+                setEditDeleteModalData={setEditDeleteModalData}
+            />
             <ModalMain 
                 isOpen={isAddGoalModalOpen} 
                 onClose={closeAddGoalModal} 

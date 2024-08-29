@@ -122,8 +122,6 @@ export default async function ActiveRoutine() {
         throw new Error(actionsError.message)
     }
 
-    console.log("All data fetched from")
-
     return (
             <Main 
                 rituals={rituals} 

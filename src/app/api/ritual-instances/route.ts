@@ -13,7 +13,7 @@ export async function POST(request: Request) {
 
         if (error) {
             console.error('Supabase Error:', error);  // Log the error
-            return NextResponse.json({ error: error.message }, { status: 500 });
+            return NextResponse.json({ error }, { status: 500 });
         }
     
         return NextResponse.json( data, { status: 201 })
@@ -34,7 +34,7 @@ export async function PUT(request: Request) {
     
             if (error) {
                 console.error('Supabase Error:', error);  // Log the error
-                return NextResponse.json({ error: error.message }, { status: 500 });
+                return NextResponse.json({ error }, { status: 500 });
             }
 
             return NextResponse.json( data, { status: 201 })
@@ -50,7 +50,7 @@ export async function PUT(request: Request) {
     
         if (error) {
             console.error('Supabase Error:', error);  // Log the error
-            return NextResponse.json({ error: error.message }, { status: 500 });
+            return NextResponse.json({ error }, { status: 500 });
         }
         return NextResponse.json({ status: 204 })
     }
