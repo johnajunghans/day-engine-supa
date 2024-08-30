@@ -36,7 +36,7 @@ const Goals: FunctionComponent<GoalsProps> = () => {
     }, [editDeleteModalData])
 
     return ( 
-        <Flex id="goals-container" width="100%" h="100%" p="1rem" flexDir="column" justify="flex-start" align="center" pos="relative">
+        <Flex id="goals-container" width="100%" h="auto" p="1rem" flexDir="column" justify="flex-start" align="center" pos="relative">
             <SeasonalGoalTile
                 year={year}
                 actions={actions}

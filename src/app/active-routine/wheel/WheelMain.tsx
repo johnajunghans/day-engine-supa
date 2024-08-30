@@ -7,11 +7,10 @@ import { DayOfWeek, Ritual, RitualInstance } from "@/app/lib/interfaces/rituals-
 import WheelFunction from "./wheel-function";
 
 interface WheelMainProps {
-    ritualInstances: Record<DayOfWeek, RitualInstance[]>
-    rituals: Ritual[]
+
 }
 
-const WheelMain: React.FC<WheelMainProps> = ({ ritualInstances, rituals }) => {
+const WheelMain: React.FC<WheelMainProps> = () => {
     const wheelMainRef = useRef<HTMLDivElement>(null);
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
     
@@ -48,7 +47,7 @@ const WheelMain: React.FC<WheelMainProps> = ({ ritualInstances, rituals }) => {
         <div id="wheel-main" ref={wheelMainRef} className="min-w-[calc(100vh-2rem)] min-h-[calc(100vh-2rem)] w-full h-full flex items-center justify-center">
             <svg width={svgSize} height={svgSize} overflow="visible">
                 {svgSize && <WheelOutline svgSize={svgSize} outerCircleRadius={outerCircleRadius} />}
-                {svgSize && <WheelFunction svgSize={svgSize} ritualInstances={ritualInstances} outerCircleRadius={outerCircleRadius} rituals={rituals} />}
+                {svgSize && <WheelFunction svgSize={svgSize} outerCircleRadius={outerCircleRadius} />}
             </svg>
         </div>
      );

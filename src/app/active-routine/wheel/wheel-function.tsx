@@ -7,12 +7,12 @@ import CreateInstanceForm from "./wheel-forms/create-instance-form";
 import { useDisclosure, useToast } from "@chakra-ui/react";
 import EditDeleteInstanceForm from "./wheel-forms/edit-delete-instance-form";
 import { useRitualInstanceContext } from "@/app/hooks/db-context-hooks/useRitualInstanceContext";
+import { useActionsContext } from "@/app/hooks/db-context-hooks/useActionsContext";
+import ActionSector from "./action-sector";
 
 interface WheelFunctionProps {
-    ritualInstances: Record<DayOfWeek, RitualInstance[]>
     svgSize: number
     outerCircleRadius: number
-    rituals: Ritual[]
 }
  
 const WheelFunction: React.FC<WheelFunctionProps> = ({ svgSize, outerCircleRadius }) => {
@@ -21,6 +21,7 @@ const WheelFunction: React.FC<WheelFunctionProps> = ({ svgSize, outerCircleRadiu
     const toast = useToast()
 
     const { ritualInstanceState: ritualInstances } = useRitualInstanceContext()
+    const { actionsState: actions } = useActionsContext()
 
     const [selectedInstance, setSelectedInstance] = useState<RitualInstance | null>(null)
 
@@ -58,6 +59,9 @@ const WheelFunction: React.FC<WheelFunctionProps> = ({ svgSize, outerCircleRadiu
         <>
             {ritualInstances[day].map(day => (
                 <RitualSector key={day.id} svgSize={svgSize} instance={day} outerCircleRadius={outerCircleRadius} setSelectedInstance={setSelectedInstance} />
+            ))}
+            {actions.filter(action => action.day === day).map(action => (
+                <ActionSector key={action.id} svgSize={svgSize} action={action} outerCircleRadius={outerCircleRadius} />
             ))}
             <WheelDaySelector svgSize={svgSize} setDay={setDay} activeDay={day} outerCircleRadius={outerCircleRadius} openAddModal={onOpen} />
             <foreignObject overflow="visible">

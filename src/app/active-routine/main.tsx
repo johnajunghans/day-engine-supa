@@ -39,7 +39,7 @@ const Main: React.FC<MainProps> = ({ rituals, ritualInstances, seasonalGoals, mo
         return (
             <Text as="button" 
                 w="100px" h="40px"
-                color="white"
+                color={activeTab === name ? "white" : "black"}
                 bgColor={activeTab === name ? theme.dark : "unset"} 
                 _hover={activeTab !== name ? {border: `1px solid ${theme.dark}`} : {}} 
                 borderColor="transparent"
@@ -55,7 +55,7 @@ const Main: React.FC<MainProps> = ({ rituals, ritualInstances, seasonalGoals, mo
             <Navbar />
             <RitualsContextProvider initialValue={rituals}>
                 <ActionsContextProvider initialValue={actions}>
-                    <Flex id="rituals-goals-container" height="100%" overflow="auto" margin="0 auto" overflowX="hidden" flexDir="column" width="90%" minW="400px" align="center">
+                    <Flex id="rituals-goals-container" height="calc(100% - 3rem)" overflow="auto" margin="1.5rem auto 0" overflowX="hidden" flexDir="column" width="90%" minW="400px" align="center" bgColor="rgba(255,255,255,0.5)" borderRadius="md">
                         <Flex id="rituals-goals-tabs-container" h="60px" w="100%" align="center" justify="space-evenly">
                             <Tab name="Goals" />
                             <Tab name="Rituals" />
@@ -63,7 +63,7 @@ const Main: React.FC<MainProps> = ({ rituals, ritualInstances, seasonalGoals, mo
                         </Flex>
                         <SeasonalGoalsContextProvider initialState={seasonalGoals}>
                             <MonthlyGoalsContextProvider initialState={monthlyGoals}>
-                                {activeTab === "Goals" ? <Goals actions={actions} /> 
+                                {activeTab === "Goals" ? <Goals /> 
                                     : activeTab === "Rituals" ? <Rituals />
                                     : <Actions />
                                 }  
@@ -72,7 +72,7 @@ const Main: React.FC<MainProps> = ({ rituals, ritualInstances, seasonalGoals, mo
                     </Flex>
                     <Flex id="wheel-container" h="100%">
                         <RitualInstanceProvider initialValue={ritualInstances}>
-                            <WheelMain ritualInstances={ritualInstances} rituals={rituals} />
+                            <WheelMain />
                         </RitualInstanceProvider>   
                     </Flex>
                 </ActionsContextProvider>

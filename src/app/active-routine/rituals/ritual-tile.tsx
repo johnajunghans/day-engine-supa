@@ -19,10 +19,10 @@ const RitualTile: React.FC<RitualTileProps> = ({ ritual, setInitialRitualEdit })
             w="100%" 
             minW="200px" 
             h={expanded ? 'auto' : '40px'}
-            bg="var(--bg-main)"
-            border={expanded ? "1px solid transparent" : "1px solid white"}
+            bg="white"
+            // border={expanded ? "1px solid transparent" : "1px solid white"}
             borderRadius="md"
-            boxShadow={expanded ? "0px 4px 4px rgba(0,0,0,0.4)" : "0px 0px 0px rgba(0,0,0,0.4)"}
+            // boxShadow={expanded ? "0px 4px 4px rgba(0,0,0,0.4)" : "0px 0px 0px rgba(0,0,0,0.4)"}
             transitionDuration="200ms"
         >
             <Flex id={`ritual-${ritual.id}-header`}

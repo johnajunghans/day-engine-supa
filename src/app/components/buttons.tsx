@@ -88,6 +88,7 @@ export const DeleteIconButton: React.FC<IconButtonProps> = ({ onClick, label }) 
 }
 
 export const AddIconButton: React.FC<IconButtonProps> = ({ onClick, label }) => {
+    
     return (
         <IconButton
             w="40px" h="40px"
