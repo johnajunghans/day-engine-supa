@@ -1,10 +1,12 @@
-export function getSeason() {
+type season = "Spring" | "Summer" | "Fall" | "Winter"
+
+export function getSeason(): season {
 
     const date = new Date()
     const month = date.getMonth()
     const day = date.getDay()
 
-    let season = ""
+    let season: season
 
     if ( month === 0 || month === 1 ) {
         season = "Winter"
@@ -37,7 +39,15 @@ export function getSeason() {
     return season
 }
 
-export function getMonthsGivenSeason(season: string) {
+export function nextSeason(season: season, year: number): {season: season, year: number} {
+    if (season === "Spring") return {season: "Summer", year: year}
+    else if (season === "Summer") return {season: "Fall", year: year}
+    else if (season === "Fall") return {season: "Winter", year: year++}
+    else if (season === "Winter") return {season: "Spring", year: year}
+    else throw new Error("Season is improperly defined")
+}
+
+export function getMonthsGivenSeason(season: season) {
     let months = [];
 
     if (season === 'Spring') {

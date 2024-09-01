@@ -29,7 +29,7 @@ const WheelOutline: React.FC<WheelOutlineProps> = ({ svgSize, miliTime=false, ri
                 alignmentBaseline="middle"
                 x={timeRawHoursToCoordinates(6, -index+6, outerCircleRadius*1.075, center)[0]} 
                 y={timeRawHoursToCoordinates(6, -index+6, outerCircleRadius*1.055, center)[1]}
-                fill="white"
+                fill="var(--light-grey)"
                 fontSize="13px"
                 className='antialiased'
             >{marker}</text>
@@ -39,13 +39,13 @@ const WheelOutline: React.FC<WheelOutlineProps> = ({ svgSize, miliTime=false, ri
     return (
         <g id='wheel-outline'> 
             {/* <circle id="background-circle" cx={center} cy={center} r={outerCircleRadius+45} className="fill-[#FFFFFF]" fillOpacity={0.33} stroke='var(--de-orange)' />  */}
-            <circle cx={center} cy={center} r={outerCircleRadius} fill="var(--bg-main)" stroke="var(--med-grey)" strokeWidth="1" />
+            <circle cx={center} cy={center} r={outerCircleRadius} fill="rgba(255,255,255,0.5)" stroke="var(--light-grey)" strokeWidth="1" />
             <g id='wheel-svg-lines-container'>
                  {rotations.map( rot => (
                     <path key={rot}
                         d={`M ${center-innerCircleRadius} ${center} L ${center-outerCircleRadius*1.03} ${center}`}
                         style={{transform: `rotate(${rot}deg)`, transformOrigin: `${center}px ${center}px`}}
-                        stroke="var(--med-grey)" strokeWidth="1"
+                        stroke="var(--light-grey)" strokeWidth="1"
                     />
                 ))}
             </g>

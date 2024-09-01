@@ -1,8 +1,7 @@
 import { useRitualInstanceContext } from "@/app/hooks/db-context-hooks/useRitualInstanceContext";
 import { useRitualsContext } from "@/app/hooks/db-context-hooks/useRitualsContext";
 import { DayOfWeek, Ritual, RitualInstance } from "@/app/lib/interfaces/rituals-interface";
-import { Button, Checkbox, CheckboxGroup, Input, Radio, RadioGroup, Stack, VStack } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
+import { Button, Checkbox, CheckboxGroup, Flex, HStack, Input, Radio, RadioGroup, Select, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, VStack } from "@chakra-ui/react";
 import { Dispatch, FormEvent, FunctionComponent, useState } from "react";
 
 interface CreateInstanceFormProps {
@@ -23,7 +22,7 @@ const CreateInstanceForm: FunctionComponent<CreateInstanceFormProps> = ({ day, c
     const [activeDays, setActiveDays] = useState<DayOfWeek[]>([day])
     const [isLoading, setIsLoading] = useState(false);
     
-    async function handleSubmit(e: FormEvent) {
+    async function handleInstanceSubmit(e: FormEvent) {
         e.preventDefault();
         setIsLoading(true)
 
@@ -59,48 +58,72 @@ const CreateInstanceForm: FunctionComponent<CreateInstanceFormProps> = ({ day, c
         }
     }
 
-    return ( 
-        <form onSubmit={handleSubmit}>
-            <VStack>
-                <RadioGroup name="ritual-selector" onChange={setSelectedRitual} value={selectedRitual} aria-required={true}>
-                    <Stack direction='row'>
+    async function handleActionSubmit(e: FormEvent) {
+
+    }
+
+    return (
+        <Tabs variant="soft-rounded">
+            <TabList gap="1rem">
+                <Tab>Create Ritual Instance</Tab>
+                <Tab>Create Action</Tab>
+            </TabList>
+            <TabPanels>
+            <TabPanel>
+            <form onSubmit={handleInstanceSubmit}>
+                <VStack gap="1rem" align="flex-start">
+                    <RadioGroup name="ritual-selector" onChange={setSelectedRitual} value={selectedRitual} aria-required={true}>
+                        <Stack direction='row'>
+                            {rituals.map(ritual => (
+                                <Radio key={ritual.id} value={JSON.stringify(ritual)}>{ritual.name}</Radio>
+                            ))}
+                        </Stack>
+                    </RadioGroup>
+                    {/* <Select placeholder="Select Ritual" onChange={setSelectedRitual}>
                         {rituals.map(ritual => (
-                            <Radio key={ritual.id} value={JSON.stringify(ritual)}>{ritual.name}</Radio>
+                            <option key={ritual.id} value={JSON.stringify(ritual)}>{ritual.name}</option>
                         ))}
-                    </Stack>
-                </RadioGroup>
-                <CheckboxGroup defaultValue={[day]} onChange={setActiveDays} required>
-                    <Stack direction="row">
-                        <Checkbox value="Monday">Monday</Checkbox>
-                        <Checkbox value="Tuesday">Tuesday</Checkbox>
-                        <Checkbox value="Wednesday">Wednesday</Checkbox>
-                        <Checkbox value="Thursday">Thursday</Checkbox>
-                        <Checkbox value="Friday">Friday</Checkbox>
-                    </Stack>
-                    <Stack direction="row">
-                        <Checkbox value="Saturday">Saturday</Checkbox>
-                        <Checkbox value="Sunday">Sunday</Checkbox>
-                    </Stack>
-                </CheckboxGroup>
-                <Input id="create-instance-form-start-input"
-                    type="time" 
-                    value={startTime} 
-                    onChange={e => setStartTime(e.target.value)}
-                    required 
-                />
-                <Input id="create-instance-form-end-input"
-                    type="time" 
-                    value={endTime} 
-                    onChange={e => setEndTime(e.target.value)} 
-                    required
-                />
-            </VStack>
-            <Button 
-                type="submit" 
-                isLoading={isLoading} 
-                disabled={!selectedRitual || !startTime || !endTime || !activeDays}
-            >Submit</Button>
-        </form>
+                    </Select> */}
+                    <CheckboxGroup defaultValue={[day]} onChange={setActiveDays} required>
+                        <Stack direction="row">
+                            <Checkbox value="Monday">Monday</Checkbox>
+                            <Checkbox value="Tuesday">Tuesday</Checkbox>
+                            <Checkbox value="Wednesday">Wednesday</Checkbox>
+                            <Checkbox value="Thursday">Thursday</Checkbox>
+                            <Checkbox value="Friday">Friday</Checkbox>
+                        </Stack>
+                        <Stack direction="row">
+                            <Checkbox value="Saturday">Saturday</Checkbox>
+                            <Checkbox value="Sunday">Sunday</Checkbox>
+                        </Stack>
+                    </CheckboxGroup>
+                    <Input id="create-instance-form-start-input"
+                        type="time" 
+                        value={startTime} 
+                        onChange={e => setStartTime(e.target.value)}
+                        required 
+                    />
+                    <Input id="create-instance-form-end-input"
+                        type="time" 
+                        value={endTime} 
+                        onChange={e => setEndTime(e.target.value)} 
+                        required
+                    />
+                    <Button 
+                    type="submit" 
+                    isLoading={isLoading} 
+                    disabled={!selectedRitual || !startTime || !endTime || !activeDays}
+                >Submit</Button>
+                </VStack>
+            </form>
+            </TabPanel>
+            <TabPanel>
+            <form onSubmit={handleActionSubmit}>
+
+            </form>
+            </TabPanel>
+            </TabPanels>
+        </Tabs> 
      );
 }
  

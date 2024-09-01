@@ -66,7 +66,7 @@ const SeasonalGoalsTile: FunctionComponent<SeasonalGoalsTileProps> = ({ year, ac
     }
 
     return (
-        <Flex id={`${season}-${year}-goals`} border="1px solid white" p="2rem 1rem 1rem" gap="1rem" mt="0.5rem" flexDir="column" borderRadius="md" w="100%" minH="100px" position="relative">
+        <Flex id={`${season}-${year}-goals`} border="1px solid white" bgColor="rgba(255,255,255,0.5)" p="2rem 1rem 1rem" gap="1rem" mt="0.5rem" flexDir="column" borderRadius="md" w="100%" minH="100px" position="relative">
             <Text bgColor="white" borderRadius="5px" fontSize="14px" p="4px" position="absolute" top="-15px" left="-10px">{`${season.toUpperCase()}-${year}`}</Text>
             <SeasonalGoalsContainer />
             {months.map(month => (
