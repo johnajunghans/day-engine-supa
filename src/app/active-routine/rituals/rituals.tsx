@@ -1,12 +1,15 @@
-import { Flex, IconButton, useDisclosure } from "@chakra-ui/react";
+"use client"
+
+import { Flex, IconButton, Text, useDisclosure } from "@chakra-ui/react";
 import RitualTile from "./ritual-tile";
 import ModalMain from "@/app/components/modal";
 import CreateRitualForm from "./create-ritual-form";
 import { useEffect, useState } from "react";
 import EditDeleteRitualForm from "./edit-delete-ritual-form";
-import { AddIconButton } from "@/app/components/buttons";
+import { AccentButton, AddIconButton } from "@/app/components/buttons";
 import { useRitualsContext } from "@/app/hooks/db-context-hooks/useRitualsContext";
 import { Ritual } from "@/app/lib/interfaces/rituals-interface";
+import { useThemeContext } from "@/app/hooks/useThemeContext";
 
 
 interface Rituals {
@@ -16,6 +19,7 @@ interface Rituals {
 const Rituals: React.FC<Rituals> = () => {
 
     const { ritualsState: rituals } = useRitualsContext()
+    const { theme } = useThemeContext()
 
     const { isOpen: isAddModalOpen, onClose: closeAddModal, onOpen: openAddModal } = useDisclosure()
     const { isOpen: isEditModalOpen, onClose: closeEditModal, onOpen: openEditModal } = useDisclosure()
@@ -37,23 +41,31 @@ const Rituals: React.FC<Rituals> = () => {
 
     return ( 
         <Flex id="rituals-container"
-            w="80%"
+            bgColor={theme.light}
+            borderRadius="md"
             pos="relative"
             flexGrow="1" 
             flexDir="column" 
             align="flex-start" 
             justify="flex-start" 
-            gap="0.5rem" 
+            gap="1.5rem" 
             py="1rem"
+
         >
-            {rituals.map(ritual => (
-                <RitualTile 
-                    key={ritual.id}
-                    ritual={ritual}
-                    setInitialRitualEdit={setInitialRitualEdit}
-                />
-            ))}
-            <AddIconButton onClick={openAddModal} label="open-post-ritual-modal" />
+            <Flex id="rituals-header" as="header" align="center" justify="space-between" w="100%" px="1rem">
+                <Text as="h2" color="var(--white-main)" fontSize="24px">Rituals</Text>
+                <AccentButton id="add-new-ritual-button" name="Add Ritual" onClick={openAddModal} />
+            </Flex>
+            <Flex id="mapped-rituals-container" flexDir="column" gap="1rem" w="100%" align="center" justify="flex-start">
+                {rituals.map(ritual => (
+                    <RitualTile 
+                        key={ritual.id}
+                        ritual={ritual}
+                        setInitialRitualEdit={setInitialRitualEdit}
+                    />
+                ))}
+            </Flex>
+            {/* <AddIconButton onClick={openAddModal} label="open-post-ritual-modal" /> */}
             <ModalMain isOpen={isAddModalOpen} onClose={closeAddModal} modalTitle="Create New Ritual">
                 <CreateRitualForm closeModal={closeAddModal} />
             </ModalMain>

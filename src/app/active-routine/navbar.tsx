@@ -3,17 +3,24 @@
 import { Button, Flex } from "@chakra-ui/react"
 import Image from "next/image";
 import { useThemeContext } from "../hooks/useThemeContext"
-import { useState } from "react";
+import { FunctionComponent, useState } from "react";
 import AccountForm from "../(auth)/account/account-form";
 import { User } from "@supabase/supabase-js";
 import useClose from "../hooks/useClose";
 import Link from "next/link";
 import ThemeSelector from "../theme-selector";
+import { usePathname } from "next/navigation";
+
+interface LinkTileProps {
+    routeName: string,
+
+}
 
 export default function Navbar() {
 
     const { theme } = useThemeContext();
     const [showAccountForm, setShowAccountForm] = useState(false);
+    const pathname = usePathname()
 
     useClose({id: "account-form-container", stateUpdateFunction: setShowAccountForm})
 
@@ -26,9 +33,27 @@ export default function Navbar() {
         )
     }
 
+    const LinkTile: FunctionComponent<LinkTileProps> = ({ routeName }) => {
+        
+        console.log(pathname)
+
+        return (
+            <Link href={`/active-routine/${routeName}`}>
+                <Flex w="75px" h="75px" bgColor={theme.light} borderRadius="md" boxShadow={pathname === `/active-routine/${routeName}` ? "0px 4px 4px var(--de-orange)" : "unset"}>
+
+                </Flex>
+            </Link>
+        )
+    }
+
     return (
-        <Flex id='account-nav-bar' as='header' h="100%" minW="100px" bgColor={theme.dark} maxW="200px" pos="relative" flexDir="column" align="center" justify="flex-end" px="0.75rem" overflow="hidden" borderRadius="md">
-            <Image src="/logo.png" priority={true} alt="logo-image" width={150} height={150} className="absolute top-4 left-[calc(50% - 75px)] animate-logo-spin" />
+        <Flex id='account-nav-bar' as='header' h="100%" minW="100px" border="1px solid var(--de-orange)" maxW="200px" pos="relative" flexDir="column" align="center" justify="space-between" p="0.75rem" overflow="hidden" borderRadius="md">
+            <Flex flexDir="column" gap="1rem" align="center" justify="center">
+                <Image src="/logo.png" priority={true} alt="logo-image" width={150} height={150} className="animate-logo-spin" />
+                <LinkTile routeName="rituals" />
+                <LinkTile routeName="/" />
+                <LinkTile routeName="/" />
+            </Flex>
             <Flex id="right-hand-nav-container" mb="1rem" align="flex-end" gap="1rem">
                 <ThemeSelector isVertical={true} />
                 <Settings />             

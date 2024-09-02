@@ -17,8 +17,10 @@
   --blue-light: #346BC4;
   --green-dark: #296B4B;
   --green-light: #458968;
-  --purple-dark: #501B68;
-  --purple-light: #6D3787;
+  /* --purple-dark: #501B68;
+  --purple-light: #6D3787; */
+  --purple-dark: #280E34;
+  --purple-light: #501B68;
   --red-dark: #7D1425;
   --red-light: #973242;
   --dark-brown-dark: #1F140E;
@@ -33,6 +35,7 @@
   --dark-grey: #70757A;
   /* wheel and tile bg color */
   --bg-main: rgba(255,255,255,0.1);
+  --white-main: #FDFCFD;
 
   /* box-shadow */
 }

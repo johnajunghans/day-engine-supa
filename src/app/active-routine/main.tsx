@@ -51,11 +51,11 @@ const Main: React.FC<MainProps> = ({ rituals, ritualInstances, seasonalGoals, mo
     }
 
     return (
-        <Box id='account-main-content-container' as='main' display="grid" gridTemplateColumns="1fr 3fr 6fr" p="1rem" gap="1rem" h="100vh" bgColor={theme.light} overflow="hidden">
+        <Box id='account-main-content-container' as='main' display="grid" gridTemplateColumns="1fr 3fr 6fr" p="1rem" gap="1rem" h="100vh" bgColor={theme.dark} overflow="hidden">
             <Navbar />
-            <RitualsContextProvider initialValue={rituals}>
+            <RitualsContextProvider initialValue={rituals}> 
                 <ActionsContextProvider initialValue={actions}>
-                    <Flex id="rituals-goals-container" height="calc(100vh - 2rem)" overflow="auto" overflowX="hidden" flexDir="column" width="100%" minW="400px" align="center" bgColor="var(--bg-main)" borderRadius="md">
+                    <Flex id="rituals-goals-container" height="calc(100vh - 2rem)" overflow="auto" overflowX="hidden" flexDir="column" width="100%" minW="400px" align="center" bgColor={theme.light} borderRadius="md" >
                         <Flex id="rituals-goals-tabs-container" h="60px" w="100%" align="center" justify="space-evenly">
                             <Tab name="Goals" />
                             <Tab name="Rituals" />
@@ -70,7 +70,7 @@ const Main: React.FC<MainProps> = ({ rituals, ritualInstances, seasonalGoals, mo
                             </MonthlyGoalsContextProvider>
                         </SeasonalGoalsContextProvider>
                     </Flex>
-                    <Flex id="wheel-container" height="calc(100vh - 2rem)" bgColor="var(--bg-main)" borderRadius="md">
+                    <Flex id="wheel-container" height="calc(100vh - 2rem)" bgColor={theme.light} borderRadius="md">
                         <RitualInstanceProvider initialValue={ritualInstances}>
                             <WheelMain />
                         </RitualInstanceProvider>   

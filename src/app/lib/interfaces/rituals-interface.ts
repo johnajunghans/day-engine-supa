@@ -7,7 +7,7 @@ export interface RitualInstance {
     start_time: string,
     end_time: string,
     ritual_id: number
-    name: string
+    name?: string
 }
 
 export interface Ritual {
@@ -17,5 +17,9 @@ export interface Ritual {
     last_updated_at: string,
     active: boolean,
     name: string,
-    description?: string,
+    what?: string,
+    where?: string,
+    why?: string
 }
+
+export type MappableInstances = Record<DayOfWeek, RitualInstance[]>

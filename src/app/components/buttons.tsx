@@ -168,5 +168,24 @@ export const ConfirmDeleteButton: FunctionComponent<ConfirmDeleteButtonProps> = 
         </Button>  
     )
 }
+
+interface AccentButtonProps {
+    id: string,
+    name: string,
+    onClick: MouseEventHandler<HTMLButtonElement>
+}
+
+export const AccentButton: FunctionComponent<AccentButtonProps> = ({ id, name, onClick }) => {
+    return (
+        <Button 
+            id={id}
+            onClick={onClick}
+            bgColor="var(--de-orange)"
+            borderRadius="md"
+            h="40px"
+            px="1rem"
+        >{name}</Button>
+    )
+}
     
     
