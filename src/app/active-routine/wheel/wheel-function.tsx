@@ -21,7 +21,9 @@ const WheelFunction: React.FC<WheelFunctionProps> = ({ svgSize, outerCircleRadiu
     const toast = useToast()
 
     const { ritualInstanceState: ritualInstances } = useRitualInstanceContext()
-    const { actionsState: actions } = useActionsContext()
+    // const { actionsState: actions } = useActionsContext()
+
+    console.log(ritualInstances)
 
     const [selectedInstance, setSelectedInstance] = useState<RitualInstance | null>(null)
 
@@ -60,9 +62,9 @@ const WheelFunction: React.FC<WheelFunctionProps> = ({ svgSize, outerCircleRadiu
             {ritualInstances[day].map(day => (
                 <RitualSector key={day.id} svgSize={svgSize} instance={day} outerCircleRadius={outerCircleRadius} setSelectedInstance={setSelectedInstance} />
             ))}
-            {actions.filter(action => action.day === day).map(action => (
+            {/* {actions.filter(action => action.day === day).map(action => (
                 <ActionSector key={action.id} svgSize={svgSize} action={action} outerCircleRadius={outerCircleRadius} />
-            ))}
+            ))} */}
             <WheelDaySelector svgSize={svgSize} setDay={setDay} activeDay={day} outerCircleRadius={outerCircleRadius} openAddModal={onOpen} />
             <foreignObject overflow="visible">
                 <ModalMain isOpen={isOpen} onClose={onClose} modalTitle="Create New:" >

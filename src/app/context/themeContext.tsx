@@ -19,8 +19,25 @@ interface ThemeContextProviderProps {
 }
 
 export const ThemeContextProvider: React.FC<ThemeContextProviderProps> = ({ children }) => {
+
+    const changeTheme = (dark: string, light: string) => {
+        setTheme({
+            dark: dark,
+            light: light,
+        });
+        localStorage.setItem("theme", JSON.stringify({dark: dark, light: light}))
+    };
     
-    const savedTheme = JSON.parse(localStorage.getItem("theme") ?? "null");
+    let savedTheme: Theme | null
+
+    if (typeof window !== "undefined") {
+        // We're in the browser
+        savedTheme = JSON.parse(localStorage.getItem("theme") ?? "null");
+        // return savedTheme ? savedTheme : { dark: "var(--blue-dark)", light: "var(--blue-light)" };
+    } else {
+        // We're on the server, provide a default theme
+        savedTheme = { dark: "var(--blue-dark)", light: "var(--blue-light)" };
+    }
     
     const [theme, setTheme] = useState<Theme>(savedTheme ? savedTheme : { dark: "var(--blue-dark)", light: "var(--blue-light)" });
 
@@ -32,14 +49,6 @@ export const ThemeContextProvider: React.FC<ThemeContextProviderProps> = ({ chil
     //         setTheme(JSON.parse(savedTheme));
     //     }
     // }, []); // Empty dependency array ensures this runs only once when the component mounts
-
-    const changeTheme = (dark: string, light: string) => {
-        setTheme({
-            dark: dark,
-            light: light,
-        });
-        localStorage.setItem("theme", JSON.stringify({dark: dark, light: light}))
-    };
 
     return (
         <ThemeContext.Provider value={{ theme, changeTheme }}>

@@ -51,7 +51,7 @@ export default function Navbar() {
             <Flex flexDir="column" gap="1rem" align="center" justify="center">
                 <Image src="/logo.png" priority={true} alt="logo-image" width={150} height={150} className="animate-logo-spin" />
                 <LinkTile routeName="rituals" />
-                <LinkTile routeName="/" />
+                <LinkTile routeName="goals" />
                 <LinkTile routeName="/" />
             </Flex>
             <Flex id="right-hand-nav-container" mb="1rem" align="flex-end" gap="1rem">

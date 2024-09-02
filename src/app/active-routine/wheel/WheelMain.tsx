@@ -50,7 +50,7 @@ const WheelMain: React.FC<WheelMainProps> = () => {
         <Flex id="wheel-main" ref={wheelMainRef} bgColor={theme.light} borderRadius="md" className="min-w-[calc(100vh-2rem)] min-h-[calc(100vh-2rem)] w-full h-full flex items-center justify-center">
             <svg width={svgSize} height={svgSize} overflow="visible">
                 {svgSize && <WheelOutline svgSize={svgSize} outerCircleRadius={outerCircleRadius} />}
-                {/* {svgSize && <WheelFunction svgSize={svgSize} outerCircleRadius={outerCircleRadius} />} */}
+                {svgSize && <WheelFunction svgSize={svgSize} outerCircleRadius={outerCircleRadius} />}
             </svg>
         </Flex>
      );
