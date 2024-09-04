@@ -1,5 +1,15 @@
 type season = "Spring" | "Summer" | "Fall" | "Winter"
 
+type SeasonTag = {
+    season: season,
+    year: number
+}
+
+interface SeasonTagWithEmoji {
+    seasonTag: SeasonTag,
+    emoji: string
+}
+
 export function getSeason(): season {
 
     const date = new Date()
@@ -39,10 +49,10 @@ export function getSeason(): season {
     return season
 }
 
-export function nextSeason(season: season, year: number): {season: season, year: number} {
+export function nextSeason(season: season, year: number): SeasonTag {
     if (season === "Spring") return {season: "Summer", year: year}
     else if (season === "Summer") return {season: "Fall", year: year}
-    else if (season === "Fall") return {season: "Winter", year: year++}
+    else if (season === "Fall") return {season: "Winter", year: year+1}
     else if (season === "Winter") return {season: "Spring", year: year}
     else throw new Error("Season is improperly defined")
 }
@@ -63,4 +73,39 @@ export function getMonthsGivenSeason(season: season) {
     }
 
     return months
-}  
+}
+
+export function getSeasonEmoji(season: season): string {
+    let emoji: string = ""
+
+    if (season === 'Spring') {
+        emoji === "🌱"
+    } else if (season === 'Summer') {
+        emoji = "☀️"
+    } else if (season === 'Fall') {
+        emoji = "🍁"
+    } else if (season === 'Winter') {
+        emoji = "❄️"
+    } else {
+        throw new Error("Season is not defined properly.")
+    }
+
+    return emoji
+} 
+
+export function getCurrentSeasonTags(): SeasonTagWithEmoji[] {
+    const season = getSeason()
+    const year = new Date().getFullYear()
+    const emoji = getSeasonEmoji(season)
+    let tag: SeasonTagWithEmoji = { seasonTag: { season, year }, emoji: emoji }
+    let arr: SeasonTagWithEmoji[] = []
+    arr.push(tag)
+
+
+    for (let i=1; i < 4; i++) {
+        tag = {seasonTag: nextSeason(tag.seasonTag.season, tag.seasonTag.year), emoji: emoji }
+        const newEmoji = getSeasonEmoji(tag.seasonTag.season)
+        arr.push({ seasonTag: { season: tag.seasonTag.season, year: tag.seasonTag.year }, emoji: newEmoji})
+    }
+    return arr
+}

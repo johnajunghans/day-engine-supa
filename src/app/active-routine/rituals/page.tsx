@@ -10,9 +10,7 @@ import RitualsProvider from "./rituals-provider";
 
 interface RitualsProps {
     
-}
- 
-const Rituals: FunctionComponent<RitualsProps> = async ({ }) => {
+}const Rituals: FunctionComponent<RitualsProps> = async ({ }) => {
     
     // instantiate supabase
     const supabase = createClient()
