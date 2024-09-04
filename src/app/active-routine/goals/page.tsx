@@ -2,6 +2,7 @@ import { Flex, Text } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
 import { createClient } from "../../../../utils/supabase/server";
 import { redirect } from "next/navigation";
+import { getSeason } from "@/app/lib/functions/season-functions";
 
 interface GoalsProps {
     
@@ -15,6 +16,11 @@ const Goals: FunctionComponent<GoalsProps> = async () => {
     if (userError || !user?.user) {
         redirect('/')
     }
+
+    const season = getSeason().toLowerCase()
+    const year = new Date().getFullYear()
+
+    redirect(`goals/${season}-${year}`)
 
     return (
         <Flex align="center" justify="center" w="100%" h="100%" px="3rem">

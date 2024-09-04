@@ -1,3 +1,5 @@
+export type season = "Spring" | "Summer" | "Fall" | "Winter"
+
 export interface SeasonData {
     id: number,
     user_id: string,

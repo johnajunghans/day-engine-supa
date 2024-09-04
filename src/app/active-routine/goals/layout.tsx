@@ -4,18 +4,12 @@ import { createClient } from "../../../../utils/supabase/server";
 import { redirect, useRouter } from "next/navigation";
 import { PostgrestMaybeSingleResponse, PostgrestResponse } from "@supabase/supabase-js";
 import Link from "next/link";
-import { getCurrentSeasonTags } from "@/app/lib/functions/season-functions";
+import { getCurrentSeasonTags, getSeason } from "@/app/lib/functions/season-functions";
 import SeasonNav from "./season-nav";
+import { VisionTile } from "./vision-tile";
 
 interface GoalsLayoutProps {
     children: ReactNode
-}
-
-interface VisionTileProps {
-    title: string,
-    content: string | undefined
-    indentWidth: number
-    variant: "vision" | "focus"
 }
 
 type UserData = {
@@ -42,34 +36,7 @@ const GoalsLayout: FunctionComponent<GoalsLayoutProps> = async ({ children }) =>
     if (userDataError) {
         console.log(userDataError)
         throw Error(userDataError.message)
-    } 
-
-    const VisionTile: FunctionComponent<VisionTileProps> = ({ title, content, indentWidth, variant }) => {
-
-        return (
-            <Box w="100%" 
-                border={variant === "vision" ? "1px solid var(--de-orange)" : "unset"} 
-                bgColor={variant === "focus" ? "var(--purple-light)" : "var(--purple-dark)"}
-                borderRadius="md" 
-                overflow="hidden" 
-                pos="relative" 
-                p="0.25rem 0.5rem 0.5rem"
-            >
-                <Text 
-                    display="inline" 
-                    p="0.25rem 0.5rem"
-                    fontSize="16px" 
-                    borderBottomRightRadius="10px" 
-                    bgColor={variant === "vision" ? "var(--de-orange)" : "var(--white-main)"} 
-                    pos="absolute" top={variant === "vision" ? "-3px" : "0px"} left={variant === "vision" ? "-3px" : "0px"}
-                >{title}</Text>
-                <Box display="inline-block" w={`${indentWidth}px`}></Box>
-                <Text display="inline" fontSize="16px" className=" antialiased" lineHeight="175%" color="var(--white-main)">{content}</Text>
-            </Box>
-        ) 
     }
-
-    
 
     return ( 
         <Box id="goals-layout-outer-container" display="grid" gridTemplateColumns="1fr 3fr" gap="1rem">
