@@ -9,7 +9,6 @@ export default function SeasonNav() {
 
     const pathname = usePathname()
     const activeSeasons = getCurrentSeasonTags()
-    console.log(pathname)
 
     return (
         <Flex as="nav" id="goals-season-nav" justify="space-between" w="100%">
@@ -17,13 +16,13 @@ export default function SeasonNav() {
                 <Link
                     key={`${season.seasonTag.season}-${season.seasonTag.year}`} 
                     id={`${season.seasonTag.season}-${season.seasonTag.year}-link`}
-                    href={`${season.seasonTag.season.toLowerCase()}`}
+                    href={`/active-routine/goals/${season.seasonTag.season.toLowerCase()}-${season.seasonTag.year}`}
                 >
                     <Flex 
                         flexDir="column" 
                         w="75px" h="75px" 
                         borderRadius="md"
-                        opacity={pathname === `/active-routine/goals/${season.seasonTag.season.toLowerCase()}` ? "1" : "0.25"} 
+                        opacity={pathname === `/active-routine/goals/${season.seasonTag.season.toLowerCase()}-${season.seasonTag.year}` ? "1" : "0.25"} 
                         bgColor="var(--purple-light)"
                         color="white"
                         align="center" justify="space-evenly"

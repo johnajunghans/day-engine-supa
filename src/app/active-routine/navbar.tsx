@@ -34,12 +34,10 @@ export default function Navbar() {
     }
 
     const LinkTile: FunctionComponent<LinkTileProps> = ({ routeName }) => {
-        
-        console.log(pathname)
 
         return (
             <Link href={`/active-routine/${routeName}`}>
-                <Flex w="75px" h="75px" bgColor={theme.light} borderRadius="md" boxShadow={pathname === `/active-routine/${routeName}` ? "0px 4px 4px var(--de-orange)" : "unset"}>
+                <Flex w="75px" h="75px" bgColor={theme.light} borderRadius="md" boxShadow={pathname.startsWith(`/active-routine/${routeName}`) ? "0px 4px 4px var(--de-orange)" : "unset"}>
 
                 </Flex>
             </Link>

@@ -1,19 +1,22 @@
+export interface SeasonData {
+    id: number,
+    user_id: string,
+    created_at: string,
+    season: string,
+    year: number
+    vision: string
+ }
+ 
+
 export interface MonthlyGoal {
     id: number,
     user_id: string,
     created_at: string,
     month: string,
-    seasonal_goal_id: number,
-    summary: string
-}
-
-export interface SeasonGoal {
-   id?: number,
-   user_id?: string,
-   created_at?: string,
-   season: string,
-   summary: string,
-   map_id: number
+    seasonal_id: number,
+    summary: string,
+    why?: string,
+    complete: boolean
 }
 
 export interface Action {
