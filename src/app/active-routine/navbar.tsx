@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Flex } from "@chakra-ui/react"
+import { Button, Flex, Text } from "@chakra-ui/react"
 import Image from "next/image";
 import { useThemeContext } from "../hooks/useThemeContext"
 import { FunctionComponent, useState } from "react";
@@ -13,7 +13,10 @@ import { usePathname } from "next/navigation";
 
 interface LinkTileProps {
     routeName: string,
-
+    icon: string
+    size: number
+    title: string
+    invert?: boolean
 }
 
 export default function Navbar() {
@@ -33,12 +36,22 @@ export default function Navbar() {
         )
     }
 
-    const LinkTile: FunctionComponent<LinkTileProps> = ({ routeName }) => {
+    const LinkTile: FunctionComponent<LinkTileProps> = ({ routeName, icon, size, title, invert=false }) => {
 
         return (
             <Link href={`/active-routine/${routeName}`}>
-                <Flex w="75px" h="75px" bgColor={theme.light} borderRadius="md" boxShadow={pathname.startsWith(`/active-routine/${routeName}`) ? "0px 4px 4px var(--de-orange)" : "unset"}>
-
+                <Flex
+                    flexDir="column"
+                    align="center"
+                    justify="center" 
+                    w="75px" h="75px" 
+                    bgColor="var(--purple-light)" 
+                    borderRadius="md" 
+                    opacity={pathname.startsWith(`/active-routine/${routeName}`) ? "1" : "0.25"}
+                    _hover={{opacity: pathname.startsWith(`/active-routine/${routeName}`) ? "1" : "0.4"}}
+                >
+                    <Image src={`/${icon}.svg`} alt={`${icon}`} width={size} height={size} style={{transform: invert ? "rotate(45deg)" : "unset"}} />
+                    <Text color="var(--white-main)" fontSize="16px">{title}</Text>
                 </Flex>
             </Link>
         )
@@ -48,9 +61,9 @@ export default function Navbar() {
         <Flex id='account-nav-bar' as='header' h="100%" minW="100px" border="1px solid var(--de-orange)" maxW="200px" pos="relative" flexDir="column" align="center" justify="space-between" py="0.75rem" overflow="hidden" borderRadius="md">
             <Flex flexDir="column" gap="1rem" align="center" justify="center">
                 <Image src="/logo.png" priority={true} alt="logo-image" width={150} height={150} className="animate-logo-spin" />
-                <LinkTile routeName="rituals" />
-                <LinkTile routeName="goals" />
-                <LinkTile routeName="/" />
+                <LinkTile routeName="rituals" icon="rituals-icon" size={45} title="Rituals" invert={true} />
+                <LinkTile routeName="goals" icon="goals-icon" size={40} title="Goals" />
+                <LinkTile routeName="/" icon="reflection-icon" size={40} title="Reflection" />
             </Flex>
             <Flex id="right-hand-nav-container" mb="1rem" align="flex-end" gap="1rem">
                 <ThemeSelector isVertical={true} />

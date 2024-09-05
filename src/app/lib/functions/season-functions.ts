@@ -1,4 +1,5 @@
 type season = "Spring" | "Summer" | "Fall" | "Winter"
+type zodiac = "Aries" | "Taurus" | "Gemini" | "Cancer" | "Leo" | "Virgo" | "Libra" | "Scorpio" | "Sagittarius" | "Capricorn" | "Aquarius" | "Pisces"
 
 type SeasonTag = {
     season: season,
@@ -14,7 +15,7 @@ export function getSeason(): season {
 
     const date = new Date()
     const month = date.getMonth()
-    const day = date.getDay()
+    const day = date.getDate()
 
     let season: season
 
@@ -49,6 +50,44 @@ export function getSeason(): season {
     return season
 }
 
+export function getZodiac() {
+    const date = new Date()
+    const day = date.getDate()
+    const month = date.getMonth()
+
+    let zodiac: zodiac
+
+    if ((month === 11 && day >= 21) || (month === 0 && day < 21)) {
+        zodiac = "Capricorn"
+    } else if ((month === 0 && day >= 21) || (month === 1 && day < 21)) {
+        zodiac = "Aquarius"
+    } else if ((month === 1 && day >= 21) || (month === 2 && day < 21)) {
+        zodiac = "Pisces"
+    } else if ((month === 2 && day >= 21) || (month === 3 && day < 21)) {
+        zodiac = "Aries"
+    } else if ((month === 3 && day >= 21) || (month === 4 && day < 21)) {
+        zodiac = "Taurus"
+    } else if ((month === 4 && day >= 21) || (month === 5 && day < 21)) {
+        zodiac = "Gemini"
+    } else if ((month === 5 && day >= 21) || (month === 6 && day < 21)) {
+        zodiac = "Cancer"
+    } else if ((month === 6 && day >= 21) || (month === 7 && day < 21)) {
+        zodiac = "Leo"
+    } else if ((month === 7 && day >= 21) || (month === 8 && day < 21)) {
+        zodiac = "Virgo"
+    } else if ((month === 8 && day >= 21) || (month === 9 && day < 21)) {
+        zodiac = "Libra"
+    } else if ((month === 9 && day >= 21) || (month === 10 && day < 21)) {
+        zodiac = "Scorpio"
+    } else if ((month === 10 && day >= 21) || (month === 11 && day < 21)) {
+        zodiac = "Sagittarius"
+    } else {
+        throw Error("Something went wrong with the date and/or month retrieval")
+    }
+
+    return zodiac
+}
+
 export function nextSeason(season: season, year: number): SeasonTag {
     if (season === "Spring") return {season: "Summer", year: year}
     else if (season === "Summer") return {season: "Fall", year: year}
@@ -58,7 +97,7 @@ export function nextSeason(season: season, year: number): SeasonTag {
 }
 
 export function getMonthsGivenSeason(season: season) {
-    let months = [];
+    let months: zodiac[] = [];
 
     if (season === 'Spring') {
         months = ["Aries", "Taurus", "Gemini"]
@@ -79,7 +118,7 @@ export function getSeasonEmoji(season: season): string {
     let emoji: string = ""
 
     if (season === 'Spring') {
-        emoji === "🌱"
+        emoji === "🌺"
     } else if (season === 'Summer') {
         emoji = "☀️"
     } else if (season === 'Fall') {
@@ -91,7 +130,41 @@ export function getSeasonEmoji(season: season): string {
     }
 
     return emoji
-} 
+}
+
+export function getMonthEmoji(month: zodiac) {
+    let emoji: string
+
+    if (month === "Aries") {
+        emoji = "🐏"
+    } else if ( month === "Taurus") {
+        emoji = "🐂"
+    } else if ( month === "Gemini") {
+        emoji = "👯"
+    } else if ( month === "Cancer") {
+        emoji = "🦀"
+    } else if ( month === "Leo") {
+        emoji = "🦁"
+    } else if ( month === "Virgo") {
+        emoji = "🌬"
+    } else if ( month === "Libra") {
+        emoji = "⚖️"
+    } else if ( month === "Scorpio") {
+        emoji = "🦂"
+    } else if ( month === "Sagittarius") {
+        emoji = "🏹"
+    } else if ( month === "Capricorn") {
+        emoji = "🐐"
+    } else if ( month === "Aquarius") {
+        emoji = "🏺"
+    } else if ( month === "Pisces") {
+        emoji = "🐟"
+    } else {
+        throw Error("Input must be a zodiac sign with the first letter capitolized.")
+    }
+
+    return emoji
+}
 
 export function getCurrentSeasonTags(): SeasonTagWithEmoji[] {
     const season = getSeason()

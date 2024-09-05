@@ -6,7 +6,7 @@ export interface SeasonData {
     created_at: string,
     season: string,
     year: number
-    vision: string
+    seasonal_vision: string
  }
  
 

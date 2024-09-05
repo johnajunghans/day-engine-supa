@@ -6,7 +6,7 @@ import { PostgrestMaybeSingleResponse, PostgrestResponse } from "@supabase/supab
 import Link from "next/link";
 import { getCurrentSeasonTags, getSeason } from "@/app/lib/functions/season-functions";
 import SeasonNav from "./season-nav";
-import { VisionTile } from "./vision-tile";
+import VisionTile from "./vision-tile";
 
 interface GoalsLayoutProps {
     children: ReactNode
