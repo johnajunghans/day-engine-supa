@@ -40,7 +40,7 @@ const WheelOutline: React.FC<WheelOutlineProps> = ({ svgSize, miliTime=false, ri
         <g id='wheel-outline'> 
             {/* <circle id="background-circle" cx={center} cy={center} r={outerCircleRadius+45} className="fill-[#FFFFFF]" fillOpacity={0.33} stroke='var(--de-orange)' />  */}
             <circle cx={center} cy={center} r={outerCircleRadius} fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.25)" strokeWidth="1" />
-            <circle cx={center} cy={center} r={outerCircleRadius * 0.36} fill="var(--purple-dark)" stroke="rgba(255,255,255,0.25)" strokeWidth="1" />
+            {/* <circle cx={center} cy={center} r={outerCircleRadius * 0.36} fill="var(--purple-dark)" stroke="rgba(255,255,255,0.25)" strokeWidth="1" /> */}
             <g id='wheel-svg-lines-container'>
                  {rotations.map( rot => (
                     <path key={rot}

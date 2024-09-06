@@ -31,41 +31,44 @@ const WheelDaySelector: React.FC<WheelDaySelectorProps> = ({ svgSize, setDay, ac
     return (
         <>
         <g id="wheel-day-selector">
-            <circle cx={center} cy={center} r={innerCircleRadius} fill="white" style={{
-                filter: "drop-shadow(0px 4px 4px rgba(0,0,0,0.25))"
-            }} />
+            <circle cx={center} cy={center} r={innerCircleRadius} fill="var(--purple-dark)" />
             {days.map((day, index) => (
                 <g key={day}>
                    <path d={`
                         M ${center} ${center}
                         L ${polarToRectCoordinates(center, index*angSclr+angAdjr, innerCircleRadius).x} ${polarToRectCoordinates(center, index*angSclr+angAdjr, innerCircleRadius).y}
                         A ${innerCircleRadius} ${innerCircleRadius} 1 0 1 ${polarToRectCoordinates(center, (index+1)*angSclr+angAdjr, innerCircleRadius).x} ${polarToRectCoordinates(center, (index+1)*angSclr+angAdjr, innerCircleRadius).y}
-                        Z `} 
-                        className="fill-white cursor-pointer peer stroke-1 stroke-[var(--light-grey)]"
+                        Z `}
+                        fill="var(--purple-dark)"
+                        className={`
+                            duration-300
+                            ${activeDay !== day ? "stroke-[rgba(255,255,255,0.25)] hover:fill-[rgba(255,255,255,0.1)]" : "fill-[rgba(255,255,255,0.25)]"}
+                        `} 
                         role="button" onClick={() => {handleDayChange(day as DayOfWeek)}}
                     />
-                    <circle 
+                    {/* <circle 
                         cx={polarToRectCoordinates(center, (index+0.5)*angSclr+angAdjr, innerCircleRadius*0.75).x} 
                         cy={polarToRectCoordinates(center, (index+0.5)*angSclr+angAdjr, innerCircleRadius*0.75).y} 
                         r={innerCircleRadius*0.2} 
+                        fill="var(--purple-dark)"
                         className={`
-                            fill-white  duration-200 pointer-events-none
+                            duration-200 pointer-events-none
                             ${activeDay !== day ? "hover:fill-[#f5f5f5] peer-hover:fill-[#f5f5f5]" : ""}
                             ${activeDay === day ? "drop-shadow-[0px_4px_4px_rgba(0,0,0,0.25)]" : "drop-shadow-[0px_4px_4px_rgba(0,0,0,0)]"}
                         `} 
-                    />
+                    /> */}
                     <text
                         textAnchor="middle"
                         alignmentBaseline="middle"
-                        fill="var(--dark-gray)"
+                        fill="var(--white-light)"
                         pointerEvents="none"
                         x={polarToRectCoordinates(center, (index+0.5)*angSclr+angAdjr, innerCircleRadius*0.75).x}
                         y={polarToRectCoordinates(center, (index+0.5)*angSclr+angAdjr, innerCircleRadius*0.75).y}
-                    >{day.slice(0,2)}</text>
+                    >{day.slice(0,3)}</text>
                 </g>  
             ))}
             <circle cx={center} cy={center} r={innerCircleRadius*0.3} role="button"
-                className="stroke-1 stroke-[var(--light-grey)] fill-white hover:drop-shadow-[0px_4px_4px_rgba(0,0,0,0.25)] hover:stroke-white duration-200"
+                fill="var(--de-orange)"
                 onClick={openAddModal}
             />
             <foreignObject width={40} height={40} x={center-20} y={center-20} className=" pointer-events-none">
