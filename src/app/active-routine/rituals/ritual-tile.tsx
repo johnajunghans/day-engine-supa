@@ -32,6 +32,7 @@ const RitualTile: React.FC<RitualTileProps> = ({ ritual, setInitialRitualEdit })
             id={`ritual-${ritual.id}`}
             onEditClick={() => setInitialRitualEdit(ritual)}
             title={ritual.name}
+            width={85}
         >
             <DescriptionTile title="WHAT" content={ritual?.what} indentWidth={40} />
             <DescriptionTile title="WHERE" content={ritual?.where} indentWidth={50} />

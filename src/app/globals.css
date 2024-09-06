@@ -12,6 +12,8 @@
   /* COLORS */
   /* brand color */
   --de-orange: #F1B049;
+  --de-orange-light: #F1B04999;
+  --de-orange-80: #F1B049CC;
   /* theme colors */
   --blue-dark: #0E4FB6;
   --blue-light: #346BC4;
@@ -36,6 +38,8 @@
   /* wheel and tile bg color */
   --bg-main: rgba(255,255,255,0.1);
   --white-main: #FDFCFD;
+  --white-light: #FFFFFF99;
+  --white-80: #FFFFFFCC;
 
   /* box-shadow */
 }

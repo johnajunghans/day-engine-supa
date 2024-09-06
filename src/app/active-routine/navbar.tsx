@@ -58,7 +58,7 @@ export default function Navbar() {
     }
 
     return (
-        <Flex id='account-nav-bar' as='header' h="100%" minW="100px" border="1px solid var(--de-orange)" maxW="200px" pos="relative" flexDir="column" align="center" justify="space-between" py="0.75rem" overflow="hidden" borderRadius="md">
+        <Flex id='account-nav-bar' as='header' h="100%" minW="100px" border="1px solid var(--de-orange-light)" maxW="200px" pos="relative" flexDir="column" align="center" justify="space-between" py="0.75rem" overflow="hidden" borderRadius="md">
             <Flex flexDir="column" gap="1rem" align="center" justify="center">
                 <Image src="/logo.png" priority={true} alt="logo-image" width={150} height={150} className="animate-logo-spin" />
                 <LinkTile routeName="rituals" icon="rituals-icon" size={45} title="Rituals" invert={true} />

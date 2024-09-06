@@ -42,7 +42,7 @@ export const ExpandIconButton: React.FC<IconButtonProps> = ({ onClick, expanded,
         <IconButton
             w="30px" h="30px"
             bgColor="transparent"
-            _hover={{bgColor: "var(--light-grey)"}}
+            _hover={{bgColor: "rgba(255,255,255,0.25)"}}
             transition="100ms"
             aria-label={label}
             size="sm"
@@ -50,7 +50,7 @@ export const ExpandIconButton: React.FC<IconButtonProps> = ({ onClick, expanded,
             icon={
                 <ChevronRightIcon 
                     boxSize={6} 
-                
+                    color="var(--white-main)"
                     className={`${expanded ? "rotate-90" : "rotate-180"} duration-100`} 
                 />
             }
@@ -64,12 +64,12 @@ export const EditIconButton: React.FC<IconButtonProps> = ({ onClick, label }) =>
         <IconButton
             w="30px" h="30px"
             bgColor="transparent"
-            _hover={{bgColor: "var(--light-grey)"}}
+            _hover={{bgColor: "rgba(255,255,255,0.25)"}}
             transition="100ms"
             aria-label={label}
             size="sm"
             onClick={onClick}
-            icon={<EditIcon boxSize={4} />}
+            icon={<EditIcon boxSize={4} color="var(--white-main)" />}
             p="0px"
         />
     )
@@ -184,6 +184,7 @@ export const AccentButton: FunctionComponent<AccentButtonProps> = ({ id, name, o
             borderRadius="md"
             h="40px"
             px="1rem"
+            _hover={{bgColor: "var(--de-orange-80)"}}
         >{name}</Button>
     )
 }

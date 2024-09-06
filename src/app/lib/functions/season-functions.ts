@@ -88,6 +88,40 @@ export function getZodiac() {
     return zodiac
 }
 
+export function getZodiacRange(zodiac: zodiac) {
+    let range: string
+
+    if (zodiac === "Aries") {
+        range = "Mar 21 - Apr 20"
+    } else if (zodiac === "Taurus") {
+        range = "Apr 21 - May 20"
+    } else if (zodiac === "Gemini") {
+        range = "May 21 - Jun 20"
+    } else if (zodiac === "Cancer") {
+        range = "Jun 21 - Jul 20"
+    } else if (zodiac === "Leo") {
+        range = "Jul 21 - Aug 20"
+    } else if (zodiac === "Virgo") {
+        range = "Aug 21 - Sep 20"
+    } else if (zodiac === "Libra") {
+        range = "Sep 21 - Oct 20"
+    } else if (zodiac === "Scorpio") {
+        range = "Oct 21 - Nov 20"
+    } else if (zodiac === "Sagittarius") {
+        range = "Nov 21 - Dec 20"
+    } else if (zodiac === "Capricorn") {
+        range = "Dec 21 - Jan 20"
+    } else if (zodiac === "Aquarius") {
+        range = "Jan 21 - Feb 20"
+    } else if (zodiac === "Pisces") {
+        range = "Feb 21 - Mar 20"
+    } else {
+        throw Error("Input must be a zodiac sign with capitolized first letter")
+    }
+
+    return range
+}
+
 export function nextSeason(season: season, year: number): SeasonTag {
     if (season === "Spring") return {season: "Summer", year: year}
     else if (season === "Summer") return {season: "Fall", year: year}

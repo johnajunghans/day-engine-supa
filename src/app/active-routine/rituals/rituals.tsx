@@ -41,7 +41,7 @@ const Rituals: React.FC<Rituals> = () => {
 
     return ( 
         <Flex id="rituals-container"
-            bgColor={theme.light}
+            border="1px solid var(--de-orange-light)"
             borderRadius="md"
             pos="relative"
             flexGrow="1" 

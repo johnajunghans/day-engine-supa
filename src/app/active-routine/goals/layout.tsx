@@ -43,7 +43,7 @@ const GoalsLayout: FunctionComponent<GoalsLayoutProps> = async ({ children }) =>
             <Box id="vision-and-yearly-container" display="grid" minW="320px" maxW="600px" gridTemplateRows="auto 1fr 1fr" gap="1rem">
                 <SeasonNav />
                 <VisionTile title="VISION" content={userData?.vision} indentWidth={60} variant="vision" />
-                <VisionTile title="1 Year Vision" content={userData?.one_year_vision} indentWidth={100} variant="focus" />
+                <VisionTile title="1 Year Vision" content={userData?.one_year_vision} indentWidth={100} variant="vision" />
             </Box>
             { children }
         </Box>

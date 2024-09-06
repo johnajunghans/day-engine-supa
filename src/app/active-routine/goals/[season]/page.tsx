@@ -3,7 +3,7 @@ import { FunctionComponent } from "react";
 import { createClient } from "../../../../../utils/supabase/server";
 import { redirect } from "next/navigation";
 import { PostgrestMaybeSingleResponse, PostgrestResponse } from "@supabase/supabase-js";
-import { MonthlyGoal, SeasonData } from "@/app/lib/interfaces/goals-interface";
+import { Action, MonthlyGoal, SeasonData } from "@/app/lib/interfaces/goals-interface";
 import MonthlyGoals from "../monthly-goals";
 
 interface SeasonGoalsProps {
@@ -35,6 +35,7 @@ const SeasonGoals: FunctionComponent<SeasonGoalsProps> = async ({ params }) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
+    // fetch season data for season
     const { data: seasonData, error: seasonDataError }: PostgrestMaybeSingleResponse<SeasonData> = await supabase
         .from('Seasonal_Data')
         .select('*')
@@ -47,8 +48,8 @@ const SeasonGoals: FunctionComponent<SeasonGoalsProps> = async ({ params }) => {
         // throw Error(seasonDataError.message)
     }
 
+    // create data for season if it does not exist
     let newSeasonData = null
-
     if (!seasonData) {
         const newSeason = {
             season, year
@@ -72,9 +73,8 @@ const SeasonGoals: FunctionComponent<SeasonGoalsProps> = async ({ params }) => {
         throw Error ("Error fetching season data")
     }
 
-    // const seasonIds = seasonData.map(season => season.id)
+    // fetch monthly goals if season data exists
     let monthlyGoals = null
-
     if (seasonData) {
          const { data: monthlyGoalsData, error: monthlyGoalsError }: PostgrestResponse<MonthlyGoal> = await supabase
             .from('Monthly_Goals')
@@ -89,8 +89,30 @@ const SeasonGoals: FunctionComponent<SeasonGoalsProps> = async ({ params }) => {
         monthlyGoals = monthlyGoalsData
     }
 
+    // fetch actions if monthly goals exist
+    let actions: Action[] | null = null
+    if (monthlyGoals) {
+        const monthlyGoalIds = monthlyGoals.map(goal => goal.id)
+
+        const { data, error }: PostgrestResponse<Action> = await supabase
+            .from('Actions')
+            .select('*')
+            .in('monthly_goal_id', monthlyGoalIds)
+        
+        if (error) {
+            console.log(error)
+            throw Error(error.message)
+        }
+
+        actions = data
+    }
+
     return (  
-        <MonthlyGoals seasonData={newSeasonData ? newSeasonData : seasonData} monthlyGoals={monthlyGoals} />
+        <MonthlyGoals 
+            seasonData={newSeasonData ? newSeasonData : seasonData} 
+            monthlyGoals={monthlyGoals}
+            actions={actions} 
+        />
     );
 }
  

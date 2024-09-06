@@ -20,7 +20,7 @@ export default function SeasonNav() {
                     href={`/active-routine/goals/${season.seasonTag.season.toLowerCase()}-${season.seasonTag.year}`}
                     display="flex"
                     flexDir="column" 
-                    w="25%" minW="75px" 
+                    w="25%"  
                     h="75px"
                     borderRadius="md"
                     opacity={pathname === `/active-routine/goals/${season.seasonTag.season.toLowerCase()}-${season.seasonTag.year}` ? "1" : "0.25"} 
@@ -28,7 +28,6 @@ export default function SeasonNav() {
                     color="white"
                     alignItems="center" justifyContent="space-evenly"
                     _hover={{textDecor: "none", opacity: pathname === `/active-routine/goals/${season.seasonTag.season.toLowerCase()}-${season.seasonTag.year}` ? "1" : "0.4"}}
-                    
                 >
                         <Text>{season.seasonTag.season}</Text>
                         <Text>{season.emoji}</Text>
