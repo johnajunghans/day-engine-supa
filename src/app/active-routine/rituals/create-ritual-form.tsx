@@ -1,6 +1,7 @@
-import { Button, Flex, HStack, Input, Text, Textarea, VStack } from "@chakra-ui/react";
+import { Button, Flex, FormLabel, HStack, Input, Text, Textarea, VStack } from "@chakra-ui/react";
 import { FormEvent, useState } from "react";
 import { useRitualsContext } from "@/app/hooks/db-context-hooks/useRitualsContext";
+import { TextAreaInput, TextInput } from "@/app/components/form-elements";
 
 interface CreateRitualFormProps {
     closeModal: VoidFunction
@@ -11,25 +12,21 @@ const CreateRitualForm: React.FC<CreateRitualFormProps> = ({ closeModal }) => {
     const { ritualsDispatch } = useRitualsContext()
 
     const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
+    const [what, setWhat] = useState("");
+    const [where, setWhere] = useState("");
+    const [why, setWhy] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const [rituals, setRituals] = useState<{name: string, description: string}[]>([]);
-
-    function handleAddRitual() {
-        const newRitual = { name, description }
-        setRituals(prevRituals => [...prevRituals, newRitual])
-        setName("");
-        setDescription("");
-    }
 
     async function handleSubmit(e: FormEvent) {
         e.preventDefault();
         setIsLoading(true)
 
+        const ritual = { name, what, where, why }
+
         const res = await fetch('http://localhost:3000/api/rituals', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(rituals)
+            body: JSON.stringify(ritual)
         })
 
         if (res.ok) {
@@ -41,44 +38,43 @@ const CreateRitualForm: React.FC<CreateRitualFormProps> = ({ closeModal }) => {
 
     return ( 
         <form onSubmit={handleSubmit}>
-            <VStack>
-                <Input id="add-ritual-form-name-input"  
-                    name="name" 
-                    type="text" 
-                    placeholder="Ritual Name"
+            <VStack alignItems="flex-start" gap="0.75rem">
+                <TextInput 
+                    id="add-ritual-form-name-input"
                     value={name}
-                    onChange={e => setName(e.target.value)} 
-                    required 
+                    placeholder="Ritual Name"
+                    onChange={e => setName(e.target.value)}
+                    required={true}
+                    size="lg"
                 />
-                <Textarea id="add-ritual-form-description-input"
-                    name="description" 
-                    placeholder="Description of ritual (optional)"
-                    value={description}
-                    onChange={e => setDescription(e.target.value)}
-                />    
-            </VStack>
-            <Flex id="create-rituals-form-preview"
-                flexDir="column"
-                gap="1rem"
-            >
-                <Text>Preview:</Text>
-                <ol>
-                    {rituals.map(ritual => (
-                        <li>{ritual.name}</li>
-                    ))}
-                </ol>
-            </Flex>
-            <HStack>
+                <TextAreaInput 
+                    id="add-ritual-form-name-input"
+                    value={what}
+                    placeholder="Description of ritual"
+                    onChange={e => setWhat(e.target.value)}
+                    required={true}
+                />
+                <TextAreaInput 
+                    id="add-ritual-form-name-input"
+                    value={where}
+                    placeholder="Where does this ritual occur?"
+                    onChange={e => setWhere(e.target.value)}
+                    required={true}
+                />
+                <TextAreaInput 
+                    id="add-ritual-form-name-input"
+                    value={why}
+                    placeholder="Why does this ritual matter to you?"
+                    onChange={e => setWhy(e.target.value)}
+                    required={true}
+                />
                 <Button id="submit-rituals-btn"
                     type="submit"
                     isLoading={isLoading}
-                    isDisabled={rituals.length == 0}
+                    bgColor="var(--de-orange)"
+                    _hover={{ bgColor: "var(--de-orange-dark)"}}
                 >Create New Ritual</Button>
-                <Button id="add-ritual-btn"
-                    isDisabled={name.length == 0}
-                    onClick={handleAddRitual}
-                >Add Ritual</Button>
-            </HStack>
+            </VStack>
         </form>
      );
 }

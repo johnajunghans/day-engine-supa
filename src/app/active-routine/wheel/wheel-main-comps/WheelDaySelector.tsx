@@ -69,6 +69,7 @@ const WheelDaySelector: React.FC<WheelDaySelectorProps> = ({ svgSize, setDay, ac
             ))}
             <circle cx={center} cy={center} r={innerCircleRadius*0.3} role="button"
                 fill="var(--de-orange)"
+                className="hover:fill-[var(--de-orange-dark)] duration-300"
                 onClick={openAddModal}
             />
             <foreignObject width={40} height={40} x={center-20} y={center-20} className=" pointer-events-none">

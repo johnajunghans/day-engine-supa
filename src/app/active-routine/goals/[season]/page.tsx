@@ -1,5 +1,5 @@
-import { Flex } from "@chakra-ui/react";
-import { FunctionComponent } from "react";
+import { Flex, Spinner } from "@chakra-ui/react";
+import { FunctionComponent, Suspense } from "react";
 import { createClient } from "../../../../../utils/supabase/server";
 import { redirect } from "next/navigation";
 import { PostgrestMaybeSingleResponse, PostgrestResponse } from "@supabase/supabase-js";
@@ -20,6 +20,7 @@ interface SeasonGoalsProps {
  
 const SeasonGoals: FunctionComponent<SeasonGoalsProps> = async ({ params }) => {
 
+    let loading = true
     const supabase = createClient()
     
     const { data: user, error: userError } = await supabase.auth.getUser()
@@ -107,7 +108,9 @@ const SeasonGoals: FunctionComponent<SeasonGoalsProps> = async ({ params }) => {
         actions = data
     }
 
-    return (  
+    loading = false
+
+    return (
         <MonthlyGoals 
             seasonData={newSeasonData ? newSeasonData : seasonData} 
             monthlyGoals={monthlyGoals}

@@ -14,6 +14,7 @@
   --de-orange: #F1B049;
   --de-orange-light: #F1B04999;
   --de-orange-80: #F1B049CC;
+  --de-orange-dark: #C28E3A;
   /* theme colors */
   --blue-dark: #0E4FB6;
   --blue-light: #346BC4;
@@ -40,6 +41,7 @@
   --white-main: #FDFCFD;
   --white-light: #FFFFFF99;
   --white-80: #FFFFFFCC;
+  --white-bg: rgba(255,255,255,0.1);
 
   /* box-shadow */
 }

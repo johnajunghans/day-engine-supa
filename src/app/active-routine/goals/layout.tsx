@@ -1,5 +1,5 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
-import { FunctionComponent, ReactNode } from "react";
+import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
+import { FunctionComponent, ReactNode, Suspense } from "react";
 import { createClient } from "../../../../utils/supabase/server";
 import { redirect, useRouter } from "next/navigation";
 import { PostgrestMaybeSingleResponse, PostgrestResponse } from "@supabase/supabase-js";
@@ -7,6 +7,7 @@ import Link from "next/link";
 import { getCurrentSeasonTags, getSeason } from "@/app/lib/functions/season-functions";
 import SeasonNav from "./season-nav";
 import VisionTile from "./vision-tile";
+import LoaderWrapper from "@/app/components/LoaderWrapper";
 
 interface GoalsLayoutProps {
     children: ReactNode

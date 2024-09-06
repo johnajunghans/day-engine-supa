@@ -22,12 +22,12 @@ const ModalMain: React.FC<ModalMainProps> = ({ children, isOpen, onClose, modalT
     const { theme } = useThemeContext()
 
     return ( 
-        <Modal isOpen={isOpen} onClose={onClose} size="xl">
+        <Modal isOpen={isOpen} onClose={onClose} size="2xl" >
         <ModalOverlay />
-        <ModalContent bgColor={theme.dark} className="bg-opacity-50" backdropFilter="blur(2px)" border="1px solid var(--de-orange)">
+        <ModalContent color="white" bgColor="var(--white-bg)" className="bg-opacity-75" backdropFilter="blur(6px)" border="1px solid var(--de-orange-light)">
           <ModalHeader>{modalTitle}</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
+          <ModalBody >
             { children }
           </ModalBody>
           {/* <ModalFooter>

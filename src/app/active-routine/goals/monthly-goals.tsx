@@ -1,8 +1,8 @@
 'use client'
 
 import { Action, MonthlyGoal, season, SeasonData } from "@/app/lib/interfaces/goals-interface";
-import { Box, Flex, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
-import { FunctionComponent, useState } from "react";
+import { Box, Flex, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
+import { FunctionComponent, Suspense, useState } from "react";
 import VisionTile from "./vision-tile";
 import { getMonthEmoji, getMonthsGivenSeason, getZodiac, getZodiacRange } from "@/app/lib/functions/season-functions";
 import MonthlyGoalTile from "./monthly-goal-tile";
@@ -14,6 +14,8 @@ interface MonthlyGoalsProps {
     monthlyGoals: MonthlyGoal[] | null
     actions: Action[] | null
 }
+
+const Loader = () => <Flex align="center" justify="center"><Spinner size="lg" color="var(--de-orange)" /></Flex>
  
 const MonthlyGoals: FunctionComponent<MonthlyGoalsProps> = ({ seasonData, monthlyGoals, actions }) => {
 
@@ -25,6 +27,7 @@ const MonthlyGoals: FunctionComponent<MonthlyGoalsProps> = ({ seasonData, monthl
     const currentMonth = getZodiac()
 
     return (
+        <Suspense fallback={<Loader />}>
         <Box display="grid" gridTemplateRows="1fr 5fr" gap="1rem" minW="500px">
             <VisionTile
                 variant="vision"
@@ -67,7 +70,8 @@ const MonthlyGoals: FunctionComponent<MonthlyGoalsProps> = ({ seasonData, monthl
                     </TabPanels>
                 </Tabs>
             </Flex>
-        </Box> 
+        </Box>
+        </Suspense>
     );
 }
  
