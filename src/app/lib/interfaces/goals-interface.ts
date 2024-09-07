@@ -1,4 +1,6 @@
 export type season = "Spring" | "Summer" | "Fall" | "Winter"
+export type zodiac = "Aries" | "Taurus" | "Gemini" | "Cancer" | "Leo" | "Virgo" | "Libra" | "Scorpio" | "Sagittarius" | "Capricorn" | "Aquarius" | "Pisces"
+export type month = "January" | "February" | "March" | "April" | "May" | "June" | "July" | "August" | "September" | "October" | "November" | "December"
 
 export interface SeasonData {
     id: number,
@@ -14,7 +16,7 @@ export interface MonthlyGoal {
     id: number,
     user_id: string,
     created_at: string,
-    month: string,
+    month: zodiac,
     seasonal_id: number,
     summary: string,
     why?: string,

@@ -1,12 +1,15 @@
 'use client'
 
 import { Action, MonthlyGoal, season, SeasonData } from "@/app/lib/interfaces/goals-interface";
-import { Box, Flex, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
-import { FunctionComponent, Suspense, useState } from "react";
+import { Box, Flex, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useDisclosure } from "@chakra-ui/react";
+import { FunctionComponent, useState } from "react";
 import VisionTile from "./vision-tile";
 import { getMonthEmoji, getMonthsGivenSeason, getZodiac, getZodiacRange } from "@/app/lib/functions/season-functions";
 import MonthlyGoalTile from "./monthly-goal-tile";
 import { AccentButton } from "@/app/components/buttons";
+import ModalMain from "@/app/components/modal";
+import AddGoalForm from "./goal-forms/add-goal-form";
+import EditDeleteGoalForm from "./goal-forms/edit-delete-goal-form";
 
 
 interface MonthlyGoalsProps {
@@ -14,8 +17,6 @@ interface MonthlyGoalsProps {
     monthlyGoals: MonthlyGoal[] | null
     actions: Action[] | null
 }
-
-const Loader = () => <Flex align="center" justify="center"><Spinner size="lg" color="var(--de-orange)" /></Flex>
  
 const MonthlyGoals: FunctionComponent<MonthlyGoalsProps> = ({ seasonData, monthlyGoals, actions }) => {
 
@@ -23,12 +24,17 @@ const MonthlyGoals: FunctionComponent<MonthlyGoalsProps> = ({ seasonData, monthl
     const [monthlyGoalsState, setMonthlyGoalsState] = useState<MonthlyGoal[] | null>(monthlyGoals)
     const [actionsState, setActionsState] = useState<Action[] | null>(actions)
 
+    console.log(monthlyGoalsState)
+
+    const [editDeleteGoalModalData, setEditDeleteGoalModalData] = useState<MonthlyGoal | null>(null)
+    const { isOpen: isAddGoalModalOpen, onClose: closeAddGoalModal, onOpen: openAddGoalModal } = useDisclosure()
+    const { isOpen: isEditDeleteGoalModalOpen, onClose: closeEditDeleteGoalModal, onOpen: openEditDeleteGoalModal } = useDisclosure()
+
     const months = getMonthsGivenSeason(seasonData?.season as season)
     const currentMonth = getZodiac()
 
     return (
-        <Suspense fallback={<Loader />}>
-        <Box display="grid" gridTemplateRows="1fr 5fr" gap="1rem" minW="500px">
+        <Box display="grid" gridTemplateRows="1fr 5fr" gap="1rem" minW="500px" overflow="auto">
             <VisionTile
                 variant="vision"
                 title={`${seasonData?.season}-${seasonData?.year} Vision`} 
@@ -60,18 +66,48 @@ const MonthlyGoals: FunctionComponent<MonthlyGoalsProps> = ({ seasonData, monthl
                     <TabPanels>
                         {monthlyGoalsState && months.map(month => (
                             <TabPanel key={month} display="flex" width="85%" flexDir="column" alignItems="flex-start" gap="1rem">
-                                <Text display="flex" alignItems="center" border="1px solid var(--white-light)" fontSize="12px" letterSpacing="2px" borderRadius="5px" py="0.25rem" px="0.5rem" className=" antialiased" color="var(--white-80)">{`GOALS FOR MONTH OF ${month.toUpperCase()}: ${getZodiacRange(month).toUpperCase()}`}</Text>
+                                <Flex w="100%" justify="space-between">
+                                    <Text display="flex" alignItems="center" border="1px solid var(--white-light)" fontSize="12px" letterSpacing="2px" borderRadius="5px" py="0.25rem" px="0.5rem" className=" antialiased" color="var(--white-80)">{`GOALS FOR MONTH OF ${month.toUpperCase()}: ${getZodiacRange(month).toUpperCase()}`}</Text>
+                                    <AccentButton id="add-new-goal-button" name="Add Goal" onClick={openAddGoalModal} />
+                                </Flex>
                                 {monthlyGoalsState.filter(goal => goal.month === month).map(goal => (
-                                    <MonthlyGoalTile key={goal.id} goal={goal} actions={actionsState?.filter(action => action.monthly_goal_id === goal.id)} />
+                                    <MonthlyGoalTile 
+                                        key={goal.id} 
+                                        goal={goal} 
+                                        actions={actionsState?.filter(action => action.monthly_goal_id === goal.id)} 
+                                        onEditGoalClick={setEditDeleteGoalModalData}
+                                    />
                                 ))}
-                                <AccentButton id="add-new-goal-button" name="Add Goal" onClick={() => {}} />
                             </TabPanel>
                         ))}
                     </TabPanels>
                 </Tabs>
             </Flex>
+            <ModalMain 
+                isOpen={isAddGoalModalOpen} 
+                onClose={closeAddGoalModal} 
+                modalTitle="Add New Goal"
+            >
+                <AddGoalForm 
+                    months={months}
+                    seasonId={seasonDataState!.id}
+                    goalsState={monthlyGoalsState}
+                    setGoalsState={setMonthlyGoalsState}
+                    closeModal={closeAddGoalModal} 
+                />
+            </ModalMain>
+            {/* <ModalMain 
+                isOpen={isEditDeleteGoalModalOpen} 
+                onClose={closeEditDeleteGoalModal} 
+                modalTitle={`Upate Goal: ${editDeleteGoalModalData?.initialGoal.summary}`}
+            >
+                {editDeleteGoalModalData && <EditDeleteGoalForm 
+                    initialGoal={editDeleteGoalModalData.initialGoal} 
+                    months={editDeleteModalData.months} 
+                    closeModal={closeEditDeleteGoalModal} 
+                />}
+            </ModalMain> */}
         </Box>
-        </Suspense>
     );
 }
  

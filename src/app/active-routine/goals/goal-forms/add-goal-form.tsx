@@ -1,48 +1,50 @@
+import { TextAreaInput, TextInput } from "@/app/components/form-elements";
 import { useMonthlyGoalsContext } from "@/app/hooks/db-context-hooks/useMonthlyGoalsContext";
 import { useSeasonalGoalsContext } from "@/app/hooks/db-context-hooks/useSeasonalGoalsContext";
+import { getMonthEmoji } from "@/app/lib/functions/season-functions";
+import { MonthlyGoal, zodiac } from "@/app/lib/interfaces/goals-interface";
 import { Button, FormLabel, HStack, Input, Radio, RadioGroup, Stack, VStack } from "@chakra-ui/react";
-import { FormEvent, FunctionComponent, useState } from "react";
+import { Dispatch, FormEvent, FunctionComponent, SetStateAction, useState } from "react";
 
 interface AddGoalFormProps {
-   addModalData: {season: string, months: string[]} | null
+   months: zodiac[]
    closeModal: VoidFunction
+   setGoalsState: Dispatch<SetStateAction<MonthlyGoal[] | null>>
+   goalsState: MonthlyGoal[] | null
+   seasonId: number
 }
  
-const AddGoalForm: FunctionComponent<AddGoalFormProps> = ({ addModalData, closeModal }) => {
+const AddGoalForm: FunctionComponent<AddGoalFormProps> = ({ months, closeModal, goalsState, setGoalsState, seasonId }) => {
 
     const [month, setMonth] = useState("")
-    const [goalType, setGoalType] = useState<"seasonal" | "monthly" | null>(null)
     const [summary, setSummary] = useState("")
+    const [why, setWhy] = useState("")
     const [isLoading, setIsLoading] = useState(false)
-
-    const { seasonalGoalsDispatch } = useSeasonalGoalsContext()
-    const { monthlyGoalsDispatch } = useMonthlyGoalsContext()
 
     async function handleSubmit(e: FormEvent) {
         e.preventDefault()
         setIsLoading(true)
 
         const newGoal = {
-            // map_id: genRandomNumber(),
             summary,
-            ...(goalType === "monthly" ? { month } : { season: addModalData?.season })
+            month,
+            why,
+            season_id: seasonId
         }
 
-        const res = await fetch(`http://localhost:3000/api/${goalType}-goals`, {
+        const res = await fetch(`http://localhost:3000/api/monthly-goals`, {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newGoal)
         })
 
         if (res.ok) {
+            // get back goal from db
             const newGoal = await res.json()
-            if (goalType === "seasonal") {
-                seasonalGoalsDispatch({ type: 'POST', payload: newGoal })
-            }
-
-            if (goalType === "monthly") {
-                monthlyGoalsDispatch({ type: 'POST', payload: newGoal })
-            }
+            // update state with new goal
+            const goalsStateCopy = goalsState ? [...goalsState] : []
+            goalsStateCopy.push(newGoal)
+            setGoalsState(goalsStateCopy)
             closeModal()
         }
 
@@ -50,36 +52,32 @@ const AddGoalForm: FunctionComponent<AddGoalFormProps> = ({ addModalData, closeM
 
     return ( 
         <form onSubmit={handleSubmit}>
-            <VStack justify="flex-start" align="flex-start" gap="1.5rem" m="0 1rem 1rem">
-                <RadioGroup name="goal-type-selector" onChange={setGoalType} >
-                    <FormLabel bgColor="white" p="3px" display="inline-block" borderRadius="5px">Seasonal or Monthly Goal</FormLabel>
-                    <HStack gap="1rem">
-                        <Radio value="seasonal">Seasonal</Radio>
-                        <Radio value="monthly">Monthly</Radio>
-                    </HStack>
-                </RadioGroup>
-               
-                {/* <RadioGroup name="season-selector" onChange={setSeason} value={season}>
+            <VStack justify="flex-start" align="flex-start" gap="1rem" m="0 1rem 1rem">
+                <RadioGroup name="month-selector" onChange={setMonth} value={month} w="100%">
+                    <VStack w="100%" border="1px solid var(--white-light)" p="1rem" borderRadius="md">
+                        <FormLabel display="inline-block" >Select Month</FormLabel>
+                        <HStack gap="1rem" justifyContent="space-evenly" w="100%">   
+                            {months.map(month => (
+                                <Radio key={month} value={month}>{`${month} ${getMonthEmoji(month)}`}</Radio>
+                            ))}
+                        </HStack>
+                    </VStack>
                     
-                    <Stack direction='row'>   
-                        <Radio value="Spring">Spring</Radio>
-                        <Radio value="Summer">Summer</Radio>
-                        <Radio value="Fall">Fall</Radio>
-                        <Radio value="Winter">Winter</Radio>
-                    </Stack>
-                </RadioGroup> */}
-
-                {goalType === "monthly" && <RadioGroup name="month-selector" onChange={setMonth} value={month}>
-                    <FormLabel bgColor="white" p="3px" display="inline-block" borderRadius="5px">Select Month</FormLabel>
-                    <HStack gap="1rem">   
-                        {addModalData?.months.map(month => (
-                            <Radio key={month} value={month}>{month}</Radio>
-                        ))}
-                    </HStack>
-                </RadioGroup>}
-                <Input value={summary} onChange={e => setSummary(e.target.value)} placeholder="Summary" required />
+                </RadioGroup>
+                <TextInput 
+                    value={summary} 
+                    onChange={e => setSummary(e.target.value)} 
+                    placeholder="Summary" 
+                    required={true}
+                />
+                <TextAreaInput 
+                   value={why}
+                   onChange={e => setWhy(e.target.value)}
+                   placeholder="How does this goal help you acheive your vision?"
+                   required={true}
+                />
             </VStack>
-            <Button type="submit" isLoading={isLoading} isDisabled={!goalType || !summary}>Submit</Button>
+            <Button type="submit" isLoading={isLoading} isDisabled={!summary && !month}>Submit</Button>
         </form>
      );
 }

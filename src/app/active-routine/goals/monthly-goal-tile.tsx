@@ -1,14 +1,16 @@
 import { DeleteIconButton } from "@/app/components/buttons";
 import Tile from "@/app/components/tile";
+import { getSeasonalZodiacs } from "@/app/lib/functions/season-functions";
 import { timeTo12Hr } from "@/app/lib/functions/util-functions";
 import { Action, MonthlyGoal } from "@/app/lib/interfaces/goals-interface";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { Box, Button, Divider, Flex, IconButton, ListItem, Text, UnorderedList } from "@chakra-ui/react";
-import { FunctionComponent, ReactNode } from "react";
+import { Dispatch, FunctionComponent, ReactNode, SetStateAction } from "react";
 
 interface MonthlyGoalTileProps {
     goal: MonthlyGoal
     actions: Action[] | undefined
+    onEditGoalClick: Dispatch<SetStateAction<MonthlyGoal | null>>
 }
 
 interface DescriptionTileProps {
@@ -31,7 +33,7 @@ const DescriptionTile: FunctionComponent<DescriptionTileProps> = ({ title, conte
     )
 }
  
-const MonthlyGoalTile: FunctionComponent<MonthlyGoalTileProps> = ({ goal, actions }) => {
+const MonthlyGoalTile: FunctionComponent<MonthlyGoalTileProps> = ({ goal, actions, onEditGoalClick }) => {
 
     const Actions: FunctionComponent<ActionProps> = ({ children }) => {
         return (
@@ -56,7 +58,7 @@ const MonthlyGoalTile: FunctionComponent<MonthlyGoalTileProps> = ({ goal, action
         <Tile
             id={`goal-${goal.id}`}
             title={goal.summary}
-            onEditClick={() => {}}
+            onEditClick={() => onEditGoalClick(goal)}
             width={100}
         > 
             <DescriptionTile title="WHY" content={goal.why} indentWidth={50} />

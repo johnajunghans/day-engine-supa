@@ -31,9 +31,9 @@ export const TextInput: FunctionComponent<TextInputProps> = ({ id, value, placeh
             bgColor="var(--white-bg)"
             required={required}
             focusBorderColor="#F1B04999"
-            height={size === "lg" ? "50px" : "unset"}
+            height={size === "lg" ? "60px" : "40px"}
             textAlign={size === "lg" ? "center" : "unset"}
-            fontSize={size === "lg" ? "20px" : "unset"}
+            fontSize={size === "lg" ? "24px" : "18px"}
         />
    )
 }

@@ -148,6 +148,24 @@ export function getMonthsGivenSeason(season: season) {
     return months
 }
 
+export function getSeasonalZodiacs(zodiac: zodiac) {
+    let otherZodiacs: zodiac[]
+
+    if (['Aries', 'Taurus', 'Gemini'].includes(zodiac)) {
+        otherZodiacs = ["Aries", "Taurus", "Gemini"]
+    } else if (["Cancer", "Leo", "Virgo"].includes(zodiac)) {
+        otherZodiacs = ["Cancer", "Leo", "Virgo"]
+    } else if (["Libra", "Scorpio", "Sagittarius"].includes(zodiac)) {
+        otherZodiacs = ["Libra", "Scorpio", "Sagittarius"]
+    } else if (["Capricorn", "Aquarius", "Pisces"].includes(zodiac)) {
+        otherZodiacs = ["Capricorn", "Aquarius", "Pisces"]
+    } else {
+        throw new Error("Season is not defined properly.")
+    }
+
+    return otherZodiacs
+}
+
 export function getSeasonEmoji(season: season): string {
     let emoji: string = ""
 

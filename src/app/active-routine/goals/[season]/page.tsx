@@ -111,11 +111,13 @@ const SeasonGoals: FunctionComponent<SeasonGoalsProps> = async ({ params }) => {
     loading = false
 
     return (
-        <MonthlyGoals 
-            seasonData={newSeasonData ? newSeasonData : seasonData} 
-            monthlyGoals={monthlyGoals}
-            actions={actions} 
-        />
+        <>
+            {(seasonData || newSeasonData) && <MonthlyGoals 
+                seasonData={newSeasonData ? newSeasonData : seasonData} 
+                monthlyGoals={monthlyGoals}
+                actions={actions} 
+            />}
+        </>
     );
 }
  

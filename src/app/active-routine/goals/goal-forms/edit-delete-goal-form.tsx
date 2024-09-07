@@ -2,13 +2,13 @@ import { ConfirmDeleteButton } from "@/app/components/buttons";
 import { useMonthlyGoalsContext } from "@/app/hooks/db-context-hooks/useMonthlyGoalsContext";
 import { useSeasonalGoalsContext } from "@/app/hooks/db-context-hooks/useSeasonalGoalsContext";
 import useClose from "@/app/hooks/useClose";
-import { MonthlyGoal, SeasonGoal } from "@/app/lib/interfaces/goals-interface";
+import { month, MonthlyGoal } from "@/app/lib/interfaces/goals-interface";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { Button, HStack, Input, Radio, RadioGroup, Text, VStack } from "@chakra-ui/react";
 import { FormEvent, FunctionComponent, useState } from "react";
 
 interface EditDeleteGoalFormProps {
-    initialGoal: SeasonGoal | MonthlyGoal
+    initialGoal: MonthlyGoal
     months: string[] | null
     closeModal: VoidFunction
 }
@@ -22,11 +22,7 @@ const EditDeleteGoalForm: FunctionComponent<EditDeleteGoalFormProps> = ({ initia
     const [isDeleteLoading, setIsDeleteLoading] = useState(false)
     const [confirmDelete, setConfirmDelete] = useState(false)
     const [summary, setSummary] = useState(initialGoal.summary)
-    const [month, setMonth] = useState(
-        'month' in initialGoal ? initialGoal.month : undefined
-    );
-
-    const goalType = 'month' in initialGoal ? "monthly" : "seasonal"
+    const [month, setMonth] = useState<month>();
 
     async function handleEditGoal(e: FormEvent) {
         e.preventDefault()
@@ -34,7 +30,6 @@ const EditDeleteGoalForm: FunctionComponent<EditDeleteGoalFormProps> = ({ initia
         const updatedGoal = {
             id: initialGoal.id,
             ...(summary !== initialGoal.summary && { summary }),
-            ...(goalType === 'monthly' && { month })
         }
 
         const res = await fetch(`http://localhost:3000/api/${goalType}-goals`, {
@@ -45,13 +40,10 @@ const EditDeleteGoalForm: FunctionComponent<EditDeleteGoalFormProps> = ({ initia
 
         if (res.ok) {
             const newGoal = await res.json()
-            if (goalType === "seasonal") {
-                seasonalGoalsDispatch({ type: 'PUT', payload: newGoal })
-            }
 
-            if (goalType === "monthly") {
-                monthlyGoalsDispatch({ type: 'PUT', payload: newGoal})
-            }
+            
+            // monthlyGoalsDispatch({ type: 'PUT', payload: newGoal})
+            
             closeModal()
         }
     }
