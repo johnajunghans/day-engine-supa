@@ -27,7 +27,7 @@ export async function PUT(request: Request) {
     
         const { data, error } = await supabase.from('Monthly_Goals')
             .update({
-               updatedGoal
+               ...updatedGoal
             })
             .eq('id', updatedGoal.id)
             .select()

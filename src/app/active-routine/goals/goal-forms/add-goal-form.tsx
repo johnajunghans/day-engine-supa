@@ -10,11 +10,10 @@ interface AddGoalFormProps {
    months: zodiac[]
    closeModal: VoidFunction
    setGoalsState: Dispatch<SetStateAction<MonthlyGoal[] | null>>
-   goalsState: MonthlyGoal[] | null
    seasonId: number
 }
  
-const AddGoalForm: FunctionComponent<AddGoalFormProps> = ({ months, closeModal, goalsState, setGoalsState, seasonId }) => {
+const AddGoalForm: FunctionComponent<AddGoalFormProps> = ({ months, closeModal, setGoalsState, seasonId }) => {
 
     const [month, setMonth] = useState("")
     const [summary, setSummary] = useState("")
@@ -42,9 +41,7 @@ const AddGoalForm: FunctionComponent<AddGoalFormProps> = ({ months, closeModal, 
             // get back goal from db
             const newGoal = await res.json()
             // update state with new goal
-            const goalsStateCopy = goalsState ? [...goalsState] : []
-            goalsStateCopy.push(newGoal)
-            setGoalsState(goalsStateCopy)
+            setGoalsState(prevState => prevState ? [...prevState, newGoal] : [newGoal])
             closeModal()
         }
 

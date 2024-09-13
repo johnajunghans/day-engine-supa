@@ -2,7 +2,7 @@
 
 import { Action, MonthlyGoal, season, SeasonData } from "@/app/lib/interfaces/goals-interface";
 import { Box, Flex, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useDisclosure } from "@chakra-ui/react";
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import VisionTile from "./vision-tile";
 import { getMonthEmoji, getMonthsGivenSeason, getZodiac, getZodiacRange } from "@/app/lib/functions/season-functions";
 import MonthlyGoalTile from "./monthly-goal-tile";
@@ -24,14 +24,31 @@ const MonthlyGoals: FunctionComponent<MonthlyGoalsProps> = ({ seasonData, monthl
     const [monthlyGoalsState, setMonthlyGoalsState] = useState<MonthlyGoal[] | null>(monthlyGoals)
     const [actionsState, setActionsState] = useState<Action[] | null>(actions)
 
-    console.log(monthlyGoalsState)
-
     const [editDeleteGoalModalData, setEditDeleteGoalModalData] = useState<MonthlyGoal | null>(null)
     const { isOpen: isAddGoalModalOpen, onClose: closeAddGoalModal, onOpen: openAddGoalModal } = useDisclosure()
     const { isOpen: isEditDeleteGoalModalOpen, onClose: closeEditDeleteGoalModal, onOpen: openEditDeleteGoalModal } = useDisclosure()
 
     const months = getMonthsGivenSeason(seasonData?.season as season)
     const currentMonth = getZodiac()
+
+    // handle open edit modal when editModalData state changes
+    useEffect(() => {
+        if (editDeleteGoalModalData) {
+            openEditDeleteGoalModal()
+        }
+    }, [editDeleteGoalModalData])
+
+    useEffect(() => {
+        if (!isEditDeleteGoalModalOpen) {
+            setEditDeleteGoalModalData(null)
+        }
+    }, [isEditDeleteGoalModalOpen])
+
+    // regen editModalData state
+    // function closeEditModal() {
+    //     setEditDeleteGoalModalData(null)
+    //     closeEditDeleteGoalModal()
+    // }
 
     return (
         <Box display="grid" gridTemplateRows="1fr 5fr" gap="1rem" minW="500px" overflow="auto">
@@ -91,22 +108,22 @@ const MonthlyGoals: FunctionComponent<MonthlyGoalsProps> = ({ seasonData, monthl
                 <AddGoalForm 
                     months={months}
                     seasonId={seasonDataState!.id}
-                    goalsState={monthlyGoalsState}
                     setGoalsState={setMonthlyGoalsState}
                     closeModal={closeAddGoalModal} 
                 />
             </ModalMain>
-            {/* <ModalMain 
+            <ModalMain 
                 isOpen={isEditDeleteGoalModalOpen} 
                 onClose={closeEditDeleteGoalModal} 
-                modalTitle={`Upate Goal: ${editDeleteGoalModalData?.initialGoal.summary}`}
+                modalTitle={`Upate Goal: ${editDeleteGoalModalData?.summary}`}
             >
                 {editDeleteGoalModalData && <EditDeleteGoalForm 
-                    initialGoal={editDeleteGoalModalData.initialGoal} 
-                    months={editDeleteModalData.months} 
-                    closeModal={closeEditDeleteGoalModal} 
+                    initialGoal={editDeleteGoalModalData} 
+                    months={months} 
+                    closeModal={closeEditDeleteGoalModal}
+                    setGoalsState={setMonthlyGoalsState} 
                 />}
-            </ModalMain> */}
+            </ModalMain>
         </Box>
     );
 }

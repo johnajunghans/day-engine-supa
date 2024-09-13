@@ -19,8 +19,6 @@ interface SeasonGoalsProps {
 // }
  
 const SeasonGoals: FunctionComponent<SeasonGoalsProps> = async ({ params }) => {
-
-    let loading = true
     const supabase = createClient()
     
     const { data: user, error: userError } = await supabase.auth.getUser()
@@ -107,8 +105,6 @@ const SeasonGoals: FunctionComponent<SeasonGoalsProps> = async ({ params }) => {
 
         actions = data
     }
-
-    loading = false
 
     return (
         <>

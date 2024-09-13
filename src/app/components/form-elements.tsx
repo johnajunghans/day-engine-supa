@@ -4,7 +4,7 @@ import { ChangeEventHandler, FunctionComponent } from "react"
 interface TextInputProps {
     id?: string
     value: string
-    placeholder: string
+    placeholder?: string
     onChange: ChangeEventHandler<HTMLInputElement>
     required: boolean
     size?: "md" | "lg"

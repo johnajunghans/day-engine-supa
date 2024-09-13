@@ -10,7 +10,7 @@ interface ActiveRoutineLayoutProps {
 const ActiveRoutineLayout: FunctionComponent<ActiveRoutineLayoutProps> = ({ children }) => {
 
     return ( 
-        <Box display="grid" gridTemplateColumns="1fr 9fr" gap="1rem" h="100vh" p="1rem" bgColor="var(--purple-dark)">
+        <Box display="grid" gridTemplateColumns="1fr 9fr" gap="1rem" h="100vh" p="1rem" bgColor="var(--purple-dark)" className="antialiased">
             <Navbar />
             { children }
         </Box>
