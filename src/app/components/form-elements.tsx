@@ -104,11 +104,12 @@ export const CheckBoxDaySelector: FunctionComponent<CheckBoxDaySelectorProps> = 
 interface RadioDaySelectorProps {
     day: DayOfWeek
     setDay: (nextValue: string) => void
+    required: boolean
 }
 
-export const RadioDaySelector: FunctionComponent<RadioDaySelectorProps> = ({day, setDay}) => {
+export const RadioDaySelector: FunctionComponent<RadioDaySelectorProps> = ({day, setDay, required}) => {
     return (
-        <RadioGroup defaultValue={day} onChange={setDay} w="100%" border="1px solid var(--white-light)" bgColor="var(--white-bg)" borderRadius="md" p="1rem">
+        <RadioGroup defaultValue={day} onChange={setDay} aria-required={required} w="100%" border="1px solid var(--white-light)" bgColor="var(--white-bg)" borderRadius="md" p="1rem">
             <VStack>
                 <HStack gap="1rem"> 
                     <Radio value="Monday">Monday</Radio>

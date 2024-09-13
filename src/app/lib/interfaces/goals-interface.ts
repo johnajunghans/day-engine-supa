@@ -1,3 +1,5 @@
+import { DayOfWeek } from "./rituals-interface"
+
 export type season = "Spring" | "Summer" | "Fall" | "Winter"
 export type zodiac = "Aries" | "Taurus" | "Gemini" | "Cancer" | "Leo" | "Virgo" | "Libra" | "Scorpio" | "Sagittarius" | "Capricorn" | "Aquarius" | "Pisces"
 export type month = "January" | "February" | "March" | "April" | "May" | "June" | "July" | "August" | "September" | "October" | "November" | "December"
@@ -29,7 +31,7 @@ export interface Action {
     created_at: string,
     monthly_goal_id: number | null,
     summary: string,
-    day?: string,
+    day?: DayOfWeek,
     start_time?: string,
     end_time?: string
 }

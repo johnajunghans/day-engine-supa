@@ -32,9 +32,23 @@ const MonthlyGoals: FunctionComponent<MonthlyGoalsProps> = ({ seasonData, monthl
     const { isOpen: isAddGoalModalOpen, onClose: closeAddGoalModal, onOpen: openAddGoalModal } = useDisclosure()
     const { isOpen: isEditDeleteGoalModalOpen, onClose: closeEditDeleteGoalModal, onOpen: openEditDeleteGoalModal } = useDisclosure()
     const { isOpen: isAddActionModalOpen, onClose: closeAddActionModal, onOpen: openAddActionModal } = useDisclosure()
+    const { isOpen: isEditDeleteActionModalOpen, onClose: closeEditDeleteActionModal, onOpen: openEditDeleteActionModal } = useDisclosure()
 
     const months = getMonthsGivenSeason(seasonData?.season as season)
     const currentMonth = getZodiac()
+
+    useEffect(() => {
+        if (editDeleteActionModalData || addActionModalData) {
+            openAddActionModal()
+        }
+    }, [editDeleteActionModalData, addActionModalData])
+
+    useEffect(() => {
+        if (!isAddActionModalOpen) {
+            setAddActionModalData(null)
+            setEditDeleteActionModalData(null)
+        }
+    }, [isAddActionModalOpen])
 
     // handle open edit modal and regen state when closed
     useModal({
@@ -95,7 +109,8 @@ const MonthlyGoals: FunctionComponent<MonthlyGoalsProps> = ({ seasonData, monthl
                                         goal={goal} 
                                         actions={actionsState?.filter(action => action.monthly_goal_id === goal.id)} 
                                         onEditGoalClick={setEditDeleteGoalModalData}
-                                        setAddActionData={setAddActionModalData}
+                                        onAddActionClick={setAddActionModalData}
+                                        onEditActionClick={setEditDeleteActionModalData}
                                     />
                                 ))}
                             </TabPanel>
@@ -130,14 +145,22 @@ const MonthlyGoals: FunctionComponent<MonthlyGoalsProps> = ({ seasonData, monthl
             <ModalMain
                 isOpen={isAddActionModalOpen}
                 onClose={closeAddActionModal}
-                modalTitle="Add New Action"
+                modalTitle={addActionModalData ? "Add New Action" : `Update Action: ${editDeleteActionModalData?.summary}`}
             >
-                {addActionModalData && <AddActionForm  
+                {(addActionModalData || editDeleteActionModalData) && <AddActionForm  
                     goalId={addActionModalData}
+                    initialAction={editDeleteActionModalData}
                     setActionState={setActionsState}
                     closeModal={closeAddActionModal}
                 />}
             </ModalMain>
+            {/* <ModalMain
+                isOpen={isEditDeleteActionModalOpen}
+                onClose={closeEditDeleteActionModal}
+                modalTitle={`Update Action: ${editDeleteActionModalData?.summary}`}
+            >
+                
+            </ModalMain> */}
         </Box>
     );
 }
