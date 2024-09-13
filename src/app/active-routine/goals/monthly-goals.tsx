@@ -2,16 +2,15 @@
 
 import { Action, MonthlyGoal, season, SeasonData } from "@/app/lib/interfaces/goals-interface";
 import { Box, Flex, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useDisclosure } from "@chakra-ui/react";
-import { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent, useState } from "react";
 import VisionTile from "./vision-tile";
 import { getMonthEmoji, getMonthsGivenSeason, getZodiac, getZodiacRange } from "@/app/lib/functions/season-functions";
 import MonthlyGoalTile from "./monthly-goal-tile";
 import { AccentButton } from "@/app/components/buttons";
 import ModalMain from "@/app/components/modal";
-import AddGoalForm from "./goal-forms/add-goal-form";
-import EditDeleteGoalForm from "./goal-forms/edit-delete-goal-form";
-import AddActionForm from "./goal-forms/add-action-form";
+import ActionForm from "./goal-forms/action-form";
 import useModal from "@/app/hooks/useModal";
+import GoalForm from "./goal-forms/goal-form";
 
 
 interface MonthlyGoalsProps {
@@ -27,43 +26,30 @@ const MonthlyGoals: FunctionComponent<MonthlyGoalsProps> = ({ seasonData, monthl
     const [actionsState, setActionsState] = useState<Action[] | null>(actions)
 
     const [editDeleteGoalModalData, setEditDeleteGoalModalData] = useState<MonthlyGoal | null>(null)
-    const [addActionModalData, setAddActionModalData] = useState<number | null>(null)
+    const [actionModalData, setActionModalData] = useState<number | null>(null)
     const [editDeleteActionModalData, setEditDeleteActionModalData] = useState<Action | null>(null)
-    const { isOpen: isAddGoalModalOpen, onClose: closeAddGoalModal, onOpen: openAddGoalModal } = useDisclosure()
-    const { isOpen: isEditDeleteGoalModalOpen, onClose: closeEditDeleteGoalModal, onOpen: openEditDeleteGoalModal } = useDisclosure()
-    const { isOpen: isAddActionModalOpen, onClose: closeAddActionModal, onOpen: openAddActionModal } = useDisclosure()
-    const { isOpen: isEditDeleteActionModalOpen, onClose: closeEditDeleteActionModal, onOpen: openEditDeleteActionModal } = useDisclosure()
+    const { isOpen: isGoalModalOpen, onClose: closeGoalModal, onOpen: openGoalModal } = useDisclosure()
+    const { isOpen: isActionModalOpen, onClose: closeActionModal, onOpen: openActionModal } = useDisclosure()
 
     const months = getMonthsGivenSeason(seasonData?.season as season)
     const currentMonth = getZodiac()
 
-    useEffect(() => {
-        if (editDeleteActionModalData || addActionModalData) {
-            openAddActionModal()
-        }
-    }, [editDeleteActionModalData, addActionModalData])
-
-    useEffect(() => {
-        if (!isAddActionModalOpen) {
-            setAddActionModalData(null)
-            setEditDeleteActionModalData(null)
-        }
-    }, [isAddActionModalOpen])
-
-    // handle open edit modal and regen state when closed
+    // handle open edit goal modal and regen state when closed
     useModal({
         state: editDeleteGoalModalData, 
         setState: setEditDeleteGoalModalData, 
-        isOpen: isEditDeleteGoalModalOpen, 
-        open: openEditDeleteGoalModal
+        isOpen: isGoalModalOpen, 
+        open: openGoalModal
     })
 
     // handle open add action modal and regen state when closed
     useModal({
-        state: addActionModalData, 
-        setState: setAddActionModalData, 
-        isOpen: isAddActionModalOpen, 
-        open: openAddActionModal
+        state: actionModalData,
+        state2: editDeleteActionModalData,
+        setState: setActionModalData,
+        setState2: setEditDeleteActionModalData,
+        isOpen: isActionModalOpen,
+        open: openActionModal
     })
 
     return (
@@ -101,7 +87,7 @@ const MonthlyGoals: FunctionComponent<MonthlyGoalsProps> = ({ seasonData, monthl
                             <TabPanel key={month} display="flex" width="85%" flexDir="column" alignItems="flex-start" gap="1rem">
                                 <Flex w="100%" justify="space-between">
                                     <Text display="flex" alignItems="center" border="1px solid var(--white-light)" fontSize="12px" letterSpacing="2px" borderRadius="5px" py="0.25rem" px="0.5rem" className=" antialiased" color="var(--white-80)">{`GOALS FOR MONTH OF ${month.toUpperCase()}: ${getZodiacRange(month).toUpperCase()}`}</Text>
-                                    <AccentButton id="add-new-goal-button" name="Add Goal" onClick={openAddGoalModal} />
+                                    <AccentButton id="add-new-goal-button" name="Add Goal" onClick={openGoalModal} />
                                 </Flex>
                                 {monthlyGoalsState.filter(goal => goal.month === month).map(goal => (
                                     <MonthlyGoalTile 
@@ -109,7 +95,7 @@ const MonthlyGoals: FunctionComponent<MonthlyGoalsProps> = ({ seasonData, monthl
                                         goal={goal} 
                                         actions={actionsState?.filter(action => action.monthly_goal_id === goal.id)} 
                                         onEditGoalClick={setEditDeleteGoalModalData}
-                                        onAddActionClick={setAddActionModalData}
+                                        onAddActionClick={setActionModalData}
                                         onEditActionClick={setEditDeleteActionModalData}
                                     />
                                 ))}
@@ -119,48 +105,30 @@ const MonthlyGoals: FunctionComponent<MonthlyGoalsProps> = ({ seasonData, monthl
                 </Tabs>
             </Flex>
             <ModalMain 
-                isOpen={isAddGoalModalOpen} 
-                onClose={closeAddGoalModal} 
-                modalTitle="Add New Goal"
+                isOpen={isGoalModalOpen} 
+                onClose={closeGoalModal} 
+                modalTitle={editDeleteGoalModalData ? `Update Goal: ${editDeleteGoalModalData.summary}` : "Add New Goal"}
             >
-                <AddGoalForm 
+                <GoalForm 
                     months={months}
-                    seasonId={seasonDataState!.id}
+                    seasonId={seasonDataState ? seasonDataState.id : null}
                     setGoalsState={setMonthlyGoalsState}
-                    closeModal={closeAddGoalModal} 
+                    closeModal={closeGoalModal}
+                    initialGoal={editDeleteGoalModalData}
                 />
             </ModalMain>
-            <ModalMain 
-                isOpen={isEditDeleteGoalModalOpen} 
-                onClose={closeEditDeleteGoalModal} 
-                modalTitle={`Upate Goal: ${editDeleteGoalModalData?.summary}`}
-            >
-                {editDeleteGoalModalData && <EditDeleteGoalForm 
-                    initialGoal={editDeleteGoalModalData} 
-                    months={months} 
-                    closeModal={closeEditDeleteGoalModal}
-                    setGoalsState={setMonthlyGoalsState} 
-                />}
-            </ModalMain>
             <ModalMain
-                isOpen={isAddActionModalOpen}
-                onClose={closeAddActionModal}
-                modalTitle={addActionModalData ? "Add New Action" : `Update Action: ${editDeleteActionModalData?.summary}`}
+                isOpen={isActionModalOpen}
+                onClose={closeActionModal}
+                modalTitle={actionModalData ? "Add New Action" : `Update Action: ${editDeleteActionModalData?.summary}`}
             >
-                {(addActionModalData || editDeleteActionModalData) && <AddActionForm  
-                    goalId={addActionModalData}
+                {(actionModalData || editDeleteActionModalData) && <ActionForm  
+                    goalId={actionModalData}
                     initialAction={editDeleteActionModalData}
                     setActionState={setActionsState}
-                    closeModal={closeAddActionModal}
+                    closeModal={closeActionModal}
                 />}
             </ModalMain>
-            {/* <ModalMain
-                isOpen={isEditDeleteActionModalOpen}
-                onClose={closeEditDeleteActionModal}
-                modalTitle={`Update Action: ${editDeleteActionModalData?.summary}`}
-            >
-                
-            </ModalMain> */}
         </Box>
     );
 }

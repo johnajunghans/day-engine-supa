@@ -4,7 +4,7 @@ import { FunctionComponent, useEffect, useState } from "react";
 import SeasonalGoalTile from "./seasonal-goal-tile";
 import { CreateNewBtn } from "@/app/components/buttons";
 import ModalMain from "@/app/components/modal";
-import AddGoalForm from "./goal-forms/add-goal-form";
+import AddGoalForm from "./goal-forms/goal-form";
 import EditDeleteGoalForm from "./goal-forms/edit-delete-goal-form";
 import { useActionsContext } from "@/app/hooks/db-context-hooks/useActionsContext";
 

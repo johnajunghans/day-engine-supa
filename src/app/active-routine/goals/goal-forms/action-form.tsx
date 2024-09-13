@@ -6,14 +6,14 @@ import { DayOfWeek } from "@/app/lib/interfaces/rituals-interface";
 import { Button, HStack, VStack } from "@chakra-ui/react";
 import { Dispatch, FormEvent, FunctionComponent, SetStateAction, useState } from "react";
 
-interface AddActionFormProps {
+interface ActionFormProps {
     setActionState: Dispatch<SetStateAction<Action[] | null>>
     goalId: number | null
     initialAction: Action | null
     closeModal: VoidFunction
 }
  
-const AddActionForm: FunctionComponent<AddActionFormProps> = ({ goalId, setActionState, closeModal, initialAction }) => {
+const ActionForm: FunctionComponent<ActionFormProps> = ({ goalId, setActionState, closeModal, initialAction }) => {
 
     const [day, setDay] = useState<DayOfWeek>(initialAction?.day ? initialAction.day : "Monday")
     const [start_time, setStart_time] = useState<string>(initialAction?.start_time ? initialAction.start_time : "")
@@ -140,4 +140,4 @@ const AddActionForm: FunctionComponent<AddActionFormProps> = ({ goalId, setActio
     );
 }
  
-export default AddActionForm;
+export default ActionForm;
