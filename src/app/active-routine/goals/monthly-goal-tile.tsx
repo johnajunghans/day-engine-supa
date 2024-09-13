@@ -11,6 +11,7 @@ interface MonthlyGoalTileProps {
     goal: MonthlyGoal
     actions: Action[] | undefined
     onEditGoalClick: Dispatch<SetStateAction<MonthlyGoal | null>>
+    setAddActionData: Dispatch<SetStateAction<number | null>>
 }
 
 interface DescriptionTileProps {
@@ -33,7 +34,7 @@ const DescriptionTile: FunctionComponent<DescriptionTileProps> = ({ title, conte
     )
 }
  
-const MonthlyGoalTile: FunctionComponent<MonthlyGoalTileProps> = ({ goal, actions, onEditGoalClick }) => {
+const MonthlyGoalTile: FunctionComponent<MonthlyGoalTileProps> = ({ goal, actions, onEditGoalClick, setAddActionData }) => {
 
     const Actions: FunctionComponent<ActionProps> = ({ children }) => {
         return (
@@ -49,7 +50,7 @@ const MonthlyGoalTile: FunctionComponent<MonthlyGoalTileProps> = ({ goal, action
                 <UnorderedList styleType="'➤'">
                    { children } 
                 </UnorderedList>
-                <Button bgColor="var(--de-orange)" width="100px" _hover={{bgColor: "var(--de-orange-80)"}} h="34px" fontWeight="400" px="0.5rem" mt="1rem">Add Action</Button>
+                <Button onClick={() => setAddActionData(goal.id)} bgColor="var(--de-orange)" width="100px" _hover={{bgColor: "var(--de-orange-80)"}} h="34px" fontWeight="400" px="0.5rem" mt="1rem">Add Action</Button>
             </Flex>
         )
     }

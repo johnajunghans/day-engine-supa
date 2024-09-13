@@ -10,6 +10,8 @@ import { AccentButton } from "@/app/components/buttons";
 import ModalMain from "@/app/components/modal";
 import AddGoalForm from "./goal-forms/add-goal-form";
 import EditDeleteGoalForm from "./goal-forms/edit-delete-goal-form";
+import AddActionForm from "./goal-forms/add-action-form";
+import useModal from "@/app/hooks/useModal";
 
 
 interface MonthlyGoalsProps {
@@ -25,30 +27,30 @@ const MonthlyGoals: FunctionComponent<MonthlyGoalsProps> = ({ seasonData, monthl
     const [actionsState, setActionsState] = useState<Action[] | null>(actions)
 
     const [editDeleteGoalModalData, setEditDeleteGoalModalData] = useState<MonthlyGoal | null>(null)
+    const [addActionModalData, setAddActionModalData] = useState<number | null>(null)
+    const [editDeleteActionModalData, setEditDeleteActionModalData] = useState<Action | null>(null)
     const { isOpen: isAddGoalModalOpen, onClose: closeAddGoalModal, onOpen: openAddGoalModal } = useDisclosure()
     const { isOpen: isEditDeleteGoalModalOpen, onClose: closeEditDeleteGoalModal, onOpen: openEditDeleteGoalModal } = useDisclosure()
+    const { isOpen: isAddActionModalOpen, onClose: closeAddActionModal, onOpen: openAddActionModal } = useDisclosure()
 
     const months = getMonthsGivenSeason(seasonData?.season as season)
     const currentMonth = getZodiac()
 
-    // handle open edit modal when editModalData state changes
-    useEffect(() => {
-        if (editDeleteGoalModalData) {
-            openEditDeleteGoalModal()
-        }
-    }, [editDeleteGoalModalData])
+    // handle open edit modal and regen state when closed
+    useModal({
+        state: editDeleteGoalModalData, 
+        setState: setEditDeleteGoalModalData, 
+        isOpen: isEditDeleteGoalModalOpen, 
+        open: openEditDeleteGoalModal
+    })
 
-    useEffect(() => {
-        if (!isEditDeleteGoalModalOpen) {
-            setEditDeleteGoalModalData(null)
-        }
-    }, [isEditDeleteGoalModalOpen])
-
-    // regen editModalData state
-    // function closeEditModal() {
-    //     setEditDeleteGoalModalData(null)
-    //     closeEditDeleteGoalModal()
-    // }
+    // handle open add action modal and regen state when closed
+    useModal({
+        state: addActionModalData, 
+        setState: setAddActionModalData, 
+        isOpen: isAddActionModalOpen, 
+        open: openAddActionModal
+    })
 
     return (
         <Box display="grid" gridTemplateRows="1fr 5fr" gap="1rem" minW="500px" overflow="auto">
@@ -93,6 +95,7 @@ const MonthlyGoals: FunctionComponent<MonthlyGoalsProps> = ({ seasonData, monthl
                                         goal={goal} 
                                         actions={actionsState?.filter(action => action.monthly_goal_id === goal.id)} 
                                         onEditGoalClick={setEditDeleteGoalModalData}
+                                        setAddActionData={setAddActionModalData}
                                     />
                                 ))}
                             </TabPanel>
@@ -122,6 +125,17 @@ const MonthlyGoals: FunctionComponent<MonthlyGoalsProps> = ({ seasonData, monthl
                     months={months} 
                     closeModal={closeEditDeleteGoalModal}
                     setGoalsState={setMonthlyGoalsState} 
+                />}
+            </ModalMain>
+            <ModalMain
+                isOpen={isAddActionModalOpen}
+                onClose={closeAddActionModal}
+                modalTitle="Add New Action"
+            >
+                {addActionModalData && <AddActionForm  
+                    goalId={addActionModalData}
+                    setActionState={setActionsState}
+                    closeModal={closeAddActionModal}
                 />}
             </ModalMain>
         </Box>

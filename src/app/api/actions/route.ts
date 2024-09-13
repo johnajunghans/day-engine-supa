@@ -8,13 +8,15 @@ export async function POST(request: Request) {
 
     const { data, error } = await supabase.from('Actions')
         .insert(newAction)
+        .select()
+        .single()
 
         if (error) {
             console.error('Supabase Error:', error);  // Log the error
             return NextResponse.json({ error: error.message }, { status: 500 });
         }
     
-        return NextResponse.json({ data }, { status: 201 })
+        return NextResponse.json(data , { status: 201 })
 }
 
 export async function PUT(request: Request) {
