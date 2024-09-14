@@ -67,13 +67,19 @@ const MonthlyGoalTile: FunctionComponent<MonthlyGoalTileProps> = ({ goal, action
             <Actions>
                 {actions && actions.map(action => (
                     <ListItem key={action.id} ml="0.5rem">
-                        <Box id={`action-${action.id}-container`} display="grid" gridTemplateColumns="1fr 1fr" ml="0.5rem" _hover={{bgColor: "rgba(255,255,255,0.25)"}} transition="100ms" borderRadius="5px" p="3px" pos="relative">
+                        <Box id={`action-${action.id}-container`} className="my-box" display="grid" gridTemplateColumns="1fr 1fr" ml="0.5rem" _hover={{bgColor: "rgba(255,255,255,0.25)"}} transition="100ms" borderRadius="5px" p="3px" pos="relative">
                             <Text textAlign="left" ml="0.25rem">{action.summary}</Text>
                             {action.day && action.start_time && action.end_time && <Text textAlign="left">{`On ${action.day?.slice(0,3)} from ${timeTo12Hr(action.start_time)} to ${timeTo12Hr(action.end_time)}`}</Text>}
                             <Flex pos="absolute" right="5px" top="calc(50% - 12px)">
                                 <IconButton 
                                     aria-label="edit-or-delete-action" 
-                                    size="xs"  
+                                    size="xs"
+                                    opacity="0"
+                                    sx={{
+                                        '.my-box:hover &': {
+                                          opacity: "1",
+                                        },
+                                      }}  
                                     _hover={{bgColor: "rgba(255,255,255,0.25)"}}
                                     width="24px" height="24px" 
                                     bgColor="unset" 

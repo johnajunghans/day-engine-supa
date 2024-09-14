@@ -37,9 +37,11 @@ interface TextAreaInputProps {
     placeholder: string
     onChange: ChangeEventHandler<HTMLTextAreaElement>
     required?: boolean
+    size?: "xs" | "sm" | "md" | "lg"
+    height?: string
 }
 
-export const TextAreaInput: FunctionComponent<TextAreaInputProps> = ({ id, value, placeholder, onChange, required }) => {
+export const TextAreaInput: FunctionComponent<TextAreaInputProps> = ({ id, value, placeholder, onChange, required, size, height }) => {
     return (
         <Textarea 
             id={id}
@@ -52,6 +54,8 @@ export const TextAreaInput: FunctionComponent<TextAreaInputProps> = ({ id, value
             required={required}
             focusBorderColor="#F1B04999"
             isRequired={required}
+            size={size}
+            h={height}
         />
     )
 }

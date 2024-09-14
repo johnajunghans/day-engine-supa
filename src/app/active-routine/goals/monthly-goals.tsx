@@ -11,6 +11,7 @@ import ModalMain from "@/app/components/modal";
 import ActionForm from "./goal-forms/action-form";
 import useModal from "@/app/hooks/useModal";
 import GoalForm from "./goal-forms/goal-form";
+import EditVisionForm from "./goal-forms/edit-vision-form";
 
 
 interface MonthlyGoalsProps {
@@ -28,8 +29,11 @@ const MonthlyGoals: FunctionComponent<MonthlyGoalsProps> = ({ seasonData, monthl
     const [editDeleteGoalModalData, setEditDeleteGoalModalData] = useState<MonthlyGoal | null>(null)
     const [actionModalData, setActionModalData] = useState<number | null>(null)
     const [editDeleteActionModalData, setEditDeleteActionModalData] = useState<Action | null>(null)
+    const [seasonVisionData, setSeasonVisionData] = useState<string | null>(null)
+
     const { isOpen: isGoalModalOpen, onClose: closeGoalModal, onOpen: openGoalModal } = useDisclosure()
     const { isOpen: isActionModalOpen, onClose: closeActionModal, onOpen: openActionModal } = useDisclosure()
+    const { isOpen: isSeasonVisionDataOpen, onClose: closeSeasonVisionData, onOpen: openSeasonVisionData } = useDisclosure()
 
     const months = getMonthsGivenSeason(seasonData?.season as season)
     const currentMonth = getZodiac()
@@ -52,13 +56,22 @@ const MonthlyGoals: FunctionComponent<MonthlyGoalsProps> = ({ seasonData, monthl
         open: openActionModal
     })
 
+    // handle open edit season vision modal and regen state
+    useModal({
+        state: seasonVisionData,
+        setState: setSeasonVisionData,
+        isOpen: isSeasonVisionDataOpen,
+        open: openSeasonVisionData
+    })
+
     return (
         <Box display="grid" gridTemplateRows="1fr 5fr" gap="1rem" minW="500px" overflow="auto">
             <VisionTile
                 variant="vision"
                 title={`${seasonData?.season}-${seasonData?.year} Vision`} 
                 indentWidth={160} 
-                content={seasonDataState?.seasonal_vision} 
+                content={seasonDataState?.seasonal_vision}
+                onEditClick={setSeasonVisionData}
             />
             <Flex  borderRadius="md" flexDir="column" border="1px solid var(--de-orange-light)" overflow="hidden">
                 <Tabs display="flex" flexDir="column" variant="unstyled" h="auto" align="center" gap="1.5rem" defaultIndex={months.indexOf(currentMonth)}>
@@ -122,11 +135,25 @@ const MonthlyGoals: FunctionComponent<MonthlyGoalsProps> = ({ seasonData, monthl
                 onClose={closeActionModal}
                 modalTitle={actionModalData ? "Add New Action" : `Update Action: ${editDeleteActionModalData?.summary}`}
             >
-                {(actionModalData || editDeleteActionModalData) && <ActionForm  
-                    goalId={actionModalData}
-                    initialAction={editDeleteActionModalData}
-                    setActionState={setActionsState}
-                    closeModal={closeActionModal}
+                {(actionModalData || editDeleteActionModalData) && 
+                    <ActionForm  
+                        goalId={actionModalData}
+                        initialAction={editDeleteActionModalData}
+                        setActionState={setActionsState}
+                        closeModal={closeActionModal}
+                    />}
+            </ModalMain>
+            <ModalMain
+                isOpen={isSeasonVisionDataOpen}
+                onClose={closeSeasonVisionData}
+                modalTitle="Update Season Vision"
+            >
+                {(seasonVisionData && seasonDataState) && 
+                    <EditVisionForm 
+                        initialVision={seasonVisionData} 
+                        id={seasonDataState.id} 
+                        setSeasonalData={setSeasonDataState} 
+                        closeModal={closeSeasonVisionData}
                 />}
             </ModalMain>
         </Box>
